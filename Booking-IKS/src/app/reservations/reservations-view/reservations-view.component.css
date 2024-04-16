@@ -1,0 +1,32 @@
+#requestsTable{
+  background-color: rgba(210, 207, 222, 0.71);
+  box-shadow: none;
+}
+#requestsTable th,
+#requestsTable td {
+
+}
+mat-paginator{
+  background-color: rgba(210, 207, 222, 0.71);
+}
+#cancelBtn{
+  width: 100px;
+  padding: 4px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+  border:1px black solid;
+}
+#rateIcon{
+  color: #939393;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+#requestsTableDiv{
+  align-items: center;
+  width: 70%;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(0, 0, 0, 0.1);
+}

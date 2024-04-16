@@ -1,0 +1,102 @@
+<div class="container">
+
+    <form class="example-form" [formGroup]="updateAccommodationFormGroup" (ngSubmit)="update()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput required name="name" formControlName="name" value="{{accommodation?.name}}"/>
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('name')?.hasError('required')) || updateAccommodationFormGroup.get('name')?.hasError('required') && updateAccommodationFormGroup.get('name')?.touched">
+          <span class="error-message">Name is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>City</mat-label>
+        <input matInput required name="city" formControlName="city" value="{{accommodation?.address?.city}}"/>
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('city')?.hasError('required')) || updateAccommodationFormGroup.get('city')?.hasError('required') && updateAccommodationFormGroup.get('city')?.touched">
+          <span class="error-message">City is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Country</mat-label>
+        <input matInput required name="country" formControlName="country" value="{{accommodation?.address?.country}}"/>
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('country')?.hasError('required')) || updateAccommodationFormGroup.get('country')?.hasError('required') && updateAccommodationFormGroup.get('country')?.touched">
+          <span class="error-message">Country is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Address</mat-label>
+        <input matInput required name="address" formControlName="address" value="{{accommodation?.address?.address}}"/>
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('address')?.hasError('required')) || updateAccommodationFormGroup.get('address')?.hasError('required') && updateAccommodationFormGroup.get('address')?.touched">
+          <span class="error-message">Address is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput required name="description" formControlName="description" value="{{accommodation?.description}}"></textarea>
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('description')?.hasError('required')) || updateAccommodationFormGroup.get('description')?.hasError('required') && updateAccommodationFormGroup.get('description')?.touched">
+          <span class="error-message">Description is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Accommodation type</mat-label>
+        <mat-select required formControlName="selectType" [value]="accommodation?.type">
+          <mat-option value="VILLA">Villa</mat-option>
+          <mat-option value="APARTMENT">Apartment</mat-option>
+          <mat-option value="HOTEL">Hotel</mat-option>
+          <mat-option value="MOTEL">Motel</mat-option>
+        </mat-select>
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('selectType')?.hasError('required')) || updateAccommodationFormGroup.get('selectType')?.hasError('required') && updateAccommodationFormGroup.get('selectType')?.touched">
+          <span class="error-message">Accommodation type is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Min number of guest</mat-label>
+        <input matInput required type="number" min="0" class="example-right-align" value="{{accommodation?.minGuests}}" name="minGuests" formControlName="minGuests">
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('minGuests')?.hasError('required')) || updateAccommodationFormGroup.get('minGuests')?.hasError('required') && updateAccommodationFormGroup.get('minGuests')?.touched">
+          <span class="error-message">Min guest number is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Max number of guest</mat-label>
+        <input matInput required type="number" min="0" class="example-right-align" value="{{accommodation?.maxGuests}}" name="maxGuests" formControlName="maxGuests">
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('maxGuests')?.hasError('required')) || updateAccommodationFormGroup.get('maxGuests')?.hasError('required') && updateAccommodationFormGroup.get('maxGuests')?.touched">
+          <span class="error-message">Max guest number is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always" class="deadline example-full-width">
+        <mat-label>Deadline for cancellation of reservation</mat-label>
+        <input matInput type="number" name="deadline" class="example-right-align" formControlName="deadline" value="{{accommodation?.reservationDeadline}}">
+        <div *ngIf="(submitted && updateAccommodationFormGroup.get('deadline')?.hasError('required')) || updateAccommodationFormGroup.get('deadline')?.hasError('required') && updateAccommodationFormGroup.get('deadline')?.touched">
+          <span class="error-message">Deadline is required.</span>
+        </div>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="checkPrice" class="example-margin" checked="{{accommodation?.pricePerGuest}}">Price per guest</mat-checkbox>
+      <mat-checkbox formControlName="checkReservation" class="example-margin" checked="{{accommodation?.automaticConfirmation}}">Automatic reservation acceptances</mat-checkbox>
+
+    <p class="amenities">Choose amenities</p>
+    <div class="checkbox-grid" *ngFor="let amenity of allAmenities2">
+        <mat-checkbox
+          name="{{amenity.name}}"
+          class="example-margin"
+          [checked]="isAmenitySelected(amenity)"
+        >
+          {{amenity.name}}
+        </mat-checkbox>
+      </div>
+    <div>
+
+    </div>
+      <button type="submit" id="updateAccommodation" mat-raised-button class="reserveButton">Save changes</button>
+
+
+    </form>
+    <div class="cont2"></div>
+</div>

@@ -1,0 +1,19 @@
+.container {
+  margin: 0 auto;
+  text-align: center;
+  height: 100%;
+  /*display: flex;*/
+  background-color: #E5E5E5;
+}
+/*E5E5E5*/
+.logo {
+  width: 30%;
+  height: 60%;
+}
+
+.reserveButton {
+  margin-bottom: 20px;
+  font-size: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+}

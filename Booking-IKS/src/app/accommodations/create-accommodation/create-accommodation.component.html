@@ -1,0 +1,131 @@
+<div class="container">
+
+<form class="example-form" [formGroup]="createAccommodationForm">
+  <mat-form-field class="example-full-width">
+    <mat-label>Name</mat-label>
+    <input matInput required placeholder="Ex. Sheraton" name="name" formControlName="name"/>
+    <div *ngIf="(submitted && createAccommodationForm.get('name')?.hasError('required')) || createAccommodationForm.get('name')?.hasError('required') && createAccommodationForm.get('name')?.touched">
+      <span class="error-message">Name is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>City</mat-label>
+    <input matInput required placeholder="Ex. Novi Sad" name="city" formControlName="city"/>
+    <div *ngIf="(submitted && createAccommodationForm.get('city')?.hasError('required')) || createAccommodationForm.get('city')?.hasError('required') && createAccommodationForm.get('city')?.touched">
+      <span class="error-message">City is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Country</mat-label>
+    <input matInput required placeholder="Ex. Serbia" name="country" formControlName="country"/>
+    <div *ngIf="(submitted && createAccommodationForm.get('country')?.hasError('required')) || createAccommodationForm.get('country')?.hasError('required') && createAccommodationForm.get('country')?.touched">
+      <span class="error-message">Country is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Address</mat-label>
+    <input matInput required placeholder="Ex. Polgar Andrasa 1" name="address" formControlName="address"/>
+    <div *ngIf="(submitted && createAccommodationForm.get('address')?.hasError('required')) || createAccommodationForm.get('address')?.hasError('required') && createAccommodationForm.get('address')?.touched">
+      <span class="error-message">Address is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput required placeholder="Ex. This accommodation is in a great location..." name="description" formControlName="description"></textarea>
+    <div *ngIf="(submitted && createAccommodationForm.get('description')?.hasError('required')) || createAccommodationForm.get('description')?.hasError('required') && createAccommodationForm.get('description')?.touched">
+      <span class="error-message">Description is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Accommodation type</mat-label>
+    <mat-select required formControlName="selectType">
+      <mat-option value="VILLA">Villa</mat-option>
+      <mat-option value="APARTMENT">Apartment</mat-option>
+      <mat-option value="HOTEL">Hotel</mat-option>
+      <mat-option value="MOTEL">Motel</mat-option>
+    </mat-select>
+    <div *ngIf="(submitted && createAccommodationForm.get('selectType')?.hasError('required')) || createAccommodationForm.get('selectType')?.hasError('required') && createAccommodationForm.get('selectType')?.touched">
+      <span class="error-message">Accommodation type is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Min number of guest</mat-label>
+    <input matInput required type="number" min="0" class="example-right-align" placeholder="0" name="minGuests" formControlName="minGuests">
+    <div *ngIf="(submitted && createAccommodationForm.get('minGuests')?.hasError('required')) || createAccommodationForm.get('minGuests')?.hasError('required') && createAccommodationForm.get('minGuests')?.touched">
+      <span class="error-message">Min guest number is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Max number of guest</mat-label>
+    <input matInput required type="number" min="0" class="example-right-align" placeholder="0" name="maxGuests" formControlName="maxGuests">
+    <div *ngIf="(submitted && createAccommodationForm.get('maxGuests')?.hasError('required')) || createAccommodationForm.get('maxGuests')?.hasError('required') && createAccommodationForm.get('maxGuests')?.touched">
+      <span class="error-message">Max guest number is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field class="date-picker example-full-width">
+    <mat-date-range-input [min]="todayDate" [rangePicker]="rangePicker">
+      <input matStartDate placeholder="Start date" #dateRangeStart disabled>
+      <input matEndDate placeholder="End date" #dateRangeEnd disabled>
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+    <mat-date-range-picker disabled="false" #rangePicker>
+      <mat-date-range-picker-actions>
+        <button mat-button matDateRangePickerCancel>Cancel</button>
+        <button mat-raised-button color="primary" (click)="dateRangeChanged(dateRangeStart,dateRangeEnd)" matDateRangePickerApply>Apply</button>
+      </mat-date-range-picker-actions>
+    </mat-date-range-picker>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always" class="example-full-width">
+    <mat-label>Price</mat-label>
+    <input matInput type="number" class="example-right-align" placeholder="0" name="price" formControlName="price">
+    <span matTextPrefix>$&nbsp;</span>
+    <span matTextSuffix>.00</span>
+    <div *ngIf="(submitted && createAccommodationForm.get('price')?.hasError('required')) || createAccommodationForm.get('price')?.hasError('required') && createAccommodationForm.get('price')?.touched">
+      <span class="error-message">Price is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always" class="deadline example-full-width">
+    <mat-label>Deadline for cancellation of reservation</mat-label>
+    <input matInput type="number" name="deadline" class="example-right-align" formControlName="deadline">
+    <div *ngIf="(submitted && createAccommodationForm.get('deadline')?.hasError('required')) || createAccommodationForm.get('deadline')?.hasError('required') && createAccommodationForm.get('deadline')?.touched">
+      <span class="error-message">Deadline is required.</span>
+    </div>
+  </mat-form-field>
+
+  <mat-checkbox formControlName="checkPrice" class="example-margin">Price per guest</mat-checkbox>
+  <mat-checkbox formControlName="checkReservation" class="example-margin">Automatic reservation acceptances</mat-checkbox>
+
+</form>
+
+
+<p class="amenities">Choose amenities</p>
+<div class="filter-panel">
+  <div class="checkbox-grid" *ngFor="let amenity of allAmenities2" >
+    <mat-checkbox name="{{amenity.name}}" class="example-margin" (change)="onChange(amenity)">{{amenity.name}}</mat-checkbox>
+  </div>
+</div>
+<div>
+  <input class="fileInput" type="file" name="photos" (change)="onFileSelected($event)" multiple/>
+  <div class="loadImages"> 
+    <div *ngFor="let image of selectedImages">
+    <img [src]="image.url" alt="selected image" class="image">
+    </div>
+  </div>
+<!--  <button mat-raised-button  (click)="uploadPicture()" class="reserveButton">upload</button>-->
+
+</div>
+  <button (click)="create()" mat-raised-button class="reserveButton">Accept</button>
+
+</div>
+
+<div class="cont2"></div>

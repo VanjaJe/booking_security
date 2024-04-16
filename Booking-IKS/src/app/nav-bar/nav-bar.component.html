@@ -1,0 +1,49 @@
+<mat-toolbar>
+  <div class="travelBee">
+    <span>TravelBee</span>
+  </div>
+  <div>
+    <button [routerLink]="['home']"  mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+    </button>
+    <button *ngIf="role == 'ROLE_HOST'"  [routerLink]="['create']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button *ngIf="role == 'ROLE_HOST' || role == 'ROLE_GUEST'" [routerLink]="['reservations']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>collections_bookmark</mat-icon>
+    </button>
+    <button  *ngIf="role == 'ROLE_ADMIN'"  [routerLink]="['commentsAndRatings']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>insert_comment</mat-icon>
+    </button>
+    <button *ngIf="role == 'ROLE_ADMIN'"  [routerLink]="['reportedUsers']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>person_add_disabled</mat-icon>
+    </button>
+    <button  *ngIf="role == 'ROLE_ADMIN'"  [routerLink]="['accommodationApproval']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>fiber_new</mat-icon>
+    </button>
+    <button  *ngIf="role == 'ROLE_HOST'"  [routerLink]="['reports']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>bar_chart</mat-icon>
+    </button>
+    <button (click)="loadNotifications()" *ngIf="role == 'ROLE_HOST' || role == 'ROLE_GUEST'" mat-icon-button [matMenuTriggerFor]="menu" class="example-icon favorite-icon">
+      <mat-icon matBadge="1" matBadgeColor="warn">notifications</mat-icon>
+    </button>
+    <button [routerLink]="['notificationSettings']" *ngIf="role == 'ROLE_HOST' || role == 'ROLE_GUEST'" mat-icon-button class="example-icon favorite-icon">
+      <mat-icon>settings</mat-icon>
+    </button>
+    <button  *ngIf="role == 'ROLE_ADMIN' || role == 'ROLE_HOST' || role == 'ROLE_GUEST'" [routerLink]="['myAccount']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>person</mat-icon>
+    </button>
+    <button [routerLink]="['logIn']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>person_add</mat-icon>
+    </button>
+    <button id="logoutBtn" (click)="logout()" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>logout</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="nott" *ngFor="let notification of notifications">
+        <app-notification-card [notification]="notification"></app-notification-card>
+        <hr/>
+      </div>
+    </mat-menu>
+  </div>
+</mat-toolbar>

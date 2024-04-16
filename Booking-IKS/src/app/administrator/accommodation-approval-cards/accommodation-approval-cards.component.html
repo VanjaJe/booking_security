@@ -1,0 +1,9 @@
+<body>
+    <div *ngFor="let accommodation of paginatedAccommodations">
+        <app-accommodation-card (clicked)="onNewAccommodationClick($event)" [accommodation]="accommodation"></app-accommodation-card>
+    </div>
+    
+    <div class="pagination">
+      <button *ngFor="let pageNumber of getPages()" (click)="onPageChange(pageNumber)">{{ pageNumber }}</button>
+    </div>
+</body>

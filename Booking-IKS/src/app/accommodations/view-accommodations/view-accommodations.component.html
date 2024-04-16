@@ -1,0 +1,61 @@
+<div class="combo-box-container" [formGroup]="filterFrom">
+  <mat-form-field>
+    <mat-label>Enter:country,city</mat-label>
+    <input matInput type="string" formControlName="destination"/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Accommodation type</mat-label>
+    <mat-select formControlName="accommodationType">
+      <mat-option *ngFor="let option of typeOptions" [value]="option">
+        {{ option}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field floatLabel="always" class="guests example-full-width">
+    <mat-label>Number of guests</mat-label>
+    <input matInput type="number" min="0" name="guestNum" class="example-right-align" formControlName="guestNum">
+  </mat-form-field>
+  <mat-form-field id="dateRangeForEditFreeDates" class="date-picker">
+    <mat-date-range-input [rangePicker]="rangePicker">
+      <input matStartDate placeholder="Start date" #dateRangeStart>
+      <input matEndDate placeholder="End date" #dateRangeEnd>
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+    <mat-date-range-picker #rangePicker>
+      <mat-date-range-picker-actions>
+        <button mat-button matDateRangePickerCancel>Cancel</button>
+        <button mat-raised-button color="primary" id="applyDateForTimeSlots" matDateRangePickerApply (click)="dateRangeChanged(dateRangeStart,dateRangeEnd)">Apply</button>
+      </mat-date-range-picker-actions>
+    </mat-date-range-picker>
+  </mat-form-field>
+  <button mat-raised-button id="search-btn" (click)="search(dateRangeStart,dateRangeEnd)">Search</button>
+  <button mat-raised-button id="clear-filters" (click)="clearFilters(rangePicker)">Clear</button>
+
+</div>
+<div class="price-range-container" [formGroup]="priceForm">
+  <p>Filter by price range : </p>
+  <span class="min-value">{{minValueView}}</span>
+  <mat-slider min="1000" max="100000" (input)="sliderChanges()">
+    <input formControlName="minValue" value="5000" matSliderStartThumb>
+    <input formControlName="maxValue" value="20000" matSliderEndThumb>
+  </mat-slider>
+  <span class="max-value">{{maxValueView}}</span>
+  <button id="disablePrice-btn" mat-raised-button (click)="disablePrice()">Disable/Enable</button>
+</div>
+
+
+<div class="filter-panel">
+  <div class="checkbox-grid">
+    <mat-checkbox *ngFor="let amenity of amenities"  #checkbox (change)="onChange(amenity.name)" value="{{amenity.name}}"
+                  class="example-margin">{{amenity.name}}</mat-checkbox>
+  </div>
+</div>
+<div class="main-div">
+  <div *ngFor="let accommodation of paginatedAccommodations">
+    <app-accommodation-card [accommodation]="accommodation"></app-accommodation-card>
+  </div>
+</div>
+<div class="pagination">
+  <button *ngFor="let pageNumber of getPages()" (click)="onPageChange(pageNumber)">{{ pageNumber }}</button>
+</div>
+<app-footer></app-footer>

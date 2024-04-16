@@ -1,0 +1,48 @@
+mat-toolbar {
+  background-color: #D3CBE0;
+}
+
+.travelBee{
+  justify-content: flex-start;
+  font-size: 30px;
+  color: white;
+}
+
+div {
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+}
+
+.favorite-icon {
+  color: white;
+  margin: 5px;
+}
+
+.notification {
+  display: block;
+}
+
+.notificationIcon {
+  color: #664269;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+
+.notificationType {
+  justify-content: flex-start;
+  display: flex;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+h4{
+  margin-right: 5px;
+}
+
+
+.nott {
+  width: 400px;
+}

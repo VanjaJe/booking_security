@@ -1,0 +1,65 @@
+.site-footer{
+  margin-top: 200px;
+  background-color: #D3CBE0;
+  color: white;
+}
+.row{
+  padding-top: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.rowBottom{
+  display: flex;
+  justify-content: space-evenly;
+}
+.column{
+  width: 25%;
+}
+.footer-logo img {
+  width: 30%;
+}
+.site-footer a {
+  color: white;
+}
+.site-footer p{
+  color: white;
+}
+.site-footer a:hover {
+  color: black;
+}
+
+.social-icons {
+  padding: 0;
+}
+
+.social-icons li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.subscribe-form {
+  margin-top: 20px;
+}
+
+.subscribe-form input {
+  padding: 10px;
+  width: 30%;
+  border: none;
+  border-radius: 4px;
+}
+
+#subscribeBtn {
+  padding: 10px;
+  background-color: #D3CBE0;
+  color: #333;
+  margin-left: 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.copyright {
+  color: #ccc;
+  margin-top: 20px;
+  text-align: center;
+}

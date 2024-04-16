@@ -1,0 +1,118 @@
+body{
+  margin: 0;
+  background-color: #e8dfe8;
+}
+.img-fluid{
+  margin: 0 auto;
+  width: 80%;
+  height: 40%;
+}
+.date-picker{
+  margin-top: 20px;
+  height: 80px;
+  font-size: 16px;
+}
+.combo-box-container {
+  margin: 2%;
+  margin-bottom: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  background-color: #D3CBE0;
+  display: flex;
+  justify-content: space-evenly;
+}
+#search-btn{
+  width: 100px;
+  padding: 10px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+  border:1px black solid;
+}
+#clear-filters{
+  width: 100px;
+  padding: 10px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+  border:1px black solid;
+}
+#disablePrice-btn{
+  margin-left: 20px;
+  width: 130px;
+  padding: 10px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+  border:1px black solid;
+}
+
+mat-form-field{
+  margin-top: 20px;
+}
+mat-slider {
+  width: 300px;
+}
+.price-range-container {
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top:0;
+  display: flex;
+  padding: 20px;
+  background-color: #D3CBE0;
+  align-items: center;
+  border-top: 1px solid #5e5e5e;
+}
+.price-range-container p{
+  margin-right: 2%;
+}
+
+
+.filter-panel {
+  margin: 2%;
+  margin-top: 0;
+  display: flex;
+  padding: 10px;
+  background-color: #D3CBE0;
+  align-items: center;
+  border-top: 1px solid #5e5e5e;
+}
+.checkbox-grid {
+  margin-left: 40px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 15px;
+}
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+}
+.action-buttons button {
+  width: 100px;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+  border:1px black solid;
+}
+
+.main-div{
+  margin-top: 100px;
+}
+.pagination {
+  display: flex;
+  padding: 2%;
+  justify-content: center;
+  margin-top: 20px; /* Adjust the margin as needed */
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color:#664269;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: purple;
+}

@@ -1,0 +1,29 @@
+
+.notificationsSettings {
+    width: 50%;
+    height: auto;
+    border-radius: 25px;
+    border: 1px solid #D3CBE0;
+    background-color: whitesmoke;
+    margin:0 auto;
+    margin-top: 4%;
+    padding-top: 3%;
+    padding-bottom: 4%;
+    /*padding-left: 10%;*/
+}
+
+.notification {
+    justify-content: center;
+    display: flex;
+}
+
+mat-slide-toggle {
+    padding-top: 15px;
+    padding-left: 20px;
+}
+
+button {
+    display: flex;
+    margin: auto;
+    margin-top: 25px;
+}

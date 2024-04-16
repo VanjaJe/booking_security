@@ -1,0 +1,43 @@
+<div class="notificationsSettings" >
+    <div *ngIf="role=='ROLE_HOST'" class="notification">
+        <p>Nofitications for cancelled reservations</p>
+        <mat-checkbox class="example-margin"
+                      [checked]="isReservationCancelled"
+                      (change)="setAll($event.checked, 'isReservationCancelled')">
+        </mat-checkbox>
+    </div>
+
+    <div *ngIf="role=='ROLE_GUEST'" class="notification">
+        <p>Nofitications for responded reservations</p>
+        <mat-checkbox class="example-margin"
+                      [checked]="isReservationResponded"
+                      (change)="setAll($event.checked, 'isReservationResponded')">
+        </mat-checkbox>
+    </div>
+
+    <div *ngIf="role=='ROLE_HOST'" class="notification">
+        <p>Nofitications for rating</p>
+        <mat-checkbox class="example-margin"
+                      [checked]="isRating"
+                      (change)="setAll($event.checked, 'isRating')">
+        </mat-checkbox>
+    </div>
+
+    <div *ngIf="role=='ROLE_HOST'" class="notification">
+        <p>Nofitications for accommodation rating</p>
+        <mat-checkbox class="example-margin"
+                      [checked]="isAccommodationRating"
+                      (change)="setAll($event.checked, 'isAccommodationRating')">
+        </mat-checkbox>
+    </div>
+
+    <div *ngIf="role=='ROLE_HOST'" class="notification">
+        <p>Nofitications for creating request</p>
+        <mat-checkbox class="example-margin"
+                      [checked]="isReservationCreated"
+                      (change)="setAll($event.checked, 'isReservationCreated')">
+        </mat-checkbox>
+    </div>
+
+    <button mat-raised-button (click)="saveSettings()">Save</button>
+</div>

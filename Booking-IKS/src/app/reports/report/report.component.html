@@ -1,0 +1,54 @@
+<div id="rangeDiv" [formGroup]="form">
+  <mat-form-field class="date-picker">
+    <mat-date-range-input [rangePicker]="rangePicker">
+      <input matStartDate placeholder="Start date" #dateRangeStart>
+      <input matEndDate placeholder="End date" #dateRangeEnd>
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+    <mat-date-range-picker #rangePicker>
+      <mat-date-range-picker-actions>
+        <button mat-button matDateRangePickerCancel>Cancel</button>
+        <button mat-raised-button color="primary" matDateRangePickerApply >Apply</button>
+      </mat-date-range-picker-actions>
+    </mat-date-range-picker>
+  </mat-form-field>
+  <button mat-raised-button id="rangeReportBtn" (click)="generateRangeReport(dateRangeStart,dateRangeEnd)">Date range report</button>
+  <mat-form-field>
+    <mat-label>Accommodation</mat-label>
+    <mat-select formControlName="accommodationName">
+      <mat-option *ngFor="let accommodation of accommodations" [value]="accommodation.name">
+        {{ accommodation.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field  id="yearInput">
+    <mat-label>Enter the year</mat-label>
+    <input matInput type="number" formControlName="year"/>
+  </mat-form-field>
+  <button mat-raised-button id="accommodationReportBtn" (click)="generateAccommodationReport()">Accommodation report</button>
+</div>
+<div id="downloadDiv" >
+  <div id="report">
+    <app-annual-chart
+      [lineChartData]="profitChart.data"
+      [lineChartLabels]="profitChart.labels"
+      [lineChartOptions]="profitChart.options">
+    </app-annual-chart>
+    <app-reservations-chart  *ngIf="showReservationsChart"
+      [lineChartData]="reservationsChart.data"
+      [lineChartLabels]="reservationsChart.labels"
+      [lineChartOptions]="reservationsChart.options">
+    </app-reservations-chart>
+  </div>
+  <div id="reportText">
+    <p id="yearInfo"></p>
+    <p id="accommodationInfo"></p>
+    <p id="monthInfo"></p>
+  </div>
+</div>
+<div id="buttonDiv">
+  <button id="downloadBtn" (click)="downloadReport()" mat-raised-button>Download PDF</button>
+</div>
+
+
+

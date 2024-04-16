@@ -1,0 +1,112 @@
+
+.comment-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.user-picture {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.username {
+  align-items: center;
+  color: white;
+  display: flex;
+  font-size: 15px;
+  margin: 0;
+}
+
+.grades{
+display: flex;
+font-size: 13px;
+align-items: center;
+}
+
+/* Comment text */
+.comment-text {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+/* Rating stars */
+.rating-stars {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+
+mat-card {
+  background-color: rgba(95, 54, 119, 0.516);
+  color:aliceblue;
+  margin-left: 8%;
+  margin-right: 8%;
+  margin-top:2%;
+}
+
+/* Add these styles to your-component.component.css */
+
+.action-buttons {
+  display: flex;
+  margin-top: 10px; /* Adjust the margin as needed */
+}
+
+
+.action-buttons button.approve {
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: rgba(95, 54, 119, 0.516); /* Green color for "Approve" */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.action-buttons button.approve:hover {
+  background-color: #664269;
+}
+
+.action-buttons button.decline:hover {
+  background-color: #664269;
+}
+
+.action-buttons button.decline {
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: rgba(95, 54, 119, 0.516); /* Green color for "Approve" */
+  color: #fff;
+  border: none;
+  margin-left: 10px;
+  border-radius: 4px;
+}
+
+mat-icon{
+  color: white;
+margin-right: 0;
+padding-right: 0;
+padding-left: 0;
+margin-left: 0;
+margin-top: 0;
+}
+
+#arrow{
+    color: white;
+  margin-right: 10px;
+  padding-right: 0;
+  padding-left: 0;
+  margin-left: 10px;
+  margin-top: 0;
+}

@@ -1,0 +1,16 @@
+.img-fluid {
+  width: 100%;
+}
+.button-overlay {
+  position: relative;
+  display: inline-block;
+}
+.button-overlay button {
+  position: absolute;
+  top: 70%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+  border-radius: 20px ;
+  font-size: 25px;
+}

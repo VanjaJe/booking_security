@@ -1,0 +1,74 @@
+.date-picker{
+  margin-top: 20px;
+  margin-left: 20px;
+  height: 80px;
+  font-size: 16px;
+}
+mat-form-field{
+  margin-left: 40px;
+  margin-top: 20px;
+}
+#yearInput{
+  margin-left:20px;
+}
+#rangeDiv{
+  margin: auto;
+  margin-top:4%;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  display: flex;
+  background-color: #D3CBE0;
+}
+#rangeReportBtn{
+  margin-left: 30px;
+  width: 150px;
+  padding: 10px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+  border:1px black solid;
+}
+#accommodationReportBtn{
+  margin-left: 30px;
+  width: 150px;
+  padding: 10px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+  border:1px black solid;
+}
+
+#downloadDiv{
+  margin:auto;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+}
+#report{
+  margin: 5%;
+  padding-bottom: 100px;
+}
+#reportText{
+  margin: 5%;
+  padding-bottom: 40px;
+  width: 60%;
+}
+p {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+}
+#buttonDiv{
+  width: 100%;
+  text-align: center;
+}
+#downloadBtn{
+  width: 200px;
+  padding: 20px;
+  margin-bottom: 100px;
+  background-color: #D3CBE0;
+  border-radius: 10px;
+}

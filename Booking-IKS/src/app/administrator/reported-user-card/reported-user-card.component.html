@@ -1,0 +1,13 @@
+<mat-card>
+    <mat-card-content>
+      <div class="user-section">
+        <img class="user-picture" id="accommodation-image" [src]="image" alt="Profile picture">
+        <div>
+          <p class="username">{{reportedUser?.account?.username}}</p>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button (click)="blockUser(reportedUser.id)"  class = "approve"  >Block</button>
+      </div>
+    </mat-card-content>
+  </mat-card>

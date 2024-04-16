@@ -1,0 +1,34 @@
+<div class="accommodation">
+  <img id="accommodation-image" [src]="image" alt="Accommodation 1">
+  <div *ngIf="role=='ROLE_HOST' || role=='ROLE_ADMIN'" class="accommodation-status">
+    <p>{{ accommodation.status }}</p>
+  </div>
+  <div class="accommodation-card">
+    <div class="star-container">
+      <mat-icon *ngFor="let star of Array(5); let i = index" class="stars" [ngClass]="getStarColor(i + 1)">star</mat-icon>
+    </div>
+    <p id="rating">Average rating:</p>
+    <p>{{ rating }}</p>
+    <h2>{{accommodation.name}}
+      <button  id="favoriteButton" mat-icon-button  [ngClass]="{ 'warn-color': buttonColor === 'warn', 'primary-color': buttonColor === 'primary' }"  (click)="addFavorite(accommodation)" aria-label="Example icon button with a heart icon">
+        <mat-icon>favorite</mat-icon>
+      </button>
+    </h2>
+    <div class="accommodation-address">
+      <p><mat-icon class="address-icon"> location_on</mat-icon>
+      {{accommodation.address.country}},{{accommodation.address.city}},
+        {{accommodation.address.address}}</p>
+    </div>
+    <p>{{accommodation.description}}</p>
+    <p id="price">Price:{{accommodation.price}}</p>
+    <p id="unitPrice">Unit price:{{accommodation.unitPrice}}<span *ngIf="accommodation.pricePerGuest">/per guest</span></p>
+    <div class="button-container">
+      <button mat-raised-button (click)="onAccommodationClicked()" [routerLink]="['accommodationDetails',accommodation.id]" class="details-btn">Details</button>
+      <button *ngIf="role=='ROLE_HOST'" mat-raised-button (click)="onAccommodationClicked()" [routerLink]="['accommodationUpdate',accommodation.id]" class="updateAccommodation">Update</button>
+    </div>
+    <div class="button-container">
+      <button *ngIf="role=='ROLE_ADMIN'" class="acceptButton" id="acceptButton" (click)="acceptAccommodation()">Accept</button>
+      <button *ngIf="role=='ROLE_ADMIN'" class="declineButton" id="declineButton" (click)="declineAccommodation()">Decline</button>
+    </div>
+  </div>
+</div>

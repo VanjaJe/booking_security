@@ -1,0 +1,133 @@
+<div *ngIf="accommodation" class="container">
+  <div class="imageDescription">
+<mat-card class="accommodationCard">
+  <mat-card-header class="accommodationName">
+    <span id="editAccommodationBtn"  *ngIf="role == 'ROLE_HOST'"  [routerLink]="['editDates']"><mat-icon class="iconEdit" >edit</mat-icon></span>
+    <strong>{{accommodation.name}}</strong> <div class="rating">
+    <mat-icon *ngFor="let star of Array(5); let i = index" class="stars" [ngClass]="getAccStarColor(i + 1)">star</mat-icon>
+
+  </div></mat-card-header>
+  <mat-card-subtitle class="address">
+    {{accommodation.address.country}}, {{accommodation.address.city}}, {{accommodation.address.address}}
+  </mat-card-subtitle>
+  <div class="images">
+    <div class="images-container" *ngFor="let image of images">
+      <img mat-card-image [src]="decodeBase64AndSanitize(image)" alt="slika"/>
+    </div>
+  </div>
+
+  <mat-card-content class="description">{{accommodation.description}}</mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button>Add to favorite<mat-icon matListItemIcon>favorite</mat-icon></button>
+  </mat-card-actions>
+
+  <mat-card-footer class="hostDescription">
+    <div mat-card-avatar class="example-header-image"></div>
+    <div class="hostInformation">
+      <mat-card-title class="hostTitle">Host of accommodation</mat-card-title>
+      <mat-card-subtitle>{{accommodation.host.account?.username}}</mat-card-subtitle>
+<!--      <mat-icon *ngFor="let star of Array(5)" class="stars">star</mat-icon>-->
+      <mat-icon *ngFor="let star of Array(5); let i = index" class="stars" [ngClass]="getHostStarColor(i + 1)">star</mat-icon>
+<!--      <button class="addComment" mat-button>Comment<mat-icon matListItemIcon>add</mat-icon></button>-->
+      <button class="viewComments" mat-raised-button [routerLink]="['commentsAndRatings']" mat-button>View comments</button>
+
+    </div>
+    <span *ngIf="role == 'ROLE_GUEST'" (click)="reportHost()"><mat-icon class="iconReportHost">report</mat-icon></span>
+<!--    <span *ngIf="role == 'ROLE_GUEST'"><mat-icon class="iconReportHost">report</mat-icon></span>-->
+
+    <div *ngIf="role == 'ROLE_GUEST'" class="addHostComment">
+    <mat-form-field appearance="outline" class="hostComment">
+      <mat-label>Write comment for host</mat-label>
+      <input matInput class="commentInput" name="commentHost" [(ngModel)]="hostComment"/>
+    </mat-form-field>
+<!--    <div class="inputStar">-->
+      <mat-icon class="hostStarsInput" *ngFor="let icon of maxRatingArrHost; let index=index" (mouseenter)="HandleMouseEnterHost(index)"
+      [ngClass]="{checked:SelectedStarHost>index}" (mouseleave)="HandeMouseLeaveHost()" (click)="RatingHost(index)" >star</mat-icon>
+<!--      </div>-->
+    <button mat-raised-button class="addComment" (click)="commentHost()" mat-button>Comment</button>
+    </div>
+  </mat-card-footer>
+</mat-card>
+  </div>
+  <div id="amenityMap">
+  <div class="amenity">
+    <h4>Available amenities</h4>
+    <mat-list *ngFor="let amenity of accommodation.amenities" class="amenityList" role="list">
+      <mat-list-item class="amenityItem">
+        <mat-icon class="amenityIcon" matListItemIcon>{{amenity.name}}</mat-icon>
+        <span class="amenityName" matListItemTitle>{{amenity.name}}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </div>
+    <div class="mapa">
+      <app-map *ngIf="address" [address]="address"></app-map>
+    </div>
+
+  </div>
+</div>
+
+<form *ngIf="role != 'ROLE_HOST'" class="filter" [formGroup]="form" (ngSubmit)="createReservation(dateRangeStart,dateRangeEnd)">
+  <div class="dates">
+    <p>Select dates</p>
+    <mat-form-field id="dateRangeForEditFreeDates" class="date-picker">
+      <mat-date-range-input [rangePicker]="rangePicker" [dateFilter]="dateFilter">
+        <input formControlName="startDateInput" matStartDate placeholder="Start date" #dateRangeStart >
+        <input formControlName="endDateInput" matEndDate placeholder="End date" #dateRangeEnd>
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #rangePicker>
+        <mat-date-range-picker-actions>
+          <button mat-button matDateRangePickerCancel>Cancel</button>
+          <button id="applyDateForTimeSlots" mat-raised-button color="primary" matDateRangePickerApply (click)="calculateTotalPrice(dateRangeStart,dateRangeEnd)">Apply</button>
+        </mat-date-range-picker-actions>
+      </mat-date-range-picker>
+    </mat-form-field>
+  <p>Number of quests</p>
+  <mat-form-field>
+    <mat-label>Select</mat-label>
+    <mat-icon matSuffix>person</mat-icon>
+    <mat-select  formControlName="numberSelect"  id="numberSelect" #numberSelect>
+      <mat-option *ngFor="let numberOption of numberOptions | async" [value]="numberOption" (click)="calculateTotalPrice(dateRangeStart,dateRangeEnd)">
+        {{numberOption}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p>Price</p>
+  <mat-form-field floatLabel="always">
+    <input  formControlName="priceInput" matInput type="number" class="example-right-align" [readonly]="true">
+  </mat-form-field>
+  </div>
+  <button mat-raised-button class="reserveButton" [disabled]="!form.valid">Reserve</button>
+</form>
+<div *ngIf="role == 'ROLE_HOST'" id="approvalDiv" [formGroup]="approvalType">
+  <mat-radio-group formControlName="approvalTypeRbt">
+    <mat-radio-button class="approvalRbt" value="automatic">automatic reservation approval</mat-radio-button>
+    <mat-radio-button class="approvalRbt" value="manual">manual reservation approval</mat-radio-button>
+  </mat-radio-group>
+  <button mat-raised-button id="saveApproval" (click)="changeApprovalType()">Save approval type</button>
+</div>
+
+  <h3>Comments</h3>
+  <div *ngIf="role == 'ROLE_GUEST'"  class="writeCommentForAcc">
+      <div class="starsForAcc">
+        <mat-icon class="hostStarsInput" *ngFor="let icon of maxRatingArrAccommodation; let index=index" (mouseenter)="HandleMouseEnterAccommodation(index)"
+                [ngClass]="{checked:SelectedStarAccommodation>index}" (mouseleave)="HandeMouseLeaveAccommodation()" (click)="RatingAccommodation(index)" >star</mat-icon>
+      </div>
+    <div class="addHostComment">
+      <mat-form-field appearance="outline" class="accommodationComment">
+        <mat-label>Write comment for accommodation</mat-label>
+        <input matInput class="commentAccommodationInput" name="commentAccommodation" [(ngModel)]="accommodationComment"/>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button class="addAccommodationComment" (click)="commentAccommodation()" mat-button>Comment</button>
+  </div>
+  <div class="comments">
+    <div *ngFor="let comment of comments">
+      <app-comment-card (delComm)="loadComments($event)" [comment]="comment"></app-comment-card>
+    </div>
+</div>
+
+
+
+<div class="footer">
+</div>

@@ -1,0 +1,80 @@
+.commentCard {
+  height: 230px;
+  width: 380px;
+  margin-top: 0;
+  /*padding-left: 20px;*/
+  margin-right: 20px;
+  padding-top: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+}
+
+.commentIcon {
+  padding: 0;
+  margin-top: 0;
+  margin-left: 0;
+}
+
+.iconComm {
+  padding-left:3%;
+  margin-left: 0;
+}
+
+.commentUser {
+  display: block;
+  padding-top: 0;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.commentDivider {
+  padding-bottom: 25px;
+  padding-top: 0;
+  width: 100%;
+}
+
+.commentEmail {
+  margin-top: 3%;
+  padding-bottom: 0;
+  margin-right: 36%;
+}
+.filled-star {
+  color: gold;
+}
+.stars{
+  padding-top: 13px;
+}
+.empty-star {
+  color: #ddd;
+}
+#rating{
+  display: flex;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+#rating p{
+  margin-bottom: 0;
+  margin-right: 10px;
+  padding-bottom: 0;
+}
+
+#email-div {
+  display: flex;
+}
+
+/*#report {*/
+  /*margin-left: 37%;*/
+  /*margin-left: 20px;*/
+/*}*/
+
+/*#delete {*/
+/*  margin-left: 36%;*/
+/*}*/
+
+.commentDate {
+  float: right;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  color: #b6b5b5;
+}

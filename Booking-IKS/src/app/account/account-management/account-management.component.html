@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="account-management.component.css">
+</head>
+<body>
+    <div class="side-illustration">
+        <img id="accommodation-image" [src]="image" alt="Profile picture">
+        <br>
+        <br>
+        <input class="fileInput" type="file" name="photos" (change)="onFileSelected($event)" multiple/>
+    </div>
+    <div class="login-container">
+        <form  [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
+            
+            <label for="firstName">First name:</label>
+            <input type="text" id="firstName"  name="firstName" formControlName="firstName" [value]="user?.firstName" required>
+            <div *ngIf="updateUserForm.get('firstName')?.hasError('required')">
+                First name is required.
+            </div>
+            <div *ngIf="updateUserForm.get('firstName')?.hasError('minlength')">
+                Minimum length is 3 characters.
+            </div>
+
+            <label for="lastName">Last name:</label>
+            <input type="text" id="lastName" name="lastName" formControlName="lastName" [value]="user?.lastName" required>
+            <div *ngIf="updateUserForm.get('lastName')?.hasError('required')">
+                Last name is required.
+            </div>
+            <div *ngIf="updateUserForm.get('lastName')?.hasError('minlength')">
+                Minimum length is 3 characters.
+            </div>
+
+            <label for="country">Country:</label>
+            <input type="text" id="country"  name="country" formControlName="country" [value]="user?.address?.country" required>
+            <div *ngIf="updateUserForm.get('country')?.hasError('required')">
+                Country is required.
+            </div>
+
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" formControlName="city" [value]="user?.address?.city" required>
+            <div *ngIf="updateUserForm.get('city')?.hasError('required')">
+                City is required.
+            </div>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" formControlName="address" [value]="user?.address?.address" required>
+            <div *ngIf="updateUserForm.get('address')?.hasError('required')">
+                Address is required.
+            </div>
+
+            <label for="phoneNumber">Phone number:</label>
+            <input type="number" id="phoneNumber" name="phoneNumber" formControlName="phoneNumber" [value]="user?.phoneNumber" required>
+            <div *ngIf="updateUserForm.get('phoneNumber')?.hasError('required')">
+                Phone number is required.
+            </div>
+            <div *ngIf="updateUserForm.get('phoneNumber')?.hasError('pattern')">
+                Please enter a valid phone number.
+            </div>
+
+            <label for="username">Username:</label>
+            <input type="email" id="username"  name="username" formControlName="username" [value]="user?.account?.username" required>
+            <div *ngIf="updateUserForm.get('username')?.hasError('required')">
+                Username is required.
+            </div>
+            <div *ngIf="updateUserForm.get('username')?.hasError('email')">
+                Please enter a valid email address.
+            </div>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"  formControlName="password" [value]="user?.account?.password" required>
+            <div *ngIf="updateUserForm.get('password')?.hasError('required')">
+                Password is required.
+            </div>
+            <div *ngIf="updateUserForm.get('password')?.hasError('minlength')">
+                Minimum length is 6 characters.
+            </div>
+            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('mismatchedValues')">
+                <span  class="error-message">Passwords do not match.</span>
+            </div>
+
+            <label for="password">Confirm password:</label>
+            <input type="password" id="password1" name="confirmPassword" formControlName="confirmPassword" [value]="user?.account?.password" required>
+            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('required')">
+                Confirm password is required.
+            </div>
+            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('minlength')">
+                Minimum length is 6 characters.
+            </div>
+            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('mismatchedValues')">
+                <span  class="error-message">Passwords do not match.</span>
+            </div>
+
+
+            <button type="submit" [disabled]="updateUserForm.invalid">Save changes</button>
+            <button id="deleteButton" (click)="deleteUser()">Delete account</button>
+
+        </form>
+    </div>
+
+</body>
+</html>

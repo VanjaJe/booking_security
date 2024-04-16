@@ -1,0 +1,30 @@
+.notification {
+  display: block;
+  /*width: 200px;*/
+}
+
+.notificationIcon {
+  margin-top: 18px;
+  color: #664269;
+  margin-left: 0;
+  padding-left: 0;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+
+.notificationType {
+  /*margin-left: 10px;*/
+  justify-content: flex-start;
+  display: flex;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+h4{
+  margin-right: 5px;
+}
+
+.turnOn {
+  margin-top: 15px;
+}

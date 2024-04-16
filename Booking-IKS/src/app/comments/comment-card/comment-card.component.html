@@ -1,0 +1,20 @@
+<mat-card class="commentCard">
+<!--  <mat-card-title class="commentIcon"><mat-icon class="iconComm">comment</mat-icon></mat-card-title>-->
+  <mat-card-header class="commentUser">
+    <div id="email-div">
+      <p class="commentEmail">Email: {{ comment?.guest?.account?.username }}</p>
+<!--      <mat-icon id="report">report</mat-icon>-->
+      <span *ngIf="userId===comment?.guest?.id" id="delete" (click)="deleteAccommodationComment(comment?.id)"><mat-icon class="iconEdit" >delete_outline</mat-icon></span>
+      <span *ngIf="role == 'ROLE_HOST'" id="report" (click)="reportAccommodationComment(comment?.id)"><mat-icon class="iconEdit" >report</mat-icon></span>
+
+    </div>
+    <div id="rating">
+      <p>Rating: {{ comment?.rating }}</p>
+      <mat-icon *ngFor="let star of Array(5); let i = index" class="stars" [ngClass]="getStarColor(i + 1)">star</mat-icon>
+    </div>
+    <p class="commentDate">{{comment?.date}}</p>
+
+  </mat-card-header>
+  <mat-divider class="commentDivider"></mat-divider>
+  <mat-card-content>{{comment?.text}}</mat-card-content>
+</mat-card>

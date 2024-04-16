@@ -1,0 +1,9 @@
+<body>
+    <div *ngFor="let commentAndGrade of paginatedComments">
+        <app-comments-and-grades-card (clicked)="onCommentAndGradeClicked($event)" [commentAndGrade]="commentAndGrade"></app-comments-and-grades-card>
+    </div>
+    
+    <div class="pagination">
+      <button *ngFor="let pageNumber of getPages()" (click)="onPageChange(pageNumber)">{{ pageNumber }}</button>
+    </div>
+</body>

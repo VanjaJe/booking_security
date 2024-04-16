@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="login.component.css">
+</head>
+<body>
+<div class="side-illustration">
+  <img src="../../../assets/images/loginlogo.png" alt="Illustration Image">
+  <div class="placeholder"></div>
+</div>
+<div class="login-container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label for="username" >Username:</label>
+    <input type="text" id="username"  class="form-control"  name="username" formControlName="username" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" class="form-control" required formControlName="password">
+    <button type="submit">Login</button>
+  </form>
+  <p>Don't have an account? <a [routerLink]="['/signIn']">Register here</a></p>
+</div>
+
+</body>
+<!--<app-snack-bar></app-snack-bar>-->
+
+</html>

@@ -1,0 +1,6 @@
+<mat-tab-group>
+  <mat-tab label="Reservations"><app-reservations-view></app-reservations-view></mat-tab>
+  <mat-tab label="Requests"><app-requests-view></app-requests-view></mat-tab>
+  <mat-tab *ngIf="role=='ROLE_GUEST'" label="Favorites"><app-favorites-view></app-favorites-view></mat-tab>
+</mat-tab-group>
+
