@@ -18,6 +18,9 @@ import {AccountActivationComponent} from "./account-activation/account-activatio
 import {AccommodationUpdateComponent} from "./accommodations/accommodation-update/accommodation-update.component";
 import {ReportComponent} from "./reports/report/report.component";
 import {NotificationComponent} from "./notification/notification/notification.component";
+import {ViewCertificatesComponent} from "./certificates/view-certificates/view-certificates.component";
+import {CreateCertificateComponent} from "./certificates/create-certificate/create-certificate.component";
+import {CertificateRequestsComponent} from "./certificates/certificate-requests/certificate-requests.component";
 
 
 const routes: Routes = [
@@ -29,6 +32,9 @@ const routes: Routes = [
   {component: EditAccommodationsDatesComponent, path:"home/accommodations/accommodationDetails/:id/editDates"},
   {component: AccommodationDetailsComponent, path:"reservations/accommodationDetails/:id"},
   {component: ReservationComponent, path:"reservations"},
+  {component: ViewCertificatesComponent, path:"certificatesView"},
+  {component: CreateCertificateComponent, path:"createCertificate"},
+  {component: CertificateRequestsComponent, path:"certificateRequestsView"},
   {component: LoginComponent, path:"logIn"},
   {component: AccountActivationComponent, path:"account-activation/:accessToken/:username"},
   {component: RegistrationComponent, path:"signIn"},
