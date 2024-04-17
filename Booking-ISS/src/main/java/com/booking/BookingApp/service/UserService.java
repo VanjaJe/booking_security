@@ -9,6 +9,7 @@ import com.booking.BookingApp.utils.ImageUploadUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -45,7 +46,7 @@ public class UserService implements IUserService {
     AccommodationRepository accommodationRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private RoleService roleService;
@@ -55,7 +56,7 @@ public class UserService implements IUserService {
 
     @Autowired
     AccommodationService accommodationService;
-  
+
     @Autowired
     GuestRepository guestRepository;
 
@@ -78,7 +79,7 @@ public class UserService implements IUserService {
     public User findByUsername(String username){
         return userRepository.findByAccount_Username(username);
     }
-  
+
     @Override
     public boolean activateUser(String activationLink, String username){
         User user = userRepository.findByAccount_Username(username);
@@ -195,7 +196,7 @@ public class UserService implements IUserService {
         }
         else{
             if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
-                 return blockGuest(user);
+                return blockGuest(user);
             } else if (user.getAccount().getRoles().get(0).getName().equals("ROLE_HOST")) {
                 return blockHost(user);
             }
@@ -311,13 +312,14 @@ public class UserService implements IUserService {
 
         // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
         // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
-        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         u.setFirstName(userRequest.getFirstName());
         u.setLastName(userRequest.getLastName());
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setAddress(userRequest.getAddress());
         u.setAccount(userRequest.getAccount());
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
 
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
@@ -334,13 +336,14 @@ public class UserService implements IUserService {
 
         // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
         // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
-        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         u.setFirstName(userRequest.getFirstName());
         u.setLastName(userRequest.getLastName());
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setAddress(userRequest.getAddress());
         u.setAccount(userRequest.getAccount());
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
         u.getAccount().setRoles(roles);
