@@ -31,3 +31,8 @@ export interface CertificateRequest{
   requestStatus: RequestStatus;
   certificateType: CertificateType;
 }
+
+export interface TreeNode {
+  name: string;
+  children?: TreeNode[];
+}

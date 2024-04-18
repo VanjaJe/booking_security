@@ -5,8 +5,6 @@ import { CertificateCardComponent } from './certificate-card/certificate-card.co
 import { CreateCertificateComponent } from './create-certificate/create-certificate.component';
 import { CertificateRequestsComponent } from './certificate-requests/certificate-requests.component';
 import { RequestCardComponent } from './request-card/request-card.component';
-import {MatSortModule} from "@angular/material/sort";
-import {MatTableModule} from "@angular/material/table";
 import {MaterialModule} from "../infrastructure/material/material.module";
 
 

@@ -1,1 +1,32 @@
+<mat-tree [dataSource]="treeDataSource" [treeControl]="treeControl">
+  <mat-tree-node class="tree-node" *matTreeNodeDef="let node" matTreeNodeToggle>
+    <li>
+      {{node.certificate.serialNumber}}
+      {{node.certificate.dateFrom | date:'dd--MM-yyyy'}}
+      {{node.certificate.dateTo | date:'dd-MM-yyyy' }}
+      {{node.certificate.certificateType.toString()}}
+      {{node.certificate.isRevoked}}
+      {{node.certificate.issuerSerialNumber}}
+    </li>
+  </mat-tree-node>
+
+  <mat-nested-tree-node class="nested-node" *matTreeNodeDef="let node; when: hasChild">
+    <li >
+      <button  mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.certificate.name">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+      {{node.certificate.serialNumber}}
+      {{node.certificate.dateFrom | date:'dd--MM-yyyy'}}
+      {{node.certificate.dateTo | date:'dd-MM-yyyy' }}
+      {{node.certificate.certificateType.toString()}}
+      {{node.certificate.isRevoked}}
+      {{node.certificate.issuerSerialNumber}} <!-- Display certificate properties as needed -->
+      <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+        <ng-container matTreeNodeOutlet></ng-container>
+      </ul>
+    </li>
+  </mat-nested-tree-node>
+</mat-tree>
 
