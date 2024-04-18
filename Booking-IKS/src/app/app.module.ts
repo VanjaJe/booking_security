@@ -24,6 +24,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {ReportsModule} from "./reports/reports.module";
 import {NgChartsModule } from 'ng2-charts';
 import {MaterialModule} from "./infrastructure/material/material.module";
+import {CertificatesModule} from "./certificates/certificates.module";
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import {MaterialModule} from "./infrastructure/material/material.module";
     NotificationModule,
     ReservationsModule,
     AccountModule,
+    CertificatesModule,
     HttpClientModule,
     AdministratorModule,
     ToastrModule.forRoot(),
