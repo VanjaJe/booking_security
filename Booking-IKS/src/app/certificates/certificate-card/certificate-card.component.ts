@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {Accommodation} from "../../accommodations/accommodation/model/model.module";
+import {Certificate} from "../model/model.module";
 
 @Component({
   selector: 'app-certificate-card',
@@ -6,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./certificate-card.component.css']
 })
 export class CertificateCardComponent {
+
+    protected readonly Array = Array;
 
 }

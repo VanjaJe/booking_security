@@ -1,0 +1,19 @@
+#certificatesTableDiv{
+  align-items: center;
+  width: 70%;
+  margin: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+#certificatesTable{
+  background-color: rgba(210, 207, 222, 0.71);
+  box-shadow: none;
+}
+#certificatesTable th,
+#certificatesTable td {
+
+}
+mat-paginator{
+  background-color: rgba(210, 207, 222, 0.71);
+}
