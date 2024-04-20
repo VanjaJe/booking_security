@@ -2,14 +2,12 @@ import {User} from "../../account/model/model.module";
 
 export interface Certificate {
   id: number;
-  certificateType: string;
+  certificateType: CertificateType;
   dateFrom: Date;
   dateTo: Date;
-  subject: User;
-  isRevoked: boolean;
+  email: string;
   serialNumber: string;
   issuerSerialNumber: string;
-
 }
 export enum RequestStatus {
   ACTIVE = 'ACTIVE',
