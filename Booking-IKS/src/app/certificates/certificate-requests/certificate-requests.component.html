@@ -1,5 +1,9 @@
 <div id="certificatesTableDiv">
   <table id="certificatesTable" mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+      <td mat-cell *matCellDef="let element"> {{element?.subject.account.username}} </td>
+    </ng-container>
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
       <td mat-cell *matCellDef="let element"> {{element?.date}} </td>
@@ -8,9 +12,23 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let element">{{element?.requestStatus}}</td>
     </ng-container>
-    <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
-      <td mat-cell *matCellDef="let element"> {{element?.subject.account.username}} </td>
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+      <td mat-cell *matCellDef="let element">{{element?.certificateType}}</td>
+    </ng-container>
+    <ng-container matColumnDef="accept">
+      <th mat-header-cell *matHeaderCellDef>Accept Request</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button id="acceptRequestBtn"         [disabled]="element?.requestStatus === 'ACCEPTED' || element?.requestStatus === 'DECLINED'"
+                [routerLink]="['/certificatesView',{id:element.id}]">Accept</button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="deny">
+      <th mat-header-cell *matHeaderCellDef>Deny Request</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button id="denyRequestBtn"         [disabled]="element?.requestStatus === 'ACCEPTED' || element?.requestStatus === 'DECLINED'"
+                (click)="denyRequest(element)" >Deny</button>
+      </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -1,9 +1,19 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
 import {NotificationService} from "../notification/notification.service";
-import {Notification} from "../notification/notification/model/model.module";
+import {Notification, NotificationType} from "../notification/notification/model/model.module";
 import {UserService} from "../account/account.service";
 import {Router} from "@angular/router";
 import {audit} from "rxjs";
+import {CertificateRequestsComponent} from "../certificates/certificate-requests/certificate-requests.component";
+import {RequestStatus, ReservationRequest} from "../accommodations/accommodation/model/model.module";
+import {CertificateService} from "../certificates/certificate.service";
+import {
+  CertificateRequest,
+  CertificateRequestStatus,
+  CertificateType,
+  KeyUsages
+} from "../certificates/model/model.module";
+import {User} from "../account/model/model.module";
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,8 +24,9 @@ export class NavBarComponent {
 
   notifications: Notification[] = []
   role: string = '';
+  user:User;
   constructor(private service: NotificationService, private auth: UserService,
-              private router: Router) {}
+              private router: Router,private certificateService:CertificateService) {}
 
   ngOnInit(): void {
     // this.service.getAll().subscribe({
@@ -43,5 +54,37 @@ export class NavBarComponent {
       },
       error: (_) => {console.log("Greska!")}
     });
+  }
+
+  generateCertificate() {
+    const keyUsage={
+      id:1,
+      name:"DIGITAL_SIGNATURE"
+    }
+    this.auth.getUser(this.auth.getUserId()).subscribe(
+      (data) => {
+        this.user=data;
+        const certificateRequest: CertificateRequest = {
+          subject: this.user,
+          date: new Date(),
+          requestStatus: CertificateRequestStatus.ACTIVE,
+          certificateType: CertificateType.END_ENTITY,
+          keyUsages: [keyUsage]
+        };
+        console.log(certificateRequest)
+
+        this.certificateService.createCertificateRequest(certificateRequest).subscribe(
+          {
+            next: (data: ReservationRequest) => {
+            },
+            error: (_: any) => {
+            }
+          });
+      },
+      (error) => {
+        console.error('Error fetching user:', error);
+      });
+
+
   }
 }
