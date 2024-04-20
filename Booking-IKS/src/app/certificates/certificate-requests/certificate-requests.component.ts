@@ -1,9 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
-import {Certificate, CertificateRequest} from "../model/model.module";
+import {CertificateRequest, CertificateRequestStatus} from "../model/model.module";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {CertificateService} from "../certificate.service";
+import {RequestStatus} from "../../accommodations/accommodation/model/model.module";
 
 @Component({
   selector: 'app-certificate-requests',
@@ -15,7 +16,7 @@ export class CertificateRequestsComponent {
   dataSource = new MatTableDataSource<CertificateRequest>([]);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  displayedColumns = ['date', 'status', 'username'];
+  displayedColumns = ['username','date', 'status', 'type','accept','deny'];
 
   constructor(private certificateRequestService:CertificateService) {
   }
@@ -35,6 +36,19 @@ export class CertificateRequestsComponent {
     });
 
   }
+  denyRequest(element:CertificateRequest) {
+      element.requestStatus=CertificateRequestStatus.DECLINED;
+      this.certificateRequestService.updateCertificateRequest(element).subscribe({
+      next: (data: CertificateRequest) => {
+      },
+      error: (_: any) => {
+        console.log("Error fetching data from CertificateService");
+      }
+    });
 
+  }
 
+  protected readonly JSON = JSON;
+  protected readonly RequestStatus = RequestStatus;
+  protected readonly CertificateRequestStatus = CertificateRequestStatus;
 }

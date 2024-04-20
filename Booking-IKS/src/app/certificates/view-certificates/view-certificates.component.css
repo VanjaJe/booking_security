@@ -1,5 +1,5 @@
 mat-tree{
-  padding: 30px;
+  padding: 10px;
 }
 .example-tree-invisible {
   display: none;
@@ -7,7 +7,13 @@ mat-tree{
 
 li {
   list-style-type: none;
-  padding: 8px;
+  padding: 4px;
+}
+.child-li{
+  width: 600px;
+}
+.parent-li{
+  width: 900px;
 }
 
 .example-tree-nested-node {
@@ -17,11 +23,13 @@ li {
 .tree-node {
   padding: 4px;
   margin-bottom: 5px;
+  width: 700px;
   font-family: Arial, sans-serif;
   color: #333;
 }
 
 .nested-node {
+  width: 800px;
   margin-left: 10px;
   font-style: italic;
   color: #666;

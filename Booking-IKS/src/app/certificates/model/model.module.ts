@@ -9,7 +9,7 @@ export interface Certificate {
   serialNumber: string;
   issuerSerialNumber: string;
 }
-export enum RequestStatus {
+export enum CertificateRequestStatus {
   ACTIVE = 'ACTIVE',
   ACCEPTED = 'ACCEPTED',
   DECLINED = 'DECLINED'
@@ -22,15 +22,22 @@ export enum CertificateType {
 }
 
 export interface CertificateRequest{
-  id: number;
-  subject: User;
-  certificateIssuer: Certificate;
-  date: Date;
-  requestStatus: RequestStatus;
-  certificateType: CertificateType;
+  id?: number;
+  subject?: User;
+  issuerSerialNumber?: string;
+  date?: Date;
+  requestStatus?: CertificateRequestStatus;
+  certificateType?: CertificateType;
+  keyUsages?: KeyUsages [];
 }
 
 export interface TreeNode {
   name: string;
   children?: TreeNode[];
+}
+
+
+export interface KeyUsages {
+  id: number;
+  name: string;
 }

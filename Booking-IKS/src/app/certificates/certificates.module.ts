@@ -6,6 +6,7 @@ import { CreateCertificateComponent } from './create-certificate/create-certific
 import { CertificateRequestsComponent } from './certificate-requests/certificate-requests.component';
 import { RequestCardComponent } from './request-card/request-card.component';
 import {MaterialModule} from "../infrastructure/material/material.module";
+import {RouterLink} from "@angular/router";
 
 
 
@@ -19,6 +20,7 @@ import {MaterialModule} from "../infrastructure/material/material.module";
   ],
   imports: [
     CommonModule,
+    RouterLink,
     MaterialModule
   ]
 })
