@@ -58,22 +58,30 @@ export class NavBarComponent {
     this.auth.getUser(this.auth.getUserId()).subscribe(
       (data) => {
         this.user=data;
-        const certificateRequest: CertificateRequest = {
-          subject: this.user,
-          date: new Date(),
-          requestStatus: CertificateRequestStatus.ACTIVE,
-          certificateType: CertificateType.END_ENTITY,
-          keyUsages: [KeyUsages.DIGITAL_SIGNATURE]
-        };
-        console.log(certificateRequest)
+        if(this.user.account?.username!=undefined){
+          const subjectData={
+            email: this.user.account.username,
+            name:this.user.firstName,
+            lastname: this.user.lastName,
+            id:this.user.id
+          }
+          const certificateRequest: CertificateRequest = {
+            subject: subjectData,
+            date: new Date(),
+            requestStatus: CertificateRequestStatus.ACTIVE,
+            certificateType: CertificateType.END_ENTITY,
+            keyUsages: [KeyUsages.DIGITAL_SIGNATURE]
+          };
+          console.log(certificateRequest)
 
-        this.certificateService.createCertificateRequest(certificateRequest).subscribe(
-          {
-            next: (data: ReservationRequest) => {
-            },
-            error: (_: any) => {
-            }
-          });
+          this.certificateService.createCertificateRequest(certificateRequest).subscribe(
+            {
+              next: (data: ReservationRequest) => {
+              },
+              error: (_: any) => {
+              }
+            });
+        }
       },
       (error) => {
         console.error('Error fetching user:', error);

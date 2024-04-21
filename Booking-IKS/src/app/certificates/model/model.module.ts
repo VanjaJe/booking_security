@@ -26,12 +26,19 @@ export enum CertificateType {
 
 export interface CertificateRequest{
   id?: number;
-  subject?: User;
+  subject?: SubjectData;
   issuerSerialNumber?: string;
   date?: Date;
   requestStatus?: CertificateRequestStatus;
   certificateType?: CertificateType;
   keyUsages?: KeyUsages [];
+}
+
+export interface SubjectData {
+  id: number;
+  email: string;
+  name: string;
+  lastname: string;
 }
 
 export interface TreeNode {
@@ -49,3 +56,10 @@ export enum KeyUsages {
   ENCRYPT_ONLY = 'ENCRYPT_ONLY',
 }
 
+export enum CertificateTemplate {
+  CERTIFICATE_AUTHORITY="CERTIFICATE_AUTHORITY",
+  SSL_TLS_Client="SSL_TLS_Client" ,
+  SSL_TLS_Server="SSL_TLS_Server",
+  Code_Signing_Certificate="Code_Signing_Certificate",
+  Email_Signing_Certificate="Email_Signing_Certificate"
+}

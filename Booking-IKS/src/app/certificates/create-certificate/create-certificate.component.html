@@ -1,8 +1,26 @@
 <form [formGroup]="certificateForm" (ngSubmit)="onSubmit()">
   <div>
     <mat-form-field>
-      <mat-label>Email</mat-label>
+      <mat-label>CN</mat-label>
       <input matInput formControlName="email">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>GIVENNAME</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>SURNAME</mat-label>
+      <input matInput formControlName="surname">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>UID</mat-label>
+      <input matInput formControlName="id">
     </mat-form-field>
   </div>
   <div>
@@ -11,14 +29,22 @@
       <input matInput type="date" formControlName="date">
     </mat-form-field>
   </div>
+<!--  <div>-->
+<!--    <mat-form-field>-->
+<!--      <mat-label >Certificate Type</mat-label>-->
+<!--      <mat-select formControlName="certificateType">-->
+<!--        <mat-option *ngFor="let option of certificateTypeOptions" [value]="option">{{ option }}</mat-option>-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--  </div>-->
   <div>
     <mat-form-field>
-      <mat-label>Certificate Type</mat-label>
-      <mat-select formControlName="certificateType">
-        <mat-option *ngFor="let option of certificateTypeOptions" [value]="option">{{ option }}</mat-option>
+      <mat-label>Template</mat-label>
+      <mat-select formControlName="templates">
+        <mat-option [value]="null"></mat-option>
+        <mat-option *ngFor="let option of selectedTemplates" (click)="onChange()" [value]="option">{{ option }}</mat-option>
       </mat-select>
     </mat-form-field>
-
   </div>
   <div>
     <mat-form-field>

@@ -47,8 +47,6 @@ export class ViewCertificatesComponent implements OnInit{
           }
         });
       }
-
-
     });
       this.certificateService.getAll().subscribe(rootNode => {
         // @ts-ignore
@@ -58,17 +56,30 @@ export class ViewCertificatesComponent implements OnInit{
     hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
 
   signCertificate(serialNumber: string) {
-    //&& this.certificate.certificateType!=CertificateType.END_ENTITY
-    if(this.certificate!=null ){
+    if(this.certificate!=null){
       this.certificate.requestStatus=CertificateRequestStatus.ACCEPTED
       this.certificate.issuerSerialNumber=serialNumber
       this.certificateService.updateCertificateRequest(this.certificate).subscribe({
         next: (data: CertificateRequest) => {
+          this.ngOnInit()
         },
-        error: (_: any) => {
-          this.snackBar.open("Certificate is revoked!", 'Close', {
-            duration: 3000,
-          });
+        error: (errorResponse: any) => {
+          if (errorResponse.status == 500) {
+            this.snackBar.open("This certificate doesn't have the right number of extensions!", 'Close', {
+              duration: 3000,
+            });
+          }
+          if (errorResponse.status == 404) {
+            this.snackBar.open("This certificate is revoked!", 'Close', {
+              duration: 3000,
+            });
+          }
+          if (errorResponse.status == 403) {
+            this.snackBar.open("End entity can sign other certificates!", 'Close', {
+              duration: 3000,
+            });
+          }
+
         }
       });
     }
@@ -82,6 +93,7 @@ export class ViewCertificatesComponent implements OnInit{
         console.log("Error deleting data from CertificateService");
       }
     });
+    this.ngOnInit()
   }
 
   showDetails(certificate: Certificate) {

@@ -16,7 +16,7 @@ import {AccommodationsModule} from "../accommodations/accommodations.module";
     ViewCertificatesComponent,
     CreateCertificateComponent,
     CertificateRequestsComponent,
-    RevokeCertificateDialogComponent
+    RevokeCertificateDialogComponent,
     CertificateDialogComponent,
   ],
     imports: [
