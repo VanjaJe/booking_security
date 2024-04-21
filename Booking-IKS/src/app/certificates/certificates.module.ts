@@ -5,6 +5,7 @@ import { CreateCertificateComponent } from './create-certificate/create-certific
 import { CertificateRequestsComponent } from './certificate-requests/certificate-requests.component';
 import {MaterialModule} from "../infrastructure/material/material.module";
 import {RouterLink} from "@angular/router";
+import { RevokeCertificateDialogComponent } from './revoke-certificate-dialog/revoke-certificate-dialog.component';
 import { CertificateDialogComponent } from './certificate-dialog/certificate-dialog.component';
 import {AccommodationsModule} from "../accommodations/accommodations.module";
 
@@ -15,6 +16,7 @@ import {AccommodationsModule} from "../accommodations/accommodations.module";
     ViewCertificatesComponent,
     CreateCertificateComponent,
     CertificateRequestsComponent,
+    RevokeCertificateDialogComponent
     CertificateDialogComponent,
   ],
     imports: [

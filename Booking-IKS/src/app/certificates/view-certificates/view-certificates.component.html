@@ -8,6 +8,7 @@
       {{node.certificate.certificateType.toString()}}
       <button mat-icon-button (click)="signCertificate(node.certificate.serialNumber)"><mat-icon class="plusIcon" >add</mat-icon></button>
       <button mat-icon-button (click)="deleteCertificate(node.certificate.serialNumber)"><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
+      <button mat-icon-button  (click)="revokeCertificate(node.certificate)"><mat-icon class="deleteIcon">settings_backup_restore</mat-icon></button>
       <button mat-icon-button (click)="showDetails(node.certificate)"><mat-icon class="deleteIcon">info</mat-icon></button>
 
     </li>
@@ -26,6 +27,7 @@
         {{node.certificate.certificateType.toString()}}
         <button mat-icon-button (click)="signCertificate(node.certificate.serialNumber)"><mat-icon class="plusIcon" >add</mat-icon></button>
         <button mat-icon-button (click)="deleteCertificate(node.certificate.serialNumber)"><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
+        <button mat-icon-button (click)="revokeCertificate(node.certificate)"><mat-icon class="deleteIcon">settings_backup_restore</mat-icon></button>
         <button mat-icon-button (click)="showDetails(node.certificate)"><mat-icon class="deleteIcon">info</mat-icon></button>
         <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
           <ng-container matTreeNodeOutlet></ng-container>
@@ -33,4 +35,3 @@
       </li>
     </mat-nested-tree-node>
 </mat-tree>
-

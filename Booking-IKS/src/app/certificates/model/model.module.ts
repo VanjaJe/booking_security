@@ -8,10 +8,10 @@ export interface Certificate {
   email: string;
   serialNumber: string;
   issuerSerialNumber: string;
+  revokeReason?:string
   keyUsages?: KeyUsages [];
-
-
 }
+
 export enum CertificateRequestStatus {
   ACTIVE = 'ACTIVE',
   ACCEPTED = 'ACCEPTED',
