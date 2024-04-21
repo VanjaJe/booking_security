@@ -16,7 +16,7 @@ export class CertificateRequestsComponent {
   dataSource = new MatTableDataSource<CertificateRequest>([]);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  displayedColumns = ['username','date', 'status', 'type','accept','deny'];
+  displayedColumns = ['username','date', 'status','keyUsage', 'type','accept','deny'];
 
   constructor(private certificateRequestService:CertificateService) {
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../env/env";
-import {Certificate, CertificateRequest, TreeNode} from "./model/model.module";
+import {Certificate, CertificateRequest, KeyUsages, TreeNode} from "./model/model.module";
 import {ReservationRequest} from "../accommodations/accommodation/model/model.module";
 import {Observable} from "rxjs";
 
@@ -30,5 +30,8 @@ export class CertificateService {
 
   revokeCertificate(certificate: Certificate): Observable<CertificateRequest> {
     return this.httpClient.put<CertificateRequest>(environment.apiHostSecurity + 'certificate/revokeCertificate', certificate);
+  }
+  deleteCertificate(serialNumber: string) {
+    return this.httpClient.delete<string>(environment.apiHostSecurity + 'certificate/delete/'+serialNumber );
   }
 }

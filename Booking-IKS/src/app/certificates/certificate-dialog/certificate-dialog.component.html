@@ -1,0 +1,12 @@
+<h1>Certificate Details</h1>
+<div id="details">
+  <p>Serial Number: {{ certificate.serialNumber }}</p>
+  <p>Certificate Type: {{ certificate.certificateType }}</p>
+  <p>Date From: {{ certificate.dateFrom | date }}</p>
+  <p>Date To: {{ certificate.dateTo | date }}</p>
+  <p>Email: {{ certificate.email }}</p>
+  <p>Issuer Serial Number: {{ certificate.issuerSerialNumber }}</p>
+  <div *ngFor="let keyUsage of certificate.keyUsages">
+    <p>{{keyUsage}}</p>
+  </div>
+</div>
