@@ -7,6 +7,7 @@ import { CertificateRequestsComponent } from './certificate-requests/certificate
 import { RequestCardComponent } from './request-card/request-card.component';
 import {MaterialModule} from "../infrastructure/material/material.module";
 import {RouterLink} from "@angular/router";
+import { RevokeCertificateDialogComponent } from './revoke-certificate-dialog/revoke-certificate-dialog.component';
 
 
 
@@ -16,7 +17,8 @@ import {RouterLink} from "@angular/router";
     CertificateCardComponent,
     CreateCertificateComponent,
     CertificateRequestsComponent,
-    RequestCardComponent
+    RequestCardComponent,
+    RevokeCertificateDialogComponent
   ],
   imports: [
     CommonModule,

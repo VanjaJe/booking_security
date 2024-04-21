@@ -8,7 +8,9 @@ export interface Certificate {
   email: string;
   serialNumber: string;
   issuerSerialNumber: string;
+  revokeReason?:string
 }
+
 export enum CertificateRequestStatus {
   ACTIVE = 'ACTIVE',
   ACCEPTED = 'ACCEPTED',

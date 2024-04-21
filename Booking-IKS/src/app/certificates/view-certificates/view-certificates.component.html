@@ -10,6 +10,7 @@
     </li>
     <button mat-icon-button (click)="signCertificate(node.certificate.serialNumber)"><mat-icon class="plusIcon" >add</mat-icon></button>
     <button mat-icon-button><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
+    <button mat-icon-button  (click)="revokeCertificate(node.certificate)"><mat-icon class="deleteIcon">settings_backup_restore</mat-icon></button>
 
   </mat-tree-node>
 
@@ -28,6 +29,7 @@
 
       <button mat-icon-button (click)="signCertificate(node.certificate.serialNumber)"><mat-icon class="plusIcon" >add</mat-icon></button>
       <button mat-icon-button><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
+      <button mat-icon-button (click)="revokeCertificate(node.certificate)"><mat-icon class="deleteIcon">settings_backup_restore</mat-icon></button>
       <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
         <ng-container matTreeNodeOutlet></ng-container>
       </ul>

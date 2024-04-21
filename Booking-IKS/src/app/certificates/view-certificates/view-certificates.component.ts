@@ -1,9 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {CertificateRequest, CertificateRequestStatus, CertificateType, TreeNode} from "../model/model.module";
+import {
+  Certificate,
+  CertificateRequest,
+  CertificateRequestStatus,
+  CertificateType,
+  TreeNode
+} from "../model/model.module";
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeNestedDataSource} from "@angular/material/tree";
 import {ActivatedRoute} from "@angular/router";
 import {CertificateService} from "../certificate.service";
+import {RevokeCertificateDialogComponent} from "../revoke-certificate-dialog/revoke-certificate-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-view-certificates',
@@ -16,7 +25,10 @@ export class ViewCertificatesComponent implements OnInit{
   treeDataSource = new MatTreeNestedDataSource<TreeNode>();
   certificate:CertificateRequest;
   id:number;
-  constructor(private root:ActivatedRoute,private certificateService: CertificateService) { }
+  reason : string = ''
+
+  constructor(private root:ActivatedRoute,private certificateService: CertificateService,
+              private dialog: MatDialog,  private snackBar: MatSnackBar) { }
   ngOnInit(): void {
     this.root.paramMap.subscribe(params => {
       // @ts-ignore
@@ -52,11 +64,38 @@ export class ViewCertificatesComponent implements OnInit{
         next: (data: CertificateRequest) => {
         },
         error: (_: any) => {
-          console.log("Error fetching data from CertificateService");
+          this.snackBar.open("Certificate is revoked!", 'Close', {
+            duration: 3000,
+          });
         }
       });
     }
-
   }
-}
 
+  revokeCertificate(certificate: Certificate) {
+    //&& this.certificate.certificateType!=CertificateType.END_ENTITY
+
+    console.log("VANJAJANAAJNAJ")
+    // this.dialog.open(RevokeCertificateDialogComponent, {
+    //   width: '500px',
+    //   height:'400px',
+    //   data: certificate
+    // });
+
+    const dialogRef = this.dialog.open(RevokeCertificateDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+      certificate.revokeReason = result
+
+      this.certificateService.revokeCertificate(certificate).subscribe({
+        next: (data: CertificateRequest) => {
+        },
+        error: (_: any) => {
+          console.log("Error fetching data from CertificateService");
+        }
+      });
+    });
+
+}
+}

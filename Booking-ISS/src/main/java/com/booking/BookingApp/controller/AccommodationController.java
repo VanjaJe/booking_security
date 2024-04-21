@@ -68,6 +68,7 @@ public class AccommodationController {
             return new ResponseEntity<AccommodationDTO>(HttpStatus.NOT_FOUND);
         }
 
+        
         return new ResponseEntity<AccommodationDTO>(AccommodationDTOMapper.fromAccommodationtoDTO(accommodation), HttpStatus.OK);
     }
     @GetMapping("/calculatePrice/{id}")
