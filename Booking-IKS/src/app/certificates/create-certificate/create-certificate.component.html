@@ -29,14 +29,22 @@
       <input matInput type="date" formControlName="date">
     </mat-form-field>
   </div>
+<!--  <div>-->
+<!--    <mat-form-field>-->
+<!--      <mat-label >Certificate Type</mat-label>-->
+<!--      <mat-select formControlName="certificateType">-->
+<!--        <mat-option *ngFor="let option of certificateTypeOptions" [value]="option">{{ option }}</mat-option>-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--  </div>-->
   <div>
     <mat-form-field>
-      <mat-label>Certificate Type</mat-label>
-      <mat-select formControlName="certificateType">
-        <mat-option *ngFor="let option of certificateTypeOptions" [value]="option">{{ option }}</mat-option>
+      <mat-label>Template</mat-label>
+      <mat-select formControlName="templates">
+        <mat-option [value]="null"></mat-option>
+        <mat-option *ngFor="let option of selectedTemplates" (click)="onChange()" [value]="option">{{ option }}</mat-option>
       </mat-select>
     </mat-form-field>
-
   </div>
   <div>
     <mat-form-field>

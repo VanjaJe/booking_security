@@ -1,33 +1,33 @@
--- INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Alekse Santica',false);
--- INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Futoska',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Alekse Santica',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Futoska',false);
 -- INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '3 Puskinova',false);
 --
 --
--- INSERT INTO role (name) VALUES ('ROLE_HOST');
--- INSERT INTO role (name) VALUES ('ROLE_GUEST');
--- INSERT INTO role (name) VALUES ('ROLE_ADMIN');
--- INSERT INTO role (name) VALUES ('ROLE_SYSADMIN');
+INSERT INTO role (name) VALUES ('ROLE_HOST');
+INSERT INTO role (name) VALUES ('ROLE_GUEST');
+INSERT INTO role (name) VALUES ('ROLE_ADMIN');
+INSERT INTO role (name) VALUES ('ROLE_SYSADMIN');
 
 --
 --
--- INSERT INTO accounts(username, password, status,deleted) VALUES ('vanja@gmail.com', '$2a$10$v1RBSJEgLWTyYhksoKPGFuGHqGDcKKOHhkIb59LZ1GI2BmVcSfXKq', 'ACTIVE',false);
+INSERT INTO accounts(username, password, status,deleted) VALUES ('vanja@gmail.com', '$2a$10$v1RBSJEgLWTyYhksoKPGFuGHqGDcKKOHhkIb59LZ1GI2BmVcSfXKq', 'ACTIVE',false);
 -- INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@example.com', '123', 'ACTIVE',false);
 -- INSERT INTO accounts(username, password, status,deleted) VALUES ('zika@example.com', '123', 'ACTIVE',false);
--- INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@gmail.com', '$2a$10$ggS9sSsw8bNh7zyJl7kA5.NomqjCtvlk7MPUba0Q/YGXtAsrhIsOC', 'ACTIVE',false);
+INSERT INTO accounts(username, password, status,deleted) VALUES ('pera@gmail.com', '$2a$10$ggS9sSsw8bNh7zyJl7kA5.NomqjCtvlk7MPUba0Q/YGXtAsrhIsOC', 'ACTIVE',false);
 --
 --
 --
 -- INSERT INTO account_role VALUES (1,1);
 -- INSERT INTO account_role VALUES (2,2);
 -- INSERT INTO account_role VALUES (3,1);
--- INSERT INTO account_role VALUES (1,3);
--- INSERT INTO account_role VALUES (2,4);
+INSERT INTO account_role VALUES (1,3);
+INSERT INTO account_role VALUES (2,4);
 --
 --
--- INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, last_password_reset_date,deleted)
--- VALUES ('pera', 'peric', 1, '1234', 1, '2023-01-01 12:00:00',false);
--- insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
--- values ('vanja','peric',2,'1234',2,'2023-01-01 12:00:00',false);
+INSERT INTO users (first_name, last_name, address_id, phone_number, account_id, last_password_reset_date,deleted)
+VALUES ('pera', 'peric', 1, '1234', 1, '2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
+values ('vanja','peric',2,'1234',2,'2023-01-01 12:00:00',false);
 -- insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
 -- values ('zika','peric',1,'1234',3,'2023-01-01 12:00:00',false);
 -- insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
