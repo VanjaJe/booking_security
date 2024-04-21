@@ -57,6 +57,14 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "ssl": true,
+            "sslCert": "keystore/booking2.crt",
+            "sslKey": "keystore/booking2.key",
+            "host": "localhost",
+            "port": 4200,
+            "publicHost": "localhost:4200"
+          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
