@@ -45,6 +45,9 @@
     <button  *ngIf="role == 'ROLE_SYSADMIN'"  [routerLink]="['certificateRequestsView']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>list</mat-icon>
     </button>
+    <button  *ngIf="role == 'ROLE_SYSADMIN'"  [routerLink]="['createCertificate']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>create_new_folder</mat-icon>
+    </button>
     <button id="logoutBtn" (click)="logout()" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>logout</mat-icon>
     </button>

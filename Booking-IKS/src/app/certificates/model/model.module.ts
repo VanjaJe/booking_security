@@ -8,6 +8,9 @@ export interface Certificate {
   email: string;
   serialNumber: string;
   issuerSerialNumber: string;
+  keyUsages?: KeyUsages [];
+
+
 }
 export enum CertificateRequestStatus {
   ACTIVE = 'ACTIVE',
@@ -35,9 +38,14 @@ export interface TreeNode {
   name: string;
   children?: TreeNode[];
 }
-
-
-export interface KeyUsages {
-  id: number;
-  name: string;
+export enum KeyUsages {
+  DIGITAL_SIGNATURE = 'DIGITAL_SIGNATURE',
+  CERTIFICATE_SIGNING = 'CERTIFICATE_SIGNING',
+  NON_REPUDIATION = 'NON_REPUDIATION',
+  KEY_ENCIPHERMENT = 'KEY_ENCIPHERMENT',
+  DATA_ENCIPHERMENT = 'DATA_ENCIPHERMENT',
+  KEY_AGREEMENT = 'KEY_AGREEMENT',
+  CRL_SIGNING = 'CRL_SIGNING',
+  ENCRYPT_ONLY = 'ENCRYPT_ONLY',
 }
+

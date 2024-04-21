@@ -29,6 +29,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatTreeModule, MatTreeNestedDataSource} from "@angular/material/tree";
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import {MatTreeModule, MatTreeNestedDataSource} from "@angular/material/tree";
     MatMenuModule,
     MatChipsModule,
     MatTreeModule,
+    MatDialogModule,
     MatBadgeModule,
     MatCheckboxModule,
     MatRadioModule,
@@ -78,6 +80,7 @@ import {MatTreeModule, MatTreeNestedDataSource} from "@angular/material/tree";
     MatFormFieldModule,
     MatInputModule,
     MatLabel,
+    MatDialogModule,
     MatIconModule,
     MatGridListModule,
     MatCardModule,

@@ -1,11 +1,9 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {NotificationService} from "../notification/notification.service";
-import {Notification, NotificationType} from "../notification/notification/model/model.module";
+import {Notification} from "../notification/notification/model/model.module";
 import {UserService} from "../account/account.service";
 import {Router} from "@angular/router";
-import {audit} from "rxjs";
-import {CertificateRequestsComponent} from "../certificates/certificate-requests/certificate-requests.component";
-import {RequestStatus, ReservationRequest} from "../accommodations/accommodation/model/model.module";
+import {ReservationRequest} from "../accommodations/accommodation/model/model.module";
 import {CertificateService} from "../certificates/certificate.service";
 import {
   CertificateRequest,
@@ -57,10 +55,6 @@ export class NavBarComponent {
   }
 
   generateCertificate() {
-    const keyUsage={
-      id:1,
-      name:"DIGITAL_SIGNATURE"
-    }
     this.auth.getUser(this.auth.getUserId()).subscribe(
       (data) => {
         this.user=data;
@@ -69,7 +63,7 @@ export class NavBarComponent {
           date: new Date(),
           requestStatus: CertificateRequestStatus.ACTIVE,
           certificateType: CertificateType.END_ENTITY,
-          keyUsages: [keyUsage]
+          keyUsages: [KeyUsages.DIGITAL_SIGNATURE]
         };
         console.log(certificateRequest)
 
