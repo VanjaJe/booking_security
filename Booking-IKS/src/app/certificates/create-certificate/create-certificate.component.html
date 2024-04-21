@@ -1,1 +1,32 @@
-<p>create-certificate works!</p>
+<form [formGroup]="certificateForm" (ngSubmit)="onSubmit()">
+  <div>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Date</mat-label>
+      <input matInput type="date" formControlName="date">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Certificate Type</mat-label>
+      <mat-select formControlName="certificateType">
+        <mat-option *ngFor="let option of certificateTypeOptions" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Key Usages</mat-label>
+      <mat-select formControlName="keyUsages" multiple>
+        <mat-option *ngFor="let option of selectedKeyUsages" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button type="submit">Submit</button>
+</form>

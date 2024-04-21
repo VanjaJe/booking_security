@@ -1,37 +1,36 @@
 <mat-tree [dataSource]="treeDataSource" [treeControl]="treeControl">
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-    <li class="child-li">
+  <mat-tree-node class="parent-li" *matTreeNodeDef="let node" matTreeNodeToggle>
+    <li >
       {{node.certificate.serialNumber}}
       {{node.certificate.email}}
-      {{node.certificate.dateFrom | date:'dd--MM-yyyy HH:mm'}}
+      {{node.certificate.dateFrom | date:'dd-MM-yyyy'}}
       {{node.certificate.dateTo | date:'dd-MM-yyyy' }}
       {{node.certificate.certificateType.toString()}}
-
-    </li>
-    <button mat-icon-button (click)="signCertificate(node.certificate.serialNumber)"><mat-icon class="plusIcon" >add</mat-icon></button>
-    <button mat-icon-button><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
-
-  </mat-tree-node>
-
-  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-    <li class="parent-li">
-      <button  mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.certificate.name">
-        <mat-icon class="mat-icon-rtl-mirror">
-          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-        </mat-icon>
-      </button>
-      {{node.certificate.serialNumber}}
-      {{node.certificate.email}}
-      {{node.certificate.dateFrom | date:'dd--MM-yyyy HH:mm'}}
-      {{node.certificate.dateTo | date:'dd-MM-yyyy' }}
-      {{node.certificate.certificateType.toString()}}
-
       <button mat-icon-button (click)="signCertificate(node.certificate.serialNumber)"><mat-icon class="plusIcon" >add</mat-icon></button>
-      <button mat-icon-button><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
-      <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
-        <ng-container matTreeNodeOutlet></ng-container>
-      </ul>
+      <button mat-icon-button (click)="deleteCertificate(node.certificate.serialNumber)"><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
+      <button mat-icon-button (click)="showDetails(node.certificate)"><mat-icon class="deleteIcon">info</mat-icon></button>
+
     </li>
-  </mat-nested-tree-node>
+  </mat-tree-node>
+    <mat-nested-tree-node class="child-li" *matTreeNodeDef="let node; when: hasChild">
+      <li>
+        <button  mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.certificate.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        {{node.certificate.serialNumber}}
+        {{node.certificate.email}}
+        {{node.certificate.dateFrom | date:'dd-MM-yyyy'}}
+        {{node.certificate.dateTo | date:'dd-MM-yyyy' }}
+        {{node.certificate.certificateType.toString()}}
+        <button mat-icon-button (click)="signCertificate(node.certificate.serialNumber)"><mat-icon class="plusIcon" >add</mat-icon></button>
+        <button mat-icon-button (click)="deleteCertificate(node.certificate.serialNumber)"><mat-icon class="deleteIcon">delete_outline</mat-icon></button>
+        <button mat-icon-button (click)="showDetails(node.certificate)"><mat-icon class="deleteIcon">info</mat-icon></button>
+        <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </ul>
+      </li>
+    </mat-nested-tree-node>
 </mat-tree>
 

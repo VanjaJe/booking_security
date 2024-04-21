@@ -1,9 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {CertificateRequest, CertificateRequestStatus, CertificateType, TreeNode} from "../model/model.module";
+import {
+  Certificate,
+  CertificateRequest,
+  CertificateRequestStatus,
+  CertificateType,
+  TreeNode
+} from "../model/model.module";
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeNestedDataSource} from "@angular/material/tree";
 import {ActivatedRoute} from "@angular/router";
 import {CertificateService} from "../certificate.service";
+import {MatDialog} from "@angular/material/dialog";
+import {CertificateDialogComponent} from "../certificate-dialog/certificate-dialog.component";
 
 @Component({
   selector: 'app-view-certificates',
@@ -16,7 +24,8 @@ export class ViewCertificatesComponent implements OnInit{
   treeDataSource = new MatTreeNestedDataSource<TreeNode>();
   certificate:CertificateRequest;
   id:number;
-  constructor(private root:ActivatedRoute,private certificateService: CertificateService) { }
+  constructor(private root:ActivatedRoute,private certificateService: CertificateService,
+private dialog: MatDialog) { }
   ngOnInit(): void {
     this.root.paramMap.subscribe(params => {
       // @ts-ignore
@@ -56,6 +65,24 @@ export class ViewCertificatesComponent implements OnInit{
         }
       });
     }
+
+  }
+  deleteCertificate(serialNumber: string) {
+    this.certificateService.deleteCertificate(serialNumber).subscribe({
+      next: (data:string) => {
+      },
+      error: (_: any) => {
+        console.log("Error deleting data from CertificateService");
+      }
+    });
+  }
+
+  showDetails(certificate: Certificate) {
+    this.dialog.open(CertificateDialogComponent, {
+      width: '500px',
+      height:'400px',
+      data: certificate
+    });
 
   }
 }

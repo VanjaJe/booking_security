@@ -1,5 +1,5 @@
--- INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Alekse Santica',false);
--- INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Futoska',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Alekse Santica',false);
+INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '54 Futoska',false);
 -- INSERT INTO addresses (country, city, postal_code, address,deleted) VALUES ('Serbia', 'Novi Sad', '21000', '3 Puskinova',false);
 --
 --
