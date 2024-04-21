@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import {CertificateRequest, CertificateRequestStatus, CertificateType, KeyUsages} from "../model/model.module";
+import {
+  CertificateRequest,
+  CertificateRequestStatus,
+  CertificateType,
+  KeyUsages,
+  SubjectData
+} from "../model/model.module";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AccommodationType, ReservationRequest} from "../../accommodations/accommodation/model/model.module";
 import {UserService} from "../../account/account.service";
@@ -15,7 +21,7 @@ import {Router} from "@angular/router";
 export class CreateCertificateComponent {
 
   certificateForm: FormGroup;
-  user:User;
+  user:SubjectData;
   // @ts-ignore
   certificateTypeOptions: string[] = []
   selectedKeyUsages: string[]=[];
@@ -28,40 +34,43 @@ export class CreateCertificateComponent {
     this.selectedKeyUsages=Object.values(KeyUsages).map(item => String(item));
     this.certificateForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
+      name: ['', [Validators.required]],
+      surname: ['', [Validators.required]],
+      id: ['', [Validators.required]],
       date: ['', Validators.required],
       certificateType: ['', Validators.required],
       keyUsages: ['', Validators.required]
     });
   }
-
   onSubmit() {
     if (this.certificateForm.invalid) {
       return;
     }
-    const formData = this.certificateForm.value as CertificateRequest;
-    this.userService.getUserByUsername( this.certificateForm.get('email')?.value).subscribe(
-      (data) => {
-        this.user=data;
-        const certificateRequest: CertificateRequest = {
-          subject: this.user,
-          date: this.certificateForm.get('date')?.value,
-          requestStatus: CertificateRequestStatus.ACTIVE,
-          certificateType: this.certificateForm.get('certificateType')?.value,
-          keyUsages:this.certificateForm.get('keyUsages')?.value
-        };
-        console.log(certificateRequest);
-        this.certificateService.createCertificateRequest(certificateRequest).subscribe(
-          {
-            next: (data: ReservationRequest) => {
-              this.router.navigate(['/certificateRequestsView']);
-            },
-            error: (_: any) => {
-            }
-          });
-      },
-      (error) => {
-        console.error('Error fetching user:', error);
-      });
+    if(this.certificateForm.valid){
+      this.user={
+        email: this.certificateForm.get('email')?.value,
+        name:this.certificateForm.get('name')?.value,
+        lastname: this.certificateForm.get('surname')?.value,
+        id:this.certificateForm.get('id')?.value
+      }
+      const certificateRequest: CertificateRequest = {
+        subject: this.user,
+        date: this.certificateForm.get('date')?.value,
+        requestStatus: CertificateRequestStatus.ACTIVE,
+        certificateType: this.certificateForm.get('certificateType')?.value,
+        keyUsages:this.certificateForm.get('keyUsages')?.value
+      };
+      console.log(certificateRequest);
+      this.certificateService.createCertificateRequest(certificateRequest).subscribe(
+        {
+          next: (data: ReservationRequest) => {
+            this.router.navigate(['/certificateRequestsView']);
+          },
+          error: (_: any) => {
+          }
+        });
+    }
+
   }
 
 }

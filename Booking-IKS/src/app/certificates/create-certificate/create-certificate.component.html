@@ -1,8 +1,26 @@
 <form [formGroup]="certificateForm" (ngSubmit)="onSubmit()">
   <div>
     <mat-form-field>
-      <mat-label>Email</mat-label>
+      <mat-label>CN</mat-label>
       <input matInput formControlName="email">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>GIVENNAME</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>SURNAME</mat-label>
+      <input matInput formControlName="surname">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>UID</mat-label>
+      <input matInput formControlName="id">
     </mat-form-field>
   </div>
   <div>

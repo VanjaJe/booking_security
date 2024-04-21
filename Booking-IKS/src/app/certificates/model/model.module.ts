@@ -26,12 +26,19 @@ export enum CertificateType {
 
 export interface CertificateRequest{
   id?: number;
-  subject?: User;
+  subject?: SubjectData;
   issuerSerialNumber?: string;
   date?: Date;
   requestStatus?: CertificateRequestStatus;
   certificateType?: CertificateType;
   keyUsages?: KeyUsages [];
+}
+
+export interface SubjectData {
+  id: number;
+  email: string;
+  name: string;
+  lastname: string;
 }
 
 export interface TreeNode {

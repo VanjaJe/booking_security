@@ -3,7 +3,7 @@ export interface User {
   firstName:string;
   lastName:string;
   address?:Address;
-  phoneNumber : string;
+  phoneNumber? : string;
   account? : Account;
   picturePath? : string;
   lastPasswordResetDate?: Date
@@ -27,10 +27,10 @@ export interface Address{
 
 export interface Account{
   id?: number;
-  username : string;
-  password: string;
-  status: Status;
-  roles: Role[];
+  username? : string;
+  password?: string;
+  status?: Status;
+  roles?: Role[];
 }
 
 export interface Role {
