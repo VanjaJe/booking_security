@@ -6,12 +6,15 @@ import {Router} from "@angular/router";
 import {ReservationRequest} from "../accommodations/accommodation/model/model.module";
 import {CertificateService} from "../certificates/certificate.service";
 import {
+  Certificate,
   CertificateRequest,
   CertificateRequestStatus,
   CertificateType,
   KeyUsages
 } from "../certificates/model/model.module";
 import {User} from "../account/model/model.module";
+import {CertificateDialogComponent} from "../certificates/certificate-dialog/certificate-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-nav-bar',
@@ -24,7 +27,8 @@ export class NavBarComponent {
   role: string = '';
   user:User;
   constructor(private service: NotificationService, private auth: UserService,
-              private router: Router,private certificateService:CertificateService) {}
+              private router: Router,private certificateService:CertificateService,
+              private dialog: MatDialog) {}
 
   ngOnInit(): void {
     // this.service.getAll().subscribe({
@@ -86,7 +90,19 @@ export class NavBarComponent {
       (error) => {
         console.error('Error fetching user:', error);
       });
+  }
 
-
+  viewCertificate() {
+    this.certificateService.getCertificate(this.auth.getUserId()).subscribe({
+              next: (certificate: Certificate) => {
+                this.dialog.open(CertificateDialogComponent, {
+                  width: '500px',
+                  height:'400px',
+                  data: certificate
+                });
+              },
+              error: (_: any) => {
+              }
+            });
   }
 }

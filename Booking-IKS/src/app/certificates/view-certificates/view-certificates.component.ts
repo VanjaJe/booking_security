@@ -88,12 +88,14 @@ export class ViewCertificatesComponent implements OnInit{
   deleteCertificate(serialNumber: string) {
     this.certificateService.deleteCertificate(serialNumber).subscribe({
       next: (data:string) => {
+        this.ngOnInit()
       },
       error: (_: any) => {
         console.log("Error deleting data from CertificateService");
+        this.ngOnInit()
       }
     });
-    this.ngOnInit()
+
   }
 
   showDetails(certificate: Certificate) {
