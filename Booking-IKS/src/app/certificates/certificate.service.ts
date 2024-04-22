@@ -34,4 +34,8 @@ export class CertificateService {
   deleteCertificate(serialNumber: string) {
     return this.httpClient.delete<string>(environment.apiHostSecurity + 'certificate/delete/'+serialNumber );
   }
+
+  getCertificate(userId:number){
+    return this.httpClient.get<Certificate>(environment.apiHostSecurity + 'certificate/'+userId);
+  }
 }
