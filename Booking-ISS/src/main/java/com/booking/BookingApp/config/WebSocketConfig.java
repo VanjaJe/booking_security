@@ -15,7 +15,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 
         System.out.println("pogodio");
-        registry.addEndpoint("/socket").setAllowedOrigins("http://localhost:4200").withSockJS();
+        registry.addEndpoint("/socket").setAllowedOrigins("https://localhost:4200").withSockJS();
         registry.addEndpoint("/socket").setAllowedOrigins("*");
 
 //        registry.addEndpoint("/socket")

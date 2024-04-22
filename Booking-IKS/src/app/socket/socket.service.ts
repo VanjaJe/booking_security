@@ -10,7 +10,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   providedIn: 'root'
 })
 export class SocketService {
-  private serverUrl = 'http://localhost:8080/socket'
+  private serverUrl = 'https://localhost:8080/socket'
   private stompClient: any;
   isLoaded: boolean = false;
   isCustomSocketOpened = false;
