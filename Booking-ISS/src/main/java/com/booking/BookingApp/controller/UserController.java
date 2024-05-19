@@ -43,11 +43,11 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private TokenUtils tokenUtils;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private TokenUtils tokenUtils;
+//
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
     @Autowired
     private IUserService userService;
@@ -99,31 +99,31 @@ public class UserController {
 
     }
 
-    @PostMapping(value ="/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserTokenState> createAuthenticationToken(
-            @RequestBody UserCredentialsDTO userCredentials, HttpServletResponse response) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                userCredentials.getUsername(), userCredentials.getPassword()));
-
-
-        // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
-        // kontekst
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Kreiraj token za tog korisnika
-        User user = (User) authentication.getPrincipal();
-
-        if (!(user.getAccount().getStatus() == Status.ACTIVE)) {
-            return new ResponseEntity<UserTokenState>(HttpStatus.BAD_REQUEST);
-        }
-
-        String jwt = tokenUtils.generateToken(user.getUsername(), user.getAccount().getRoles().get(0), user.getId());
-        int expiresIn = tokenUtils.getExpiredIn();
-
-        // Vrati token kao odgovor na uspesnu autentifikaciju
-        System.out.println(jwt);
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getAccount().getRoles().get(0).getName(),user.getId()));
-    };
+//    @PostMapping(value ="/login", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<UserTokenState> createAuthenticationToken(
+//            @RequestBody UserCredentialsDTO userCredentials, HttpServletResponse response) {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                userCredentials.getUsername(), userCredentials.getPassword()));
+//
+//
+//        // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
+//        // kontekst
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        // Kreiraj token za tog korisnika
+//        User user = (User) authentication.getPrincipal();
+//
+//        if (!(user.getAccount().getStatus() == Status.ACTIVE)) {
+//            return new ResponseEntity<UserTokenState>(HttpStatus.BAD_REQUEST);
+//        }
+//
+//        String jwt = tokenUtils.generateToken(user.getUsername(), user.getAccount().getRoles().get(0), user.getId());
+//        int expiresIn = tokenUtils.getExpiredIn();
+//
+//        // Vrati token kao odgovor na uspesnu autentifikaciju
+//        System.out.println(jwt);
+//        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getAccount().getRoles().get(0).getName(),user.getId()));
+//    };
 
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> addUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
