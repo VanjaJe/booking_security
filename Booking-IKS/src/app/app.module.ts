@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,8 +25,13 @@ import {ReportsModule} from "./reports/reports.module";
 import {NgChartsModule } from 'ng2-charts';
 import {MaterialModule} from "./infrastructure/material/material.module";
 import {CertificatesModule} from "./certificates/certificates.module";
+import {KeycloakService} from "./certificates/keycloak.service";
 
 
+
+export function kcFactory(kcService:KeycloakService){
+  return ()=>kcService.init();
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +60,12 @@ import {CertificatesModule} from "./certificates/certificates.module";
     ToastrModule.forRoot(),
     // MatButtonModule,
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: InterceptService, multi: true}],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: InterceptService, multi: true},
+    {provide: APP_INITIALIZER, deps: [KeycloakService],useFactory:kcFactory, multi: true},
+
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

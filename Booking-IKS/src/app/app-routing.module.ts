@@ -21,33 +21,34 @@ import {NotificationComponent} from "./notification/notification/notification.co
 import {ViewCertificatesComponent} from "./certificates/view-certificates/view-certificates.component";
 import {CreateCertificateComponent} from "./certificates/create-certificate/create-certificate.component";
 import {CertificateRequestsComponent} from "./certificates/certificate-requests/certificate-requests.component";
+import {GuardService} from "./certificates/guard.service";
 
 
 const routes: Routes = [
-  {component: AccommodationDetailsComponent, path:"home/accommodations/accommodationDetails/:id"},
-  {component: AccommodationDetailsComponent, path:"accommodationApproval/accommodationDetails/:id"},
+  {component: AccommodationDetailsComponent, path:"home/accommodations/accommodationDetails/:id",canActivate:[GuardService]},
+  {component: AccommodationDetailsComponent, path:"accommodationApproval/accommodationDetails/:id",canActivate:[GuardService]},
   {component: AccommodationComponent, path:"accommodation"},
-  {component: ViewAccommodationsComponent, path:"home/accommodations"},
-  {component: CreateAccommodationComponent, path:"create"},
-  {component: EditAccommodationsDatesComponent, path:"home/accommodations/accommodationDetails/:id/editDates"},
-  {component: AccommodationDetailsComponent, path:"reservations/accommodationDetails/:id"},
-  {component: ReservationComponent, path:"reservations"},
-  {component: ViewCertificatesComponent, path:"certificatesView"},
-  {component: CreateCertificateComponent, path:"createCertificate"},
-  {component: CertificateRequestsComponent, path:"certificateRequestsView"},
-  {component: LoginComponent, path:"logIn"},
-  {component: AccountActivationComponent, path:"account-activation/:accessToken/:username"},
-  {component: RegistrationComponent, path:"signIn"},
-  {component: AccountManagementComponent, path:"myAccount"},
-  {component: CommentsAndGradesCardsComponent, path:'commentsAndRatings'},
-  {component: NotificationComponent, path:"notificationSettings"},
-  {component: CommentsAndGradesCardsComponent, path:'home/accommodations/accommodationDetails/:id/commentsAndRatings'},
-  {component: ReportedUserCardsComponent, path:'reportedUsers'},
-  {component: AccommodationApprovalCardsComponent, path:'accommodationApproval'},
-  {component: AccommodationUpdateComponent, path:'home/accommodations/accommodationUpdate/:id'},
+  {component: ViewAccommodationsComponent, path:"home/accommodations",canActivate:[GuardService]},
+  {component: CreateAccommodationComponent, path:"create",canActivate:[GuardService]},
+  {component: EditAccommodationsDatesComponent, path:"home/accommodations/accommodationDetails/:id/editDates",canActivate:[GuardService]},
+  {component: AccommodationDetailsComponent, path:"reservations/accommodationDetails/:id",canActivate:[GuardService]},
+  {component: ReservationComponent, path:"reservations",canActivate:[GuardService]},
+  {component: ViewCertificatesComponent, path:"certificatesView",canActivate:[GuardService]},
+  {component: CreateCertificateComponent, path:"createCertificate",canActivate:[GuardService]},
+  {component: CertificateRequestsComponent, path:"certificateRequestsView",canActivate:[GuardService]},
+  {component: LoginComponent, path:"logIn",canActivate:[GuardService]},
+  {component: AccountActivationComponent, path:"account-activation/:accessToken/:username",canActivate:[GuardService]},
+  {component: RegistrationComponent, path:"signIn",canActivate:[GuardService]},
+  {component: AccountManagementComponent, path:"myAccount",canActivate:[GuardService]},
+  {component: CommentsAndGradesCardsComponent, path:'commentsAndRatings',canActivate:[GuardService]},
+  {component: NotificationComponent, path:"notificationSettings",canActivate:[GuardService]},
+  {component: CommentsAndGradesCardsComponent, path:'home/accommodations/accommodationDetails/:id/commentsAndRatings',canActivate:[GuardService]},
+  {component: ReportedUserCardsComponent, path:'reportedUsers',canActivate:[GuardService]},
+  {component: AccommodationApprovalCardsComponent, path:'accommodationApproval',canActivate:[GuardService]},
+  {component: AccommodationUpdateComponent, path:'home/accommodations/accommodationUpdate/:id',canActivate:[GuardService]},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path:"home",component:HomeComponent},
-  {component: ReportComponent, path:'reports'},
+  {component: ReportComponent, path:'reports',canActivate:[GuardService]},
 ];
 
 @NgModule({

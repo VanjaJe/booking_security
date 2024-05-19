@@ -6,7 +6,16 @@ export interface User {
   phoneNumber? : string;
   account? : Account;
   picturePath? : string;
-  lastPasswordResetDate?: Date
+  lastPasswordResetDate?: Date;
+  token?:string
+}
+
+export interface UserProfile{
+  username?:string;
+  email?:string;
+  firstName?:string;
+  lastName?:string;
+  token?:string
 }
 
 export interface Host extends User{

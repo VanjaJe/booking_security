@@ -15,6 +15,7 @@ import {
 import {User} from "../account/model/model.module";
 import {CertificateDialogComponent} from "../certificates/certificate-dialog/certificate-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {KeycloakService} from "../certificates/keycloak.service";
 
 @Component({
   selector: 'app-nav-bar',
@@ -28,7 +29,7 @@ export class NavBarComponent {
   user:User;
   constructor(private service: NotificationService, private auth: UserService,
               private router: Router,private certificateService:CertificateService,
-              private dialog: MatDialog) {}
+              private dialog: MatDialog, private keycloakService:KeycloakService) {}
 
   ngOnInit(): void {
     // this.service.getAll().subscribe({
@@ -37,6 +38,9 @@ export class NavBarComponent {
     //   },
     //   error: (_) => {console.log("Greska!")}
     // });
+    // localStorage.getItem('user');
+    // this.auth.setUser();
+
     this.auth.userState.subscribe((result) => {
       this.role = result;
     });
@@ -44,8 +48,10 @@ export class NavBarComponent {
 
   logout() {
     localStorage.removeItem('user');
-    this.router.navigate(['logIn']);
     this.auth.setUser();
+    this.keycloakService.logout();
+    // this.router.navigate(['logIn']);
+
 
   }
 

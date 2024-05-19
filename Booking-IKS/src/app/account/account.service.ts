@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Account, User, Address, Status} from './model/model.module';
+import {Account, User, Address, Status, UserProfile} from './model/model.module';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { environment } from 'src/env/env';
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {Guest} from "../administrator/comments-and-grades/model/model.module";
+import {KeycloakService} from "../certificates/keycloak.service";
+import {keyframes} from "@angular/animations";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,9 @@ export class UserService {
   user$ = new BehaviorSubject("");
   userState = this.user$.asObservable();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private keycloak: KeycloakService) {
+
+    console.log("rolica ",this.getRole())
     this.user$.next(this.getRole());
   }
   login(auth: any): Observable<any> {
@@ -67,10 +71,20 @@ export class UserService {
     return localStorage.getItem('user') != null;
   }
   getRole(): any {
-    if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('user');
+    if (this.keycloak.keycloak?.authenticated) {
+      // const accessToken: any = localStorage.getItem('user');
+      const accessToken: any = this.keycloak.keycloak.token;
+      // const accessToken: any = this.profile.token;
       const helper = new JwtHelperService();
-      return helper.decodeToken(accessToken).role;
+      const decodedToken=helper.decodeToken(accessToken);
+      const realmAccess = decodedToken.realm_access;
+      console.log("roli ",realmAccess)
+      if (realmAccess && realmAccess.roles && realmAccess.roles.includes('GUEST')) {
+        return "ROLE_GUEST"
+      } else if(realmAccess && realmAccess.roles && realmAccess.roles.includes('HOST')){
+        return "ROLE_HOST"
+      }
+      // return helper.decodeToken(accessToken).role;
     }
     return null;
   }
@@ -93,7 +107,7 @@ export class UserService {
   setUser(): void {
     this.user$.next(this.getRole());
   }
-  
+
   uploadImage(files: File[], id: number): Observable<User> {
     const data: FormData = new FormData();
     for (let file of files) {
@@ -111,7 +125,7 @@ export class UserService {
     const url = `${environment.apiHost}users/block/${user.id}`;
     return this.httpClient.put<User>(url, user);
   }
-  
+
 
   reportHost(guestId: number|undefined, reportedHost: User): Observable<User> {
     return this.httpClient.put<User>(environment.apiHost + 'users/reportUser/' + guestId, reportedHost);

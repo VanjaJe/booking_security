@@ -6,6 +6,7 @@ import {UserService} from "../account.service";
 import {SharedService} from "../../shared/shared.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SocketService} from "../../socket/socket.service";
+import {KeycloakService} from "../../certificates/keycloak.service";
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit{
     private toastr: ToastrService,
     // private sharedService: SharedService
     private _snackBar: MatSnackBar,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private keycloakService: KeycloakService
   ) {}
 
 
@@ -34,33 +36,36 @@ export class LoginComponent implements OnInit{
 
 
 
-  ngOnInit() {
-  }
+  async ngOnInit() {
+    await this.keycloakService.init();
+    await this.keycloakService.login();
 
-  submit() {
-    const auth: any = {};
-    auth.username = this.form.value.username;
-    auth.password = this.form.value.password;
-
-    this.authenticationService.login(auth).subscribe(
-      result => {
-        console.log("VANJAAAAAAAAAAAAAAAAAAAAAAAAA")
-        this.toastr.success('Successful login!');
-        localStorage.setItem('user', JSON.stringify(result));
-        this.authenticationService.setUser()
-        this.socketService.initializeWebSocketConnection(this.authenticationService.getUserId());
-        this.router.navigate(['home']);
-      },
-      error => {
-        this.openSnackBar("Your account is not active. Check your email address!")
-        // this.toastr.error(error.error);
-      }
-    );
   }
-
-  openSnackBar(message:string) {
-    this._snackBar.open(message, "close",{
-      duration:2000
-    });
-  }
+  //
+  // submit() {
+  //   const auth: any = {};
+  //   auth.username = this.form.value.username;
+  //   auth.password = this.form.value.password;
+  //
+  //   this.authenticationService.login(auth).subscribe(
+  //     result => {
+  //       console.log("VANJAAAAAAAAAAAAAAAAAAAAAAAAA")
+  //       this.toastr.success('Successful login!');
+  //       localStorage.setItem('user', JSON.stringify(result));
+  //       this.authenticationService.setUser()
+  //       this.socketService.initializeWebSocketConnection(this.authenticationService.getUserId());
+  //       this.router.navigate(['home']);
+  //     },
+  //     error => {
+  //       this.openSnackBar("Your account is not active. Check your email address!")
+  //       // this.toastr.error(error.error);
+  //     }
+  //   );
+  // }
+  //
+  // openSnackBar(message:string) {
+  //   this._snackBar.open(message, "close",{
+  //     duration:2000
+  //   });
+  // }
 }

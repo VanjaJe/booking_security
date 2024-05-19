@@ -45,8 +45,8 @@ public class UserService implements IUserService {
     @Autowired
     AccommodationRepository accommodationRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private RoleService roleService;
@@ -318,7 +318,7 @@ public class UserService implements IUserService {
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setAddress(userRequest.getAddress());
         u.setAccount(userRequest.getAccount());
-        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+//        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
 
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
@@ -342,7 +342,7 @@ public class UserService implements IUserService {
         u.setPhoneNumber(userRequest.getPhoneNumber());
         u.setAddress(userRequest.getAddress());
         u.setAccount(userRequest.getAccount());
-        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+//        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
