@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {UserService} from "../account.service";
 import {Router} from "@angular/router";
+import {noHtmlOrSqlValidator, lettersOnlyValidator, numbersOnlyValidator,lettersAndSpacesValidator} from "../../validators/validators";
 // import {ToastrService} from "ngx-toastr";
 import {Account, Address, Role, Status, User} from "../model/model.module";
 import {SharedService} from "../../shared/shared.service";
@@ -41,15 +42,15 @@ export class RegistrationComponent implements OnInit {
   // };
 
   registrationForm = this.fb.group({
-    username : ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.pattern(/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/)]],
-    confirmPassword: ['', [Validators.required, this.matchValues('password')]],
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
-    address: ['', [Validators.required]],
-    city: ['', [Validators.required]],
-    country: ['', [Validators.required]],
-    phoneNumber: ['', [Validators.required]],
+    username: ['', [Validators.required, Validators.email, noHtmlOrSqlValidator()]],
+    password: ['', [Validators.required, Validators.pattern(/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/), noHtmlOrSqlValidator()]],
+    confirmPassword: ['', [Validators.required, this.matchValues('password'), noHtmlOrSqlValidator()]],
+    firstName: ['', [Validators.required, lettersOnlyValidator(), noHtmlOrSqlValidator()]],
+    lastName: ['', [Validators.required, lettersOnlyValidator(), noHtmlOrSqlValidator()]],
+    address: ['', [Validators.required, noHtmlOrSqlValidator()]],
+    city: ['', [Validators.required, lettersAndSpacesValidator(), noHtmlOrSqlValidator()]],
+    country: ['', [Validators.required,lettersAndSpacesValidator(), noHtmlOrSqlValidator()]],
+    phoneNumber: ['', [Validators.required, numbersOnlyValidator()]],
     role: ['', [Validators.required]]
   });
 
