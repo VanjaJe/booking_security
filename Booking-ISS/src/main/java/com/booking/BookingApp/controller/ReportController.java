@@ -30,9 +30,9 @@ public class ReportController {
     private IReportService reportService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('VIEW_REPORT')")
     public ResponseEntity<Collection<ReportDTO>> getReportByTimeSlot(
-            @RequestParam(value = "hostId", required = false)Integer hostId,
+            @RequestParam(value = "hostId", required = false)String hostId,
             @RequestParam("begin") @DateTimeFormat(pattern="yyyy-MM-dd") Date begin,
             @RequestParam("end") @DateTimeFormat(pattern="yyyy-MM-dd") Date end) {
         TimeSlot timeSlot = new TimeSlot(begin.toInstant().atZone
@@ -46,12 +46,11 @@ public class ReportController {
     };
 
     @GetMapping(value = "/annual",produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('VIEW_REPORT')")
     public ResponseEntity<ReportDTO> getAnnualReportByAccommodation(
             @RequestParam("accommodationName") String accommodationName,
             @RequestParam("year") int year) {
         Report report=reportService.findAnnualByAccommodation(accommodationName,year);
         return new ResponseEntity<ReportDTO>(ReportDTOMapper.fromReportToDTO(report), HttpStatus.OK);
     };
-
 }

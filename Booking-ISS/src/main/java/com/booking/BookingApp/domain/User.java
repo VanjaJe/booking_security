@@ -119,13 +119,18 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.account.getPassword();
+        return null;
     }
-    public void setPassword(String password) {
-        Timestamp now = new Timestamp(new Date().getTime());
-        this.setLastPasswordResetDate(now);
-        this.account.setPassword(password);
-    }
+
+//    @Override
+//    public String getPassword() {
+//        return this.account.getPassword();
+//    }
+//    public void setPassword(String password) {
+//        Timestamp now = new Timestamp(new Date().getTime());
+//        this.setLastPasswordResetDate(now);
+//        this.account.setPassword(password);
+//    }
 
     @Override
     public String getUsername() {

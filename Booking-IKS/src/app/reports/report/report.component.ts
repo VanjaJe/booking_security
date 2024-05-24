@@ -156,7 +156,7 @@ export class ReportComponent {
     }
   }
 
-  private loadAccommodations(hostId: number) {
+  private loadAccommodations(hostId: string) {
     this.accommodationService.getAll(hostId).subscribe({
       next: (data: Accommodation[]) => {
         this.accommodations = data

@@ -54,39 +54,26 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public Collection<Request> findByHostId(Long id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
+    public Collection<Request> findByHostId(String id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
         return requestRepository.findAllForHost(id, status, begin, end, accommodationName);
     }
 
-    public Collection<Request> findAllRequestForHost(RequestStatus status, Long id) {
-        return requestRepository.findAllByStatusAndGuest_Id(status, id);
+    public Collection<Request> findAllRequestForHost(RequestStatus status, String id) {
+        return requestRepository.findAllByStatusAndGuest_AccountUsername(status, id);
     }
 
     @Override
-    public Collection<Request> findByHost(Long id) {
-        return requestRepository.findByAccommodation_Host_Id(id);
+    public Collection<Request> findByHost(String id) {
+        return requestRepository.findByAccommodation_Host_AccountUsername(id);
     }
 
-    public Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
+    public Collection<Request> findByGuestId(String id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName) {
         return requestRepository.findAllForGuest(id, status,  begin, end, accommodationName);
     }
 
     public Collection<Request> findByAccommodationId(Long id) {
         return  requestRepository.findByAccommodation_Id(id);
     }
-
-//    @Override
-//    public Collection<Request> findReservationByGuestId(Long id, RequestStatus status) {
-//        return data();
-//    }
-
-//    @Override
-//    public Collection<Request> findWaitingRequest(Long id) {return data();}
-
-//    @Override
-//    public Request findByAccommodationId(Long id) {
-//        return oneRequest();
-//    }
 
     @Override
     public Request create(Request request) throws Exception{
@@ -135,7 +122,7 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public int findCancellations(Long id) {
+    public int findCancellations(String id) {
         Collection<Request> requests=requestRepository.findAllForGuest(id,RequestStatus.CANCELLED,null,null,null);
         return requests.size();
     }
@@ -144,8 +131,6 @@ public class RequestService implements IRequestService {
     public Request accept(Request request) {
         Collection<Request> requests = requestRepository.findAllByAccommodationAndTimeSlot(request.getAccommodation()
                 ,request.getTimeSlot().getStartDate(),request.getTimeSlot().getEndDate());
-        System.out.println(requests.size());
-        System.out.println("ACCEPTING REQUESTS:" + requests);
         for(Request _request:requests){
             _request.setStatus(RequestStatus.DENIED);
             requestRepository.save(_request);

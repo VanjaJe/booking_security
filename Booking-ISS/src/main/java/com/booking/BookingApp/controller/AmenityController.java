@@ -25,7 +25,6 @@ public class AmenityController {
     private AmenityService amenityService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Collection<AmenityDTO>> getAmenities() {
         Collection<Amenity> amenities = amenityService.findAll();
 
@@ -37,7 +36,6 @@ public class AmenityController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
     public ResponseEntity<AmenityDTO> getById(@PathVariable("id") Long id) {
         Amenity amenity = amenityService.findById(id);
         return new ResponseEntity<AmenityDTO>(new AmenityDTO(amenity), HttpStatus.OK);

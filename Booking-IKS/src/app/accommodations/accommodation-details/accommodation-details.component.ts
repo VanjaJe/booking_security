@@ -140,8 +140,8 @@ export class AccommodationDetailsComponent implements OnInit{
               console.error('Error fetching images:', error);
             }
           );
-
-        this.commentService.getAverageHostRating(this.accommodation.host.id)
+        // @ts-ignore
+          this.commentService.getAverageHostRating(this.accommodation.host.account?.username)
             .subscribe(
                 (averageRating: number) => {
                     this.hostAverageRating = averageRating;
@@ -292,7 +292,8 @@ export class AccommodationDetailsComponent implements OnInit{
                   if (this.checkNotificationStatus(NotificationType.RESERVATION_REQUEST)) {
                     console.log("KREIRAOOOOOOOOOOO")
                     this.createNotification(text, NotificationType.RESERVATION_REQUEST);
-                    this.socketService.sendMessageUsingSocket(text, this.guest.id, this.accommodation.host.id);
+                    // @ts-ignore
+                    this.socketService.sendMessageUsingSocket(text, this.guest.account?.username, this.accommodation.host.account?.username);
                   }
 
                   this.snackBar.open("Request created!", 'Close', {
@@ -417,7 +418,7 @@ export class AccommodationDetailsComponent implements OnInit{
     let rate=this.SelectedStarHost;
     let comment = this.hostComment;
 
-    console.log(this.accommodation.host.id);
+    // console.log(this.accommodation.host.id);
 
     const commentAndGrade : CommentAndGrade = {
         text: comment,
@@ -427,16 +428,17 @@ export class AccommodationDetailsComponent implements OnInit{
         guest:this.guest,
     }
 
-    this.commentService.createHostComment(this.accommodation.host.id, commentAndGrade).subscribe({
+    // @ts-ignore
+    this.commentService.createHostComment(this.accommodation.host.account?.username, commentAndGrade).subscribe({
       next: (data: CommentAndGrade) => {
 
           const text="User "+this.guest.account?.username + " has commented you.";
 
           if (this.checkNotificationStatus(NotificationType.HOST_RATED)) {
-              console.log("KREIRAOOOOOOOOOOO")
 
               this.createNotification(text, NotificationType.HOST_RATED);
-              this.socketService.sendMessageUsingSocket(text,this.guest.id,this.accommodation.host.id);
+              // @ts-ignore
+            this.socketService.sendMessageUsingSocket(text,this.guest.account?.username,this.accommodation.host.account?.username);
           }
 
           this.snackBar.open("Comment is created", 'Close', {
@@ -459,7 +461,7 @@ export class AccommodationDetailsComponent implements OnInit{
       let rate=this.SelectedStarAccommodation;
       let comment = this.accommodationComment;
 
-      console.log(this.accommodation.host.id);
+      // console.log(this.accommodation.host.id);
 
       const commentAndGrade : CommentAndGrade = {
           text: comment,
@@ -477,7 +479,6 @@ export class AccommodationDetailsComponent implements OnInit{
               if (this.checkNotificationStatus(NotificationType.ACCOMMODATION_RATED)) {
 
                   this.createNotification(text, NotificationType.ACCOMMODATION_RATED);
-                  this.socketService.sendMessageUsingSocket(text,this.guest.id,this.accommodation.host.id);
               }
 
               this.snackBar.open("Comment is created", 'Close', {
@@ -497,7 +498,8 @@ export class AccommodationDetailsComponent implements OnInit{
     }
 
     public reportHost() {
-        this.userService.reportHost(this.guest.id, this.accommodation.host).subscribe(
+        // @ts-ignore
+      this.userService.reportHost(this.guest.account?.username, this.accommodation.host).subscribe(
         (data) => {
           console.log(data)
           this.snackBar.open("Host has been reported", 'Close', {
@@ -572,7 +574,8 @@ export class AccommodationDetailsComponent implements OnInit{
   }
 
   public getSettings()  {
-    this.notificationService.getHostSettings(this.accommodation.host.id).subscribe(
+    // @ts-ignore
+    this.notificationService.getHostSettings(this.accommodation.host.account?.username).subscribe(
       {
         next: (data: HostNotificationSettings) => {
           this.settings = data;
@@ -586,7 +589,6 @@ export class AccommodationDetailsComponent implements OnInit{
 
   public checkNotificationStatus(type:NotificationType ):boolean{
     if (NotificationType.RESERVATION_REQUEST==type && this.settings.requestCreated) {
-      console.log("USAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
       return true;
     }
     if (NotificationType.ACCOMMODATION_RATED==type && this.settings.accommodationRated) {

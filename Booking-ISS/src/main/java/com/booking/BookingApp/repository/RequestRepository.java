@@ -15,15 +15,15 @@ import java.util.Collection;
 public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByStatus(RequestStatus status);
 
-    Collection<Request> findAllByStatusAndGuest_Id(RequestStatus status, Long id);
+    Collection<Request> findAllByStatusAndGuest_AccountUsername(RequestStatus status, String id);
 
-    Collection<Request> findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus status, Long hostId, Long guestId);
+    Collection<Request> findAllByStatusAndAccommodation_Host_AccountUsernameAndGuest_AccountUsername(RequestStatus status, String hostId, String guestId);
 
     Collection<Request> findByStatusAndAccommodation_Name(RequestStatus status, String accommodationName);
 
     Collection<Request> findByStatusAndAccommodation_NameAndTimeSlot_StartDateLessThanEqualAndTimeSlot_EndDateGreaterThanEqual(RequestStatus status,String accommodationName,LocalDate end,LocalDate begin);
 
-    Collection<Request> findByAccommodation_Host_Id(Long id);
+    Collection<Request> findByAccommodation_Host_AccountUsername(String id);
 
     @Query("SELECT r FROM Request r WHERE r.status = 'ACCEPTED' AND r.timeSlot.startDate > :currentDateTime AND r.guest = :guest")
     Collection<Request> findActiveReservationsForGuest(@Param("currentDateTime") LocalDate currentDateTime, @Param("guest") Guest guest);
@@ -46,13 +46,13 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Collection<Request> findByStatusAndAccommodation_Id(RequestStatus status, Long id);
 
     @Query("SELECT r FROM Request r WHERE " +
-            "(:hostId is null or r.accommodation.host.id = :hostId) " +
+            "(:hostId is null or r.accommodation.host.account.username = :hostId) " +
             "and (:status is null or r.status = :status) " +
             "and (COALESCE(:begin, r.timeSlot.startDate) <= r.timeSlot.endDate) " +
             "and (COALESCE(:end, r.timeSlot.endDate) >= r.timeSlot.startDate) " +
             "and (:accommodationName is null or r.accommodation.name like %:accommodationName%)")
     Collection<Request> findAllForHost(
-            @Param("hostId") Long hostId,
+            @Param("hostId") String hostId,
             @Param("status") RequestStatus status,
             @Param("begin") LocalDate begin,
             @Param("end") LocalDate end,
@@ -60,13 +60,13 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     );
 
     @Query("SELECT r FROM Request r WHERE " +
-            "(:guestId is null or r.guest.id = :guestId) " +
+            "(:guestId is null or r.guest.account.username = :guestId) " +
             "and (:status is null or r.status = :status) " +
             "and (COALESCE(:begin, r.timeSlot.startDate) <= r.timeSlot.endDate) " +
             "and (COALESCE(:end, r.timeSlot.endDate) >= r.timeSlot.startDate) " +
             "and (:accommodationName is null or r.accommodation.name like %:accommodationName%)")
     Collection<Request> findAllForGuest(
-            @Param("guestId") Long guestId,
+            @Param("guestId") String guestId,
             @Param("status") RequestStatus status,
             @Param("begin") LocalDate begin,
             @Param("end") LocalDate end,

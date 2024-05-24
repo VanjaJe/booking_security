@@ -30,7 +30,7 @@ export class AccommodationsService {
     return <string>new DatePipe('en-US').transform(date, 'yyyy-MM-dd');
   }
   getAll(
-    hostId?: number,
+    hostId?: string,
     country?: string,
     city?: string,
     type?: AccommodationType,
@@ -115,10 +115,10 @@ export class AccommodationsService {
     return this.httpClient.put<Accommodation>(environment.apiHost + "accommodations/changeFreeTimeSlots/" + accommodationId, reservationTimeSlot)
   }
 
-  getAllFavorites(id:number): Observable<Accommodation[]> {
+  getAllFavorites(id:string): Observable<Accommodation[]> {
     return this.httpClient.get<Accommodation[]>(environment.apiHost + 'users/guest/'+id)
   }
-  updateFavoriteAccommodation(guestId: number, accommodationId?: number): Observable<String> {
+  updateFavoriteAccommodation(guestId: string, accommodationId?: number): Observable<String> {
     return this.httpClient.put(environment.apiHost + 'users/'+guestId+"/favoriteAccommodations/"+accommodationId,{},{ responseType: 'text' });
   }
 

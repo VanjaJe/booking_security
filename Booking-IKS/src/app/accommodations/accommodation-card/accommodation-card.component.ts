@@ -43,6 +43,7 @@ export class AccommodationCardComponent {
       this.userService.getUser(guestId).subscribe(
         (data) => {
           this.guest=data;
+          console.log()
         },
         (error) => {
           console.error('Error fetching guest:', error);
@@ -140,7 +141,8 @@ export class AccommodationCardComponent {
 
   addFavorite(accommodation: Accommodation) {
     this.buttonColor = this.buttonColor === 'warn' ? 'primary' : 'warn';
-    this.accommodationService.updateFavoriteAccommodation(this.guest.id, accommodation.id).subscribe(
+    // @ts-ignore
+    this.accommodationService.updateFavoriteAccommodation(this.guest.account?.username, accommodation.id).subscribe(
       (response) => {
         console.log('Favorite added successfully:', response);
       },

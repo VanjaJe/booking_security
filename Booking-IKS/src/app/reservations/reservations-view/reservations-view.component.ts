@@ -52,7 +52,7 @@ export class ReservationsViewComponent implements OnInit{
 
   cancelReservation(reservation: ReservationRequest) {
     // @ts-ignore
-    this.getSettings(reservation.accommodation?.host.id)
+    this.getSettings(reservation.accommodation?.host.account?.username)
     if (this.todayIsBeforeDeadline(reservation)) {
       this.service.cancel(reservation).subscribe(
         {
@@ -61,11 +61,10 @@ export class ReservationsViewComponent implements OnInit{
             const text="User " + reservation.guest?.account?.username + " has cancelled reservation.";
 
             if (this.checkNotificationStatus(NotificationType.RESERVATION_CANCELLED)) {
-              console.log("KREIRAOOOOOOOOOOO")
 
               this.createNotification(reservation.accommodation?.host as Host, text, NotificationType.RESERVATION_CANCELLED);
               // @ts-ignore
-              this.socketService.sendMessageUsingSocket(text,reservation.guest.id,reservation.accommodation.host.id);
+              // this.socketService.sendMessageUsingSocket(text,reservation.guest?.account?.username,reservation.accommodation.host.account.username);
             }
 
             this.snackBar.open("Reservation canceled!", 'Close', {

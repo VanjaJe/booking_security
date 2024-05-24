@@ -28,11 +28,9 @@ public class CommentsController {
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private UserService userService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
     public ResponseEntity<Collection<CommentsDTO>> getComments(@RequestParam(value="status", required = false) Status status) {
         Collection<Comments> comments = commentService.findAll(status);
 //        Collection<AccommodationComments> accommodationComments = commentService.findAllAccommodationComments(status);
@@ -45,7 +43,7 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/hosts", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
     public ResponseEntity<Collection<CreateHostCommentDTO>> getAllHostComments(@RequestParam(value = "status", required = false) Status status) {
         Collection<HostComments> comments = commentService.findAllHostComments(status);
 
@@ -57,7 +55,7 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/accommodations", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
     public ResponseEntity<Collection<AccommodationCommentDTO>> getAllAccommodationComments(@RequestParam(value = "status", required = false) Status status) {
         Collection<AccommodationComments> comments = commentService.findAllAccommodationComments(status);
 
@@ -69,15 +67,15 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
     public ResponseEntity<CommentsDTO> getById(@PathVariable("id") Long id) {
         Comments comment = commentService.findById(id);
         return new ResponseEntity<CommentsDTO>(new CommentsDTO(comment), HttpStatus.OK);
     }
 
     @GetMapping(value = "/host/{hostId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
-    public ResponseEntity<Collection<CommentsDTO>> getHostComments(@PathVariable("hostId") Long id,
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
+    public ResponseEntity<Collection<CommentsDTO>> getHostComments(@PathVariable("hostId") String id,
                                                                    @RequestParam(value = "status", required = false) Status status) {
         Collection<Comments> comments = commentService.findByHostId(id, status);
 
@@ -89,7 +87,7 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/accommodation/{accommodationId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
     public ResponseEntity<Collection<CommentsDTO>> getAccommodationComments(@PathVariable("accommodationId") Long id,
                                                                             @RequestParam(value = "status", required = false) Status status) {
         Collection<Comments> comments = commentService.findByAccommodationId(id, status);
@@ -102,24 +100,23 @@ public class CommentsController {
     }
 
     @GetMapping(value = "/host/{hostId}/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
-    public ResponseEntity<Double> getHostRating(@PathVariable("hostId") Long id) {
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
+    public ResponseEntity<Double> getHostRating(@PathVariable("hostId") String id) {
         double rating = commentService.findHostRating(id);
         return new ResponseEntity<Double>(rating,HttpStatus.OK);
     }
 
     @GetMapping(value = "/accommodation/{accommodationId}/averageRate", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') or hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('READ_COMMENT')")
     public ResponseEntity<Double> getAccommodationRating(@PathVariable("accommodationId") Long id) {
         double rating = commentService.findAccommodationRating(id);
         return new ResponseEntity<Double>(rating,HttpStatus.OK);
     }
 
     @PostMapping(value = "/host/{hostId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('GUEST')")
+    @PreAuthorize("hasAuthority('WRITE_COMMENT')")
     public ResponseEntity<CommentsDTO> createHostComment(@RequestBody CommentsDTO commentDTO,
-                                                         @PathVariable("hostId") Long id) {
-//        Host host = (Host) userService.findOne(id);
+                                                         @PathVariable("hostId") String id) {
         Comments commentModel = CommentsDTOMapper.fromDTOtoComments(commentDTO);
         Comments savedComment = commentService.createHostComment(commentModel, id);
         if (savedComment==null) {
@@ -129,7 +126,7 @@ public class CommentsController {
     }
 
     @PostMapping(value = "/accommodation/{accommodationId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('GUEST')")
+    @PreAuthorize("hasAuthority('WRITE_COMMENT')")
     public ResponseEntity<CommentsDTO> createAccommodationComment(@RequestBody CommentsDTO commentDTO,
                                                                   @PathVariable("accommodationId") Long id) {
         Comments commentModel = CommentsDTOMapper.fromDTOtoComments(commentDTO);
@@ -151,9 +148,9 @@ public class CommentsController {
     }
 
     @PutMapping(value = "/approve/accommodations/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('MANAGE_COMMENT')")
     public ResponseEntity<CommentsDTO> approveAccommodationsComment(@RequestBody AccommodationCommentDTO commentDTO) {
         AccommodationComments comment= AccommodationCommentDTOMapper.fromDTOtoComments(commentDTO);
-        System.out.println(comment);
         Comments updatedComment = commentService.approve(comment);
         if (updatedComment == null) {
             return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -162,9 +159,9 @@ public class CommentsController {
     }
 
     @PutMapping(value = "/decline/accommodations/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('MANAGE_COMMENT')")
     public ResponseEntity<CommentsDTO> declineAccommodationsComment(@RequestBody AccommodationCommentDTO commentDTO) {
         AccommodationComments comment= AccommodationCommentDTOMapper.fromDTOtoComments(commentDTO);
-        System.out.println(commentDTO);
         Comments updatedComment = commentService.decline(comment);
         if (updatedComment == null) {
             return new ResponseEntity<CommentsDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -173,6 +170,7 @@ public class CommentsController {
     }
 
     @PutMapping(value = "/approve/hosts/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('MANAGE_COMMENT')")
     public ResponseEntity<CommentsDTO> approveHostsComment(@RequestBody CreateHostCommentDTO commentDTO) {
         HostComments comment= HostCommentDTOMapper.fromDTOtoComments(commentDTO);
         Comments updatedComment = commentService.approve(comment);
@@ -183,6 +181,7 @@ public class CommentsController {
     }
 
     @PutMapping(value = "/decline/hosts/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('MANAGE_COMMENT')")
     public ResponseEntity<CommentsDTO> declineHostsComment(@RequestBody CreateHostCommentDTO commentDTO) {
         HostComments comment= HostCommentDTOMapper.fromDTOtoComments(commentDTO);
         Comments updatedComment = commentService.decline(comment);
@@ -193,7 +192,7 @@ public class CommentsController {
     }
 
     @PutMapping(value = "reportComment/{commentId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('HOST')")
+    @PreAuthorize("hasAuthority('REPORT_COMMENT')")
     public ResponseEntity<CommentsDTO> reportComment(@RequestBody Status status, @PathVariable("commentId") Long commentId) {
         Comments commentForUpdate = commentService.findById(commentId);
         Comments updatedComment = commentService.reportComment(commentForUpdate, status);
@@ -201,7 +200,7 @@ public class CommentsController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasRole('GUEST')")
+    @PreAuthorize("hasAuthority('DELETE_COMMENT')")
     public ResponseEntity<CommentsDTO> deleteComment(@PathVariable("id") Long id) {
         commentService.delete(id);
         return new ResponseEntity<CommentsDTO>(HttpStatus.NO_CONTENT);

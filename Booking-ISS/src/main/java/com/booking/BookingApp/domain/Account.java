@@ -28,8 +28,8 @@ public class Account {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
-    private String password;
+//    @Column(name = "password")
+//    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -44,18 +44,18 @@ public class Account {
     @Column(name="deleted")
     private boolean deleted = Boolean.FALSE;
 
-    public Account(Long id, String username, String password, Status status, List<Role> roles, boolean deleted) {
+    public Account(Long id, String username, Status status, List<Role> roles, boolean deleted) {
         this.id = id;
         this.username =username;
-        this.password = password;
+//        this.password = password;
         this.status = status;
         this.roles = roles;
         this.deleted = deleted;
     }
 
-    public Account(String username, String password, Status status, List<Role> roles, boolean deleted) {
+    public Account(String username, Status status, List<Role> roles, boolean deleted) {
         this.username =username;
-        this.password = password;
+//        this.password = password;
         this.status = status;
         this.roles = roles;
         this.deleted = deleted;
@@ -66,7 +66,6 @@ public class Account {
         return "Account{" +
                 "id=" + id  +
                 ",username" + username +
-                ", password='" + password + '\'' +
                 ", status=" + status +
                 ", role=" + roles +
                 ", deleted=" + deleted +

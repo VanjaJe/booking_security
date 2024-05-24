@@ -14,15 +14,15 @@ public interface INotificationService {
 
     Notification createUserNotification(Notification notification) throws Exception;
 
-    Collection<Notification> findAllForUser(Long id);
+    Collection<Notification> findAllForUser(String id);
 
-    GuestNotificationSettings updateGuestSettings(Long id, GuestNotificationSettings settings);
+    GuestNotificationSettings updateGuestSettings(String id, GuestNotificationSettings settings);
 
-    HostNotificationSettings updateHostSettings(Long id, HostNotificationSettings settings);
+    HostNotificationSettings updateHostSettings(String id, HostNotificationSettings settings);
 
     Notification updateNotification(Long id, Notification notification);
 
-    Notification findNewForUser(Long id)throws ParseException;
+    Notification findNewForUser(String id)throws ParseException;
 
 //    Collection<Notification> updateSettings(Long id, NotificationType type);
 }
