@@ -31,8 +31,8 @@ public class NotificationService implements INotificationService{
     GuestNotificationSettingsRepository guestNotificationSettingsRepository;
 
     @Override
-    public Collection<Notification> findAllForUser(Long userId) {
-        return notificationRepository.findAllByUser_IdAndReadIsFalse(userId);
+    public Collection<Notification> findAllForUser(String userId) {
+        return notificationRepository.findAllByUser_Account_UsernameAndReadIsFalse(userId);
 
 //        User user = userService.findOne(userId);
 //        Collection<Notification> displayedNotifications = new ArrayList<>();
@@ -86,8 +86,8 @@ public class NotificationService implements INotificationService{
     public void delete(Long id) {}
 
     @Override
-    public GuestNotificationSettings updateGuestSettings(Long id, GuestNotificationSettings settings) {
-        GuestNotificationSettings notificationSettings = guestNotificationSettingsRepository.findByUser_Id(id);
+    public GuestNotificationSettings updateGuestSettings(String id, GuestNotificationSettings settings) {
+        GuestNotificationSettings notificationSettings = guestNotificationSettingsRepository.findByUser_Account_Username(id);
         if (notificationSettings == null) {
             return null;
         }
@@ -97,8 +97,8 @@ public class NotificationService implements INotificationService{
     }
 
     @Override
-    public HostNotificationSettings updateHostSettings(Long id, HostNotificationSettings settings) {
-        HostNotificationSettings notificationSettings = hostNotificationSettingsRepository.findByUser_Id(id);
+    public HostNotificationSettings updateHostSettings(String id, HostNotificationSettings settings) {
+        HostNotificationSettings notificationSettings = hostNotificationSettingsRepository.findByUser_Account_Username(id);
 
         if (notificationSettings == null) {
             return null;
@@ -131,7 +131,7 @@ public class NotificationService implements INotificationService{
     }
 
     @Override
-    public Notification findNewForUser(Long userId) throws ParseException {
+    public Notification findNewForUser(String userId) throws ParseException {
         Collection<Notification> notifications = findAllForUser(userId);
         List<Notification>notificationList=notifications.stream().toList();
         if(notificationList.isEmpty()){
@@ -144,10 +144,10 @@ public class NotificationService implements INotificationService{
         if (sdf.parse(notifTime).after(secondsCalculator(new Date(), -5))) {
             User user = this.userService.findOne(userId);
             if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
-                GuestNotificationSettings guestSettings=guestNotificationSettingsRepository.findByUser_Id(userId);
+                GuestNotificationSettings guestSettings=guestNotificationSettingsRepository.findByUser_Account_Username(userId);
                 enabled = guestSettings.isRequestResponded();
             } else if (user.getAccount().getRoles().get(0).getName().equals("ROLE_HOST")) {
-                HostNotificationSettings hostSettings=hostNotificationSettingsRepository.findByUser_Id(userId);
+                HostNotificationSettings hostSettings=hostNotificationSettingsRepository.findByUser_Account_Username(userId);
 
                 if (notification.getType() == NotificationType.RESERVATION_REQUEST){
                     enabled = hostSettings.isRequestCreated();
@@ -165,20 +165,4 @@ public class NotificationService implements INotificationService{
         }
         return null;
     }
-
-//    @Override
-//    public Collection<Notification> updateSettings(Long id, NotificationType type) {
-//        return null;
-//    }
-
-
-//    public Collection<Notification> data() {
-//        Collection<Notification> notificationList = new ArrayList<>();
-//
-//        notificationList.add(new Notification(1L, "New message received", LocalDate.now(), NotificationType.HOST_RATED,false));
-//        notificationList.add(new Notification(2L, "Reminder: Meeting at 10 AM", LocalDate.now(), NotificationType.RESERVATION_REQUEST,false));
-//        notificationList.add(new Notification(3L, "System update available", LocalDate.now(), NotificationType.ACCOMMODATION_RATED,false));
-//
-//        return notificationList;
-//    }
 }

@@ -27,7 +27,7 @@ export class ViewAccommodationsComponent implements  OnInit{
   finalPrice: number;
   country:string=""
   city:string=""
-  hostId: number;
+  hostId: string;
   minValueView=5000;
   maxValueView=20000;
   minValue=5000;

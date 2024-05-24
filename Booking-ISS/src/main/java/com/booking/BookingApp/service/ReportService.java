@@ -26,13 +26,13 @@ public class ReportService implements IReportService {
 
 
     @Override
-    public Collection<Report> findAllByTimeSlot(int hostId,TimeSlot timeslot) {
+    public Collection<Report> findAllByTimeSlot(String hostId,TimeSlot timeslot) {
         Collection<Report>reports=new ArrayList<>();
         Collection<Accommodation>hostAccommodations=accommodationService.findAll(null,null,
                 0,null,0,0,null,null,null,null,
                 hostId);
         for(Accommodation accommodation:hostAccommodations){
-            Collection<Request>reservations=requestService.findByHostId(Long.valueOf(hostId),RequestStatus.ACCEPTED,timeslot.getStartDate(),
+            Collection<Request>reservations=requestService.findByHostId(hostId,RequestStatus.ACCEPTED,timeslot.getStartDate(),
                     timeslot.getEndDate(),accommodation.getName());
             int sum=0;
             for(Request reservation:reservations){
@@ -97,5 +97,4 @@ public class ReportService implements IReportService {
         report.setProfitByMonth(profitByMonth);
         return report;
     }
-
 }

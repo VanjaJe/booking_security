@@ -58,13 +58,6 @@ export class CreateAccommodationComponent {
   });
 
   ngOnInit(): void {
-    const item = localStorage.getItem('user');
-    const jwt: JwtHelperService = new JwtHelperService();
-    console.log("JWTTTTTTTTTTTTTTTTTTTTTTTTT")
-    // @ts-ignore
-    console.log(jwt.decodeToken(item));
-    // @ts-ignore
-    console.log(jwt.decodeToken(item).sub)
 
     this.amenityService.getAll().subscribe({
       next: (data: Amenity[]) => {
@@ -74,10 +67,10 @@ export class CreateAccommodationComponent {
     });
 
     // @ts-ignore
-    this.userService.getUserByUsername(jwt.decodeToken(item).sub).subscribe({
+    this.userService.getUserByUsername(this.userService.getUserId()).subscribe({
       next: (data: User) => {
         this.host1 = data;
-        console.log(this.host1)
+        console.log("ne kapiram ",this.host1)
       },
       error: (_) => {console.log("Greska!")}
     })

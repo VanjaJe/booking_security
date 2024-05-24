@@ -19,15 +19,15 @@ public interface ICommentService {
 
     Comments findById(Long id);
 
-    Collection<Comments> findByHostId(Long id, Status status);
+    Collection<Comments> findByHostId(String id, Status status);
 
     Collection<Comments> findByAccommodationId(Long id, Status status);
 
-    double findHostRating(Long id);
+    double findHostRating(String id);
 
     double findAccommodationRating(Long id);
 
-    Comments createHostComment(Comments comment, Long id);
+    Comments createHostComment(Comments comment, String id);
 
     Comments createAccommodationComment(Comments comment, Long id);
 

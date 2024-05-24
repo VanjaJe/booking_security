@@ -43,12 +43,6 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
-//    @Autowired
-//    private TokenUtils tokenUtils;
-//
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-
     @Autowired
     private IUserService userService;
 
@@ -78,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable("id") String id) {
         User user = userService.findOne(id);
         if (user == null) {
             return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
@@ -87,7 +81,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/guest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AccommodationDTO>> getGuestFavorites(@PathVariable("id") Long id) {
+    @PreAuthorize("hasAuthority('READ_FAVORITES')")
+    public ResponseEntity<Collection<AccommodationDTO>> getGuestFavorites(@PathVariable("id") String id) {
         Collection<Accommodation> accommodations= userService.findFavorites(id);
         if (accommodations == null) {
             return new ResponseEntity<Collection<AccommodationDTO>>(HttpStatus.NOT_FOUND);
@@ -99,32 +94,6 @@ public class UserController {
 
     }
 
-//    @PostMapping(value ="/login", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<UserTokenState> createAuthenticationToken(
-//            @RequestBody UserCredentialsDTO userCredentials, HttpServletResponse response) {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//                userCredentials.getUsername(), userCredentials.getPassword()));
-//
-//
-//        // Ukoliko je autentifikacija uspesna, ubaci korisnika u trenutni security
-//        // kontekst
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        // Kreiraj token za tog korisnika
-//        User user = (User) authentication.getPrincipal();
-//
-//        if (!(user.getAccount().getStatus() == Status.ACTIVE)) {
-//            return new ResponseEntity<UserTokenState>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//        String jwt = tokenUtils.generateToken(user.getUsername(), user.getAccount().getRoles().get(0), user.getId());
-//        int expiresIn = tokenUtils.getExpiredIn();
-//
-//        // Vrati token kao odgovor na uspesnu autentifikaciju
-//        System.out.println(jwt);
-//        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getAccount().getRoles().get(0).getName(),user.getId()));
-//    };
-
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> addUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         User existUser = this.userService.findByUsername(user.getUsername());
@@ -134,9 +103,7 @@ public class UserController {
         }
 
         User savedUser;
-//        User newUser = this.userService.save(user);
         if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
-            System.out.println("GOST");
             savedUser = userService.saveGuest(user);
         }
         else { savedUser = userService.saveHost(user);}
@@ -147,26 +114,6 @@ public class UserController {
 
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
-
-//    @GetMapping(value ="/log-in", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<UserDTO> getReportByHostAndTimeSlot(
-//            @RequestParam("username") String username,
-//            @RequestParam("password") String password) {
-//        User user = userService.findLoggedUser(username,password);
-//        if (user == null) {
-//            return new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user), HttpStatus.OK);
-//    };
-
-//    @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Collection<UserDTO>> getUsersByStatus(@PathVariable("status") Status status) {
-//        Collection<User> users = userService.findAllByStatus(status);
-//        Collection<UserDTO> usersDTO = users.stream()
-//                .map(UserDTOMapper::fromUsertoDTO)
-//                .toList();
-//        return new ResponseEntity<Collection<UserDTO>>(usersDTO, HttpStatus.OK);
-//    }
 
     @GetMapping(value = "/userEmail/{userEmail}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getUserByAccountUsername(@PathVariable("userEmail") String userEmail) {
@@ -189,7 +136,6 @@ public class UserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws Exception {
         User newUser = UserDTOMapper.fromDTOtoUser(userDTO);
-//        User savedUser = userService.save(newUser);
         User savedUser;
         if (userDTO.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
             savedUser = userService.saveGuest(newUser);
@@ -200,18 +146,8 @@ public class UserController {
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(savedUser), HttpStatus.CREATED);
     }
 
-//    @PutMapping(value = "reportUser/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<UserDTO> reportUser(@RequestBody Status status, @PathVariable Long id)
-//            throws Exception {
-//        User updatedUser = userService.reportUser(status, id);
-//        if (updatedUser == null) {
-//            return new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(updatedUser), HttpStatus.OK);
-//    }
-
     @PutMapping(value = "reportUser/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> reportUser(@RequestBody UserDTO reportedUserDTO, @PathVariable("id") Long guestId)
+    public ResponseEntity<UserDTO> reportUser(@RequestBody UserDTO reportedUserDTO, @PathVariable("id") String guestId)
             throws Exception {
         User user = UserDTOMapper.fromDTOtoUser(reportedUserDTO);
         user.setReportingReason(reportedUserDTO.getReportingReason());
@@ -244,7 +180,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<UserDTO> deleteUser(@PathVariable("id") String id) {
         System.out.println("brisese");
         userService.delete(id);
         return new ResponseEntity<UserDTO>(HttpStatus.NO_CONTENT);
@@ -258,7 +194,7 @@ public class UserController {
 
     @PostMapping("/{userId}/upload-picture")
     public ResponseEntity<String> uploadImage(
-            @PathVariable("userId") Long userId,
+            @PathVariable("userId") String userId,
             @RequestParam("images") Collection<MultipartFile> imageFiles) throws IOException {
         System.out.println("kika");
 
@@ -269,9 +205,11 @@ public class UserController {
         return new ResponseEntity<>("Pictures uploaded successfully", HttpStatus.OK);
     }
 
+
     @PutMapping("/block/{userId}")
+    @PreAuthorize("hasAuthority('BLOCK_USER')")
     public ResponseEntity<UserDTO> blockUser(@RequestBody UserDTO userDTO,
-                                             @PathVariable("userId") Long userId) {
+                                             @PathVariable("userId") String userId) {
         System.out.println("dobrodosao na listu block");
         User user = userService.block(userId);
         if (user == null) {
@@ -280,16 +218,16 @@ public class UserController {
         return new ResponseEntity<UserDTO>(UserDTOMapper.fromUsertoDTO(user),HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('HOST') or hasRole('GUEST') or hasRole('ADMIN')")
     @GetMapping(value = "/{userId}/images", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<String>> getImages(@PathVariable("userId") Long userId) throws IOException {
+    public ResponseEntity<List<String>> getImages(@PathVariable("userId") String userId) throws IOException {
         List<String> images = userService.getImages(userId);
         return ResponseEntity.ok().body(images);
     }
 
     @PutMapping("/{guestId}/favoriteAccommodations/{accommodationId}")
+    @PreAuthorize("hasAuthority('UPDATE_FAVORITES')")
     public ResponseEntity<String> updateFavorites(
-            @PathVariable Long guestId, @PathVariable Long accommodationId) {
+            @PathVariable String guestId, @PathVariable Long accommodationId) {
         userService.updateFavoriteAccommodations(guestId, accommodationId);
         return new ResponseEntity<String>("Added favorite.",HttpStatus.OK);
     }

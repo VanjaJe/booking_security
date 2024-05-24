@@ -13,6 +13,6 @@ public interface HostCommentRepository extends JpaRepository<HostComments,Long> 
     Collection<HostComments> findAllByStatus(Status status);
 
     Collection<Comments> findByHost_Id(Long id);
-    Collection<Comments> findByHost_IdAndStatus(Long id, Status status);
+    Collection<Comments> findByHost_Account_UsernameAndStatus(String id, Status status);
 
 }

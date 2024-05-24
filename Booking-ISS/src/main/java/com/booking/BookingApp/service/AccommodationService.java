@@ -97,7 +97,6 @@ public class AccommodationService implements IAccommodationService {
     @Override
     public Accommodation changeFreeTimeSlotsAcceptingReservation(Long accommodationId, TimeSlotDTO reservationTimeSlot) {
         Accommodation accommodation = removeReservedTimeSlots(findOne(accommodationId),reservationTimeSlot);
-        System.out.println("posle brisanja       " + accommodation);
         accommodationRepository.save(accommodation);
         return accommodation;
     }
@@ -105,7 +104,6 @@ public class AccommodationService implements IAccommodationService {
     @Override
     public Accommodation changeFreeTimeSlotsCancelingReservation(Long accommodationId, TimeSlotDTO reservationTimeSlot) {
         Accommodation accommodation = addReservedTimeSlots(findOne(accommodationId),reservationTimeSlot);
-        System.out.println("posle dodavanja       " + accommodation);
         accommodationRepository.save(accommodation);
         return accommodation;
     }
@@ -179,7 +177,7 @@ public class AccommodationService implements IAccommodationService {
 
 
     @Override
-    public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities, Integer hostId) {
+    public Collection<Accommodation> findAll(LocalDate begin, LocalDate end, int guestNumber, AccommodationType accommodationType, double startPrice, double endPrice, AccommodationStatus status, String country, String city, List<String> amenities, String hostId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Collection<Accommodation> accommodations=new ArrayList<>();
         if(status!=null){
@@ -203,8 +201,6 @@ public class AccommodationService implements IAccommodationService {
                         hostId
                 );
         }else{
-            System.out.println(hostId);
-            System.out.println("HOSTID");
                 accommodations= accommodationRepository.findAccommodationsByCountryTypeGuestNumberAndAmenities(
                         country,
                         city,
@@ -267,11 +263,6 @@ public class AccommodationService implements IAccommodationService {
         System.out.println(existingAccommodation);
 
         return accommodationRepository.save(existingAccommodation);
-//        accommodationForUpdate.setStatus(AccommodationStatus.UPDATED);
-//        accommodationForUpdate.setFreeTimeSlots(accommodation.getFreeTimeSlots());
-//        accommodationForUpdate.setPriceList(accommodation.getPriceList());
-//        return accommodationRepository.save(accommodationForUpdate);
-
     }
 
     public Accommodation removeReservedTimeSlots(Accommodation accommodation, TimeSlotDTO reservationTimeSlot) {
@@ -289,17 +280,14 @@ public class AccommodationService implements IAccommodationService {
                     && (reservationEndDate.isBefore(freeEndDate)||reservationEndDate.equals(freeEndDate))){
                 if(!freeStartDate.plusDays(1).equals(reservationStartDate)){
                     TimeSlot timeSlot = new TimeSlot(freeStartDate,reservationStartDate.minusDays(1),false);
-                    System.out.println("TIMESLOT1:            " + timeSlot);
                     timeSlotRepository.save(timeSlot);
                     newFreeTimeSlots.add(timeSlot);
                 }
                 if(!reservationEndDate.plusDays(1).equals(freeEndDate)){
                     TimeSlot timeSlot1 = new TimeSlot(reservationEndDate.plusDays(1),freeEndDate,false);
-                    System.out.println("TIMESLOT2:            " + timeSlot1);
                     timeSlotRepository.save(timeSlot1);
                     newFreeTimeSlots.add(timeSlot1);
                 }
-
             }
             else{
                 newFreeTimeSlots.add(freeTimeSlot);
@@ -325,14 +313,8 @@ public class AccommodationService implements IAccommodationService {
 
         Collection<TimeSlot> timeSlots = accommodationForUpdate.getFreeTimeSlots();
 
-//        Collection<TimeSlot> updatedTimeSlots = availabilityService.updateFreeTimeSlots(newTimeSlot, timeSlots); //5
-//        Collection<TimeSlot> updatedTimeSlots = availabilityService.updateFreeTimeSlots(newTimeSlot, timeSlots); //5
         availabilityService.updateFreeTimeSlots(newTimeSlot, timeSlots); //5
 
-//        accommodationForUpdate.setFreeTimeSlots(updatedTimeSlots);
-
-        System.out.println("Vanja");
-        System.out.println(accommodationForUpdate);
         accommodationRepository.save(accommodationForUpdate);
         return accommodationForUpdate;
     }

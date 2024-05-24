@@ -79,28 +79,30 @@ export class UserService {
       const decodedToken=helper.decodeToken(accessToken);
       const realmAccess = decodedToken.realm_access;
       console.log("roli ",realmAccess)
-      if (realmAccess && realmAccess.roles && realmAccess.roles.includes('GUEST')) {
-        return "ROLE_GUEST"
-      } else if(realmAccess && realmAccess.roles && realmAccess.roles.includes('HOST')){
+      if (realmAccess && realmAccess.roles && realmAccess.roles.includes('HOST')) {
         return "ROLE_HOST"
+      } else if(realmAccess && realmAccess.roles && realmAccess.roles.includes('GUEST')){
+        return "ROLE_GUEST"
       }
       // return helper.decodeToken(accessToken).role;
     }
     return null;
   }
-  getRoleName(): any {
-    if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('user');
-      const helper = new JwtHelperService();
-      return helper.decodeToken(accessToken).role.name;
-    }
-    return null;
-  }
+  // getRoleName(): any {
+  //   if (this.isLoggedIn()) {
+  //     const accessToken: any = localStorage.getItem('user');
+  //     const helper = new JwtHelperService();
+  //     return helper.decodeToken(accessToken).role.name;
+  //   }
+  //   return null;
+  // }
   getUserId(): any {
-    if (this.isLoggedIn()) {
-      const accessToken: any = localStorage.getItem('user');
+    if (this.keycloak.keycloak?.authenticated) {
+      // const accessToken: any = localStorage.getItem('user');
+      const accessToken: any = this.keycloak.keycloak.token;
+
       const helper = new JwtHelperService();
-      return helper.decodeToken(accessToken).id;
+      return helper.decodeToken(accessToken).email;
     }
     return null;
   }

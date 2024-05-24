@@ -45,10 +45,10 @@ public class NotificationSettingsService implements INotificationSettingsService
     }
 
     public HostNotificationSettings getHostSettings(User user) {
-        return hostNotificationSettingsRepository.findByUser_Id(user.getId());
+        return hostNotificationSettingsRepository.findByUser_Account_Username(user.getAccount().getUsername());
     }
 
     public GuestNotificationSettings getGuestSettings(User user) {
-        return guestNotificationSettingsRepository.findByUser_Id(user.getId());
+        return guestNotificationSettingsRepository.findByUser_Account_Username(user.getAccount().getUsername());
     }
 }

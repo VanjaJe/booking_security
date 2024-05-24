@@ -30,7 +30,7 @@ public class RequestController {
     private RequestService requestService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('READ_HOST_REQUEST') or hasAuthority('READ_GUEST_REQUEST')")
     public ResponseEntity<Collection<RequestDTO>> getRequests(@RequestParam(value = "status", required = false) RequestStatus status,
                                                               @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
                                                               @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
@@ -43,9 +43,10 @@ public class RequestController {
 
         return new ResponseEntity<Collection<RequestDTO>>(requestsDTO, HttpStatus.OK);
     }
+
     @GetMapping(value = "/host/{hostId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('HOST')")
-    public ResponseEntity<Collection<RequestDTO>> getByHostId(@PathVariable("hostId") Long id,
+    @PreAuthorize("hasAuthority('READ_HOST_REQUEST')")
+    public ResponseEntity<Collection<RequestDTO>> getByHostId(@PathVariable("hostId") String id,
                                                               @RequestParam(value = "status", required = false) RequestStatus status,
                                                               @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
                                                               @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
@@ -60,8 +61,8 @@ public class RequestController {
     }
 
     @GetMapping(value = "/guest/{guestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('GUEST')")
-    public ResponseEntity<Collection<RequestDTO>> getByGuestId(@PathVariable("guestId") Long id,
+    @PreAuthorize("hasAuthority('READ_GUEST_REQUEST')")
+    public ResponseEntity<Collection<RequestDTO>> getByGuestId(@PathVariable("guestId") String id,
                                                                @RequestParam(value = "status", required = false) RequestStatus status,
                                                                @RequestParam(value = "begin", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate begin,
                                                                @RequestParam(value = "end", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate end,
@@ -76,14 +77,14 @@ public class RequestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('READ_GUEST_REQUEST') or hasAuthority('READ_HOST_REQUEST')")
     public ResponseEntity<RequestDTO> getById(@PathVariable("id") Long id) {
         Request request = requestService.findById(id);
         return new ResponseEntity<RequestDTO>(new RequestDTO(request), HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('GUEST')")
+    @PreAuthorize("hasAuthority('WRITE_REQUEST')")
     public ResponseEntity<RequestDTO> createRequest(@RequestBody @Valid RequestDTO requestDTO) throws Exception {
         Request requestModel = RequestDTOMapper.fromDTOtoRequest(requestDTO);
         Request savedRequest = requestService.create(requestModel);
@@ -93,20 +94,20 @@ public class RequestController {
         }
         return new ResponseEntity<RequestDTO>(RequestDTOMapper.fromRequesttoDTO(savedRequest), HttpStatus.CREATED);
     }
-
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
-    public ResponseEntity<RequestDTO> updateRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
-        Request requestForUpdate = requestService.findById(id);
-        Request request = RequestDTOMapper.fromDTOtoRequest(requestDTO);
-        Request updatedRequest = requestService.update(requestForUpdate, request);
-        return new ResponseEntity<RequestDTO>(new RequestDTO(updatedRequest), HttpStatus.OK);
-    }
+//
+//    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+//    public ResponseEntity<RequestDTO> updateRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
+//        Request requestForUpdate = requestService.findById(id);
+//        Request request = RequestDTOMapper.fromDTOtoRequest(requestDTO);
+//        Request updatedRequest = requestService.update(requestForUpdate, request);
+//        return new ResponseEntity<RequestDTO>(new RequestDTO(updatedRequest), HttpStatus.OK);
+//    }
 
 
 
     @PutMapping(value = "/accept/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('MANAGE_HOST_REQUESTS')")
     public ResponseEntity<RequestDTO> acceptRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
         Request request = requestService.accept(RequestDTOMapper.fromDTOtoRequest(requestDTO));
         if(request == null){
@@ -116,7 +117,7 @@ public class RequestController {
     }
 
     @PutMapping(value = "/deny/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('MANAGE_HOST_REQUESTS')")
     public ResponseEntity<RequestDTO> denyRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
         Request request = requestService.deny(RequestDTOMapper.fromDTOtoRequest(requestDTO));
         if(request == null){
@@ -126,7 +127,7 @@ public class RequestController {
     }
 
     @PutMapping(value = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('MANAGE_GUEST_REQUESTS')")
     public ResponseEntity<RequestDTO> cancelRequest(@RequestBody RequestDTO requestDTO, @PathVariable("id") Long id) {
         Request request = requestService.cancel(RequestDTOMapper.fromDTOtoRequest(requestDTO));
         if(request == null){
@@ -136,14 +137,14 @@ public class RequestController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('MANAGE_GUEST_REQUESTS')")
     public ResponseEntity<RequestDTO> deleteRequest(@PathVariable("id") Long id) {
         requestService.delete(id);
         return new ResponseEntity<RequestDTO>(HttpStatus.NO_CONTENT);
     }
     @GetMapping(value = "/{guestId}/cancelledReservations", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST')")
-    public ResponseEntity<Integer> getGuestCancellations(@PathVariable("guestId") Long id) {
+    @PreAuthorize("hasAuthority('MANAGE_HOST_REQUESTS')")
+    public ResponseEntity<Integer> getGuestCancellations(@PathVariable("guestId") String id) {
         int number = requestService.findCancellations(id);
         return new ResponseEntity<Integer>(number,HttpStatus.OK);
     }

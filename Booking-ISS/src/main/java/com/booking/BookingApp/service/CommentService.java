@@ -56,11 +56,8 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Collection<Comments> findByHostId(Long id, Status status) {
-        System.out.println("DOOOOSAAAAAOAOOAOAOAOAOOAOAOAOAO");
-        System.out.println(id);
-        System.out.println(hostCommentRepository.findByHost_IdAndStatus(id, status));
-        return hostCommentRepository.findByHost_IdAndStatus(id, Status.ACTIVE);
+    public Collection<Comments> findByHostId(String id, Status status) {
+        return hostCommentRepository.findByHost_Account_UsernameAndStatus(id, Status.ACTIVE);
     }
 
     @Override
@@ -85,7 +82,7 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public double findHostRating(Long id) {
+    public double findHostRating(String id) {
         Collection<Comments> commentsAndRatings = findByHostId(id,Status.ACTIVE);
 
         double sum=0;
@@ -99,7 +96,7 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Comments createHostComment(Comments comment, Long id) {
+    public Comments createHostComment(Comments comment, String id) {
         Collection<Request> hostRequests = requestService.findByHost(id);
 
         boolean check=false;
@@ -204,32 +201,5 @@ public class CommentService implements ICommentService {
         commentForUpdate.setStatus(Status.REPORTED);
         commentsRepository.save(commentForUpdate);
         return commentForUpdate;
-    }
-
-    public Collection<Comments> data() {
-        Collection<Comments> commentsList = new ArrayList<>();
-        Address address = new Address("Srbija","Novi Sad","21000","Futoska 1",false);
-        Role role=new Role(1L,"guest");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        Account account = new Account(1L, "aleksicisidora@yahoo.com","slatkica",Status.ACTIVE, roles, false);
-        Guest guest = new Guest(1L,"Isidora","Aleksic",address,"0692104221",account,false, null);
-        // Adding instances to the collection
-        commentsList.add(new Comments(1L, "Great comment!", LocalDate.now(), 4.5, Status.ACTIVE, guest, false));
-        commentsList.add(new Comments(2L, "Agree with you.", LocalDate.now(), 3.0, Status.REPORTED, guest,false));
-        commentsList.add(new Comments(3L, "Disagree with this.", LocalDate.now(), 2.5, Status.ACTIVE,guest, false));
-        commentsList.add(new Comments(4L, "Fantastic!", LocalDate.now(), 4.5, Status.ACTIVE, guest,false));
-        commentsList.add(new Comments(5L, "Nothing special.", LocalDate.now(), 3.0, Status.REPORTED, guest, false));
-        commentsList.add(new Comments(6L, "I don't like it.", LocalDate.now(), 2.5, Status.ACTIVE,guest, false));
-        commentsList.add(new Comments(7L, "It was good!", LocalDate.now(), 4.5, Status.ACTIVE, guest,false));
-        commentsList.add(new Comments(8L, "It's okay for that price.", LocalDate.now(), 3.0, Status.REPORTED, guest,false));
-        commentsList.add(new Comments(9L, "It was dirty.", LocalDate.now(), 2.5, Status.ACTIVE,guest,false));
-        commentsList.add(new Comments(10L, "The host is extra.", LocalDate.now(), 4.5, Status.ACTIVE, guest,false));
-        commentsList.add(new Comments(11L, "Not good not bad.", LocalDate.now(), 3.0, Status.REPORTED, guest,false));
-        commentsList.add(new Comments(12L, "Bad.", LocalDate.now(), 2.5, Status.ACTIVE,guest,false));
-        commentsList.add(new Comments(13L, "Super!", LocalDate.now(), 4.5, Status.ACTIVE, guest,false));
-        commentsList.add(new Comments(14L, "Fun but I expected more.", LocalDate.now(), 3.0, Status.REPORTED, guest,false));
-        commentsList.add(new Comments(15L, "I'm not returning there.", LocalDate.now(), 2.5, Status.ACTIVE,guest,false));
-        return commentsList;
     }
 }

@@ -17,7 +17,7 @@ public interface IUserService {
 
     User findByUsername(String username);
 
-    User findOne(Long id);
+    User findOne(String id);
 
     Collection<User> findByStatus(Status userStatus);
 
@@ -25,13 +25,13 @@ public interface IUserService {
 
     User update(User user) throws Exception;
 
-    void delete(Long id);
+    void delete(String id);
 
     void deleteHost(User user);
 
     void deleteGuest(User user);
 
-    Collection<Accommodation> findFavorites(Long id);
+    Collection<Accommodation> findFavorites(String id);
 
 //    User save(User user);
     User saveGuest(User user);
@@ -40,19 +40,19 @@ public interface IUserService {
 
     User updateActivationLink(String activationLink, String username);
 
-    void uploadImage(Long userId, MultipartFile image) throws IOException;
+    void uploadImage(String userId, MultipartFile image) throws IOException;
 
-    List<String> getImages(Long userId) throws IOException;
+    List<String> getImages(String userId) throws IOException;
 
     Collection<User> findAllByStatus(Status status);
 
-    User reportUser(User status, Long id);
+    User reportUser(User status, String id);
 
-    User reportHost(User status, Long id);
+    User reportHost(User status, String id);
 
-    User reportGuest(User status, Long id);
+    User reportGuest(User status, String id);
 
-    void updateFavoriteAccommodations(Long guestId, Long accommodationId);
+    void updateFavoriteAccommodations(String guestId, Long accommodationId);
 
-    User block(Long userId);
+    User block(String userId);
 }

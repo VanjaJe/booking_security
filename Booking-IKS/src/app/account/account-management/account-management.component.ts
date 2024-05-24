@@ -59,17 +59,17 @@ export class AccountManagementComponent implements OnInit {
     this.service.getUser(this.service.getUserId()).subscribe({
       next: (data: User) => {
         this.user = data;
-        this.service.getImages(this.user?.id).subscribe(
-          (images) => {
-            this.images = images;
-            if(this.images.length>0){
-              this.image=this.decodeBase64AndSanitize(this.images[0])
-            }
-          },
-          (error) => {
-            console.error('Error fetching images:', error);
-          }
-        );
+        // this.service.getImages(this.user?.id).subscribe(
+        //   (images) => {
+        //     this.images = images;
+        //     if(this.images.length>0){
+        //       this.image=this.decodeBase64AndSanitize(this.images[0])
+        //     }
+        //   },
+        //   (error) => {
+        //     console.error('Error fetching images:', error);
+        //   }
+        // );
         this.updateUserForm.patchValue({
           firstName: this.user.firstName,
           lastName: this.user.lastName,

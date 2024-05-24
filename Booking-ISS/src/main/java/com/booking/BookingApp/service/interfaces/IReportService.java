@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public interface IReportService {
 
-    Collection<Report> findAllByTimeSlot(int hostId,TimeSlot timeslot);
+    Collection<Report> findAllByTimeSlot(String hostId,TimeSlot timeslot);
     Report findAnnualByAccommodation(String accommodationName,  int year);
 
 }

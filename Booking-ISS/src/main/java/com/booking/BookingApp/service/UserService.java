@@ -66,8 +66,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User findOne(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public User findOne(String id) {
+        return userRepository.findByAccount_Username(id);
     }
 
     @Override
@@ -87,12 +87,6 @@ public class UserService implements IUserService {
         if (!user.getActivationLink().equals(activationLink)) {
             return false;
         }
-//        LocalDate now = LocalDate.now();
-//
-//        if (user.getActivationLinkDate().plusDays(1).isAfter(now)) {
-//            return false;
-//        }
-
 
         if(user != null) {
             user.getAccount().setStatus(Status.ACTIVE);
@@ -125,8 +119,8 @@ public class UserService implements IUserService {
 
 
     @Override
-    public void delete(Long id) {
-        User user = userRepository.findById(id).orElse(null);
+    public void delete(String id) {
+        User user = userRepository.findByAccount_Username(id);
         if (user.getAccount().getRoles().get(0).getName().equals("ROLE_GUEST")) {
             deleteGuest(user);
         } else if (user.getAccount().getRoles().get(0).getName().equals("ROLE_HOST")) {
@@ -167,13 +161,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Collection<Accommodation> findFavorites(Long id) {
-        Guest guest= guestRepository.findGuestById(id);
+    public Collection<Accommodation> findFavorites(String id) {
+        Guest guest=guestRepository.findGuestByAccount_Username(id);
         return guest.getFavoriteAccommodations();
     }
+
     @Override
-    public void updateFavoriteAccommodations(Long guestId, Long accommodationId) {
-        Guest guest= guestRepository.findGuestById(guestId);
+    public void updateFavoriteAccommodations(String guestId, Long accommodationId) {
+        Guest guest= guestRepository.findGuestByAccount_Username(guestId);
         Accommodation favoriteAccommodation=accommodationService.findOne(accommodationId);
         if(guest.getFavoriteAccommodations().contains(favoriteAccommodation)){
             guest.getFavoriteAccommodations().remove(favoriteAccommodation);
@@ -189,7 +184,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User block(Long userId) {
+    public User block(String userId) {
         User user = findOne(userId);
         if(user == null){
             return null;
@@ -261,7 +256,7 @@ public class UserService implements IUserService {
 //        return u;
 //    }
 
-    public void uploadImage(Long id, MultipartFile image) throws IOException {
+    public void uploadImage(String id, MultipartFile image) throws IOException {
         User user = findOne(id);
 
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
@@ -275,8 +270,7 @@ public class UserService implements IUserService {
         userRepository.save(user);
     }
 
-    public List<String> getImages(Long id) throws IOException {
-        System.out.println("GET SLIKE ID:    " + id);
+    public List<String> getImages(String id) throws IOException {
         User user = findOne(id);
         List<String> base64Images = new ArrayList<>();
 
@@ -301,7 +295,6 @@ public class UserService implements IUserService {
 
     @Override
     public Collection<User> findAllByStatus(Status status) {
-        System.out.println("uslo u status");
         return userRepository.findAllByAccountStatus(status);
     }
 
@@ -310,8 +303,6 @@ public class UserService implements IUserService {
         Guest u = new Guest();
         u.setUsername(userRequest.getUsername());
 
-        // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
-        // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
 
         u.setFirstName(userRequest.getFirstName());
         u.setLastName(userRequest.getLastName());
@@ -321,7 +312,6 @@ public class UserService implements IUserService {
 //        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
 
-        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
         u.getAccount().setRoles(roles);
         this.userRepository.save(u);
@@ -334,9 +324,6 @@ public class UserService implements IUserService {
         Host u = new Host();
         u.setUsername(userRequest.getUsername());
 
-        // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
-        // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
-
         u.setFirstName(userRequest.getFirstName());
         u.setLastName(userRequest.getLastName());
         u.setPhoneNumber(userRequest.getPhoneNumber());
@@ -344,7 +331,6 @@ public class UserService implements IUserService {
         u.setAccount(userRequest.getAccount());
 //        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
-        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         List<Role> roles = roleService.findByName(userRequest.getAccount().getRoles().get(0).getName());
         u.getAccount().setRoles(roles);
 
@@ -355,7 +341,6 @@ public class UserService implements IUserService {
 
     @Override
     public User updateActivationLink(String activationLink, String username) {
-        System.out.println("IDDDDDDDDDDDD" + username);
         User user1 = userRepository.findByAccount_Username(username);
         System.out.println(user1);
 
@@ -368,32 +353,27 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User reportUser(User user, Long guestId) {
+    public User reportUser(User user, String guestId) {
 //        User guest = findOne(guestId);
-        User host = findOne(user.getId());
+        User host = findOne(user.getAccount().getUsername());
 
-        Collection<Request> requests = requestRepository.findAllByStatusAndGuest_Id(RequestStatus.ACCEPTED, guestId);
-
-        for (Request r : requests) {
-            System.out.println("REQUEST "+r.getStatus());
-        }
+        Collection<Request> requests = requestRepository.findAllByStatusAndGuest_AccountUsername(RequestStatus.ACCEPTED, guestId);
 
         if (requests.isEmpty()) {
             return null;
         }
 
         host.getAccount().setStatus(Status.REPORTED);
-        System.out.println("SERVICE "+host);
         return userRepository.save(host);
     }
 
     @Override
-    public User reportGuest(User user, Long hostId) {
-        User guest = findOne(user.getId());
+    public User reportGuest(User user, String hostId) {
+        User guest = findOne(user.getAccount().getUsername());
         guest.setReportingReason(user.getReportingReason());
 
         Collection<Request> requests =
-                requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED,hostId ,guest.getId());
+                requestRepository.findAllByStatusAndAccommodation_Host_AccountUsernameAndGuest_AccountUsername(RequestStatus.ACCEPTED,hostId ,guest.getAccount().getUsername());
 
         if (requests.isEmpty()) {
             return null;
@@ -404,22 +384,18 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User reportHost(User user, Long guestId) {
-        User host = findOne(user.getId());
+    public User reportHost(User user, String guestId) {
+        User host = findOne(user.getAccount().getUsername());
         host.setReportingReason(user.getReportingReason());
 
         Collection<Request> requests =
-                requestRepository.findAllByStatusAndAccommodation_Host_IdAndGuest_Id(RequestStatus.ACCEPTED, host.getId() ,guestId);
+                requestRepository.findAllByStatusAndAccommodation_Host_AccountUsernameAndGuest_AccountUsername(RequestStatus.ACCEPTED, host.getAccount().getUsername() ,guestId);
 
         if (requests.isEmpty()) {
-            System.out.println("NEMA REZZZ");
             return null;
         }
 
         host.getAccount().setStatus(Status.REPORTED);
         return userRepository.save(host);
     }
-
-
 }
-

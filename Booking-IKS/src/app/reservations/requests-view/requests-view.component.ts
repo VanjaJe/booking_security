@@ -142,7 +142,8 @@ export class RequestsViewComponent implements OnInit {
       (data) => {
         this.guest = data;
 
-        this.userService.reportGuest(this.host.id, this.guest).subscribe(
+        // @ts-ignore
+        this.userService.reportGuest(this.host.account?.username, this.guest).subscribe(
           (data) => {
             this.snackBar.open("Guest is reported!", 'Close', {
               duration: 3000,
@@ -188,7 +189,7 @@ export class RequestsViewComponent implements OnInit {
 
   denyRequest(request: ReservationRequest) {
     // @ts-ignore
-    this.getSettings(request.guest?.id);
+    this.getSettings(request.guest?.account?.username);
     if (request.status == RequestStatus.PENDING) {
       this.requestService.deny(request).subscribe(
         {
@@ -199,7 +200,7 @@ export class RequestsViewComponent implements OnInit {
             if (this.checkNotificationStatus(NotificationType.RESERVATION_RESPONSE)) {
               this.createNotification(request.guest as Guest, text, NotificationType.RESERVATION_RESPONSE);
               // @ts-ignore
-              this.socketService.sendMessageUsingSocket(text,request.accommodation?.host.id, request.guest.id);
+              this.socketService.sendMessageUsingSocket(text,request.accommodation?.host.account?.username, request.guest?.account?.username);
             }
 
             this.snackBar.open("Request denied!", 'Close', {
@@ -218,7 +219,7 @@ export class RequestsViewComponent implements OnInit {
 
   acceptRequest(request: ReservationRequest) {
     // @ts-ignore
-    this.getSettings(request.guest?.id);
+    this.getSettings(request.guest?.account?.username);
     if (request.status == RequestStatus.PENDING) {
       this.requestService.accept(request).subscribe(
         {
@@ -228,7 +229,7 @@ export class RequestsViewComponent implements OnInit {
             if (this.checkNotificationStatus(NotificationType.RESERVATION_RESPONSE)) {
               this.createNotification(request.guest as Guest, text, NotificationType.RESERVATION_RESPONSE);
               // @ts-ignore
-              this.socketService.sendMessageUsingSocket(text,request.accommodation?.host.id, request.guest.id);
+              this.socketService.sendMessageUsingSocket(text,request.accommodation?.host.account?.username, request.guest?.account?.username);
             }
             this.snackBar.open("Request accepted!", 'Close', {
               duration: 3000,
@@ -247,7 +248,7 @@ export class RequestsViewComponent implements OnInit {
   private getCancellationsForGuest() {
     for (const request of this.requests) {
       // @ts-ignore
-      this.requestService.getCancellations(request.guest.id).subscribe({
+      this.requestService.getCancellations(request.guest?.account?.username).subscribe({
         next: (data: number) => {
           // @ts-ignore
           request.guest.cancellations = data;

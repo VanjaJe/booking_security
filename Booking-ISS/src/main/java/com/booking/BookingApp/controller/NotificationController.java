@@ -35,8 +35,8 @@ public class NotificationController {
 
 
     @GetMapping(value = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
-    public ResponseEntity<Collection<NotificationDTO>> getUserNotifications(@PathVariable("userId") Long id) {
+    @PreAuthorize("hasAuthority('READ_NOTIFICATIONS')")
+    public ResponseEntity<Collection<NotificationDTO>> getUserNotifications(@PathVariable("userId") String id) {
         Collection<Notification> notifications=notificationService.findAllForUser(id);
         Collection<NotificationDTO> notificationDTOS = notifications.stream()
                 .map(NotificationDTOMapper::fromNotificationtoDTO)
@@ -44,8 +44,8 @@ public class NotificationController {
         return new ResponseEntity<>(notificationDTOS, HttpStatus.OK);
     }
     @GetMapping(value = "/new/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
-    public ResponseEntity<NotificationDTO> getUserNewNotifications(@PathVariable("userId") Long id) throws ParseException {
+    @PreAuthorize("hasAuthority('READ_NOTIFICATIONS')")
+    public ResponseEntity<NotificationDTO> getUserNewNotifications(@PathVariable("userId") String id) throws ParseException {
         Notification notification=notificationService.findNewForUser(id);
         if(notification==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -55,16 +55,16 @@ public class NotificationController {
 
 
     @GetMapping(value = "guest/settings/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
-    public ResponseEntity<NotificationSettings> getGuestNotificationsSettings(@PathVariable("userId") Long id) {
+    @PreAuthorize("hasAuthority('READ_GUEST_SETTINGS') or hasAuthority('READ_HOST_SETTINGS')")
+    public ResponseEntity<NotificationSettings> getGuestNotificationsSettings(@PathVariable("userId") String id) {
         User user = userService.findOne(id);
         GuestNotificationSettings notificationsSetings = notificationSettingsService.getGuestSettings(user);
         return new ResponseEntity<>(notificationsSetings, HttpStatus.OK);
     }
 
     @GetMapping(value = "host/settings/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
-    public ResponseEntity<NotificationSettings> getHostNotificationsSettings(@PathVariable("userId") Long id) {
+    @PreAuthorize("hasAuthority('READ_GUEST_SETTINGS') or hasAuthority('READ_HOST_SETTINGS')")
+    public ResponseEntity<NotificationSettings> getHostNotificationsSettings(@PathVariable("userId") String id) {
         User user = userService.findOne(id);
         HostNotificationSettings notificationsSetings = notificationSettingsService.getHostSettings(user);
         return new ResponseEntity<>(notificationsSetings, HttpStatus.OK);
@@ -84,7 +84,7 @@ public class NotificationController {
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
+    @PreAuthorize("hasAuthority('WRITE_NOTIFICATION')")
     public ResponseEntity<NotificationDTO> createUserNotification(@RequestBody NotificationDTO notification) throws Exception {
         Notification savedNotification = notificationService.createUserNotification(NotificationDTOMapper.fromDTOtoNotification(notification));
         return new ResponseEntity<NotificationDTO>(NotificationDTOMapper.fromNotificationtoDTO(savedNotification), HttpStatus.CREATED);
@@ -112,8 +112,8 @@ public class NotificationController {
 //    }
 
     @PutMapping(value = "/{userId}/guestSettings", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST')")
-    public ResponseEntity<GuestNotificationSettings> updateGuestSettings(@PathVariable("userId") Long id, @RequestBody GuestNotificationSettings settings) throws Exception {
+    @PreAuthorize("hasAuthority('UPDATE_GUEST_SETTINGS')")
+    public ResponseEntity<GuestNotificationSettings> updateGuestSettings(@PathVariable("userId") String id, @RequestBody GuestNotificationSettings settings) throws Exception {
 
         GuestNotificationSettings result = notificationService.updateGuestSettings(id, settings);
 
@@ -126,8 +126,8 @@ public class NotificationController {
 
 
     @PutMapping(value = "/{userId}/hostSettings", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_HOST')")
-    public ResponseEntity<HostNotificationSettings> updateHostSettings(@PathVariable("userId") Long id, @RequestBody HostNotificationSettings settings) throws Exception {
+    @PreAuthorize("hasAuthority('UPDATE_HOST_SETTINGS')")
+    public ResponseEntity<HostNotificationSettings> updateHostSettings(@PathVariable("userId") String id, @RequestBody HostNotificationSettings settings) throws Exception {
 
         HostNotificationSettings result = notificationService.updateHostSettings(id, settings);
 
@@ -144,10 +144,8 @@ public class NotificationController {
         return new ResponseEntity<NotificationDTO>(HttpStatus.NO_CONTENT);
     }
 
-
-
     @PutMapping(value = "/{notificationId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_HOST') ")
+    @PreAuthorize("hasAuthority('UPDATE_NOTIFICATIONS') ")
     public ResponseEntity<Notification> updateNotification(@PathVariable("notificationId") Long id, @RequestBody Notification notification) throws Exception {
 
         Notification result = notificationService.updateNotification(id, notification);

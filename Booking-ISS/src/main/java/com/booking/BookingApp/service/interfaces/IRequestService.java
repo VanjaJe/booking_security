@@ -17,11 +17,11 @@ public interface IRequestService {
 
     Request findById(Long id);
 
-    Collection<Request> findByHostId(Long id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName);
+    Collection<Request> findByHostId(String id,RequestStatus status, LocalDate begin, LocalDate end, String accommodationName);
 
-    Collection<Request> findByHost(Long id);
+    Collection<Request> findByHost(String id);
 
-    Collection<Request> findByGuestId(Long id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName);
+    Collection<Request> findByGuestId(String id, RequestStatus status, LocalDate begin, LocalDate end, String accommodationName);
 
     public Collection<Request> findReservationsByYear(String accommodationName,int year);
 
@@ -36,7 +36,7 @@ public interface IRequestService {
     Request update(Request requestForUpdate, Request request);
 
     void delete(Long id);
-    int findCancellations(Long id);
+    int findCancellations(String id);
 
     Request accept(Request request);
 

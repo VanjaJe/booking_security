@@ -10,7 +10,7 @@
     <p id="rating">Average rating:</p>
     <p>{{ rating }}</p>
     <h2>{{accommodation.name}}
-      <button  id="favoriteButton" mat-icon-button  [ngClass]="{ 'warn-color': buttonColor === 'warn', 'primary-color': buttonColor === 'primary' }"  (click)="addFavorite(accommodation)" aria-label="Example icon button with a heart icon">
+      <button  *ngIf="role=='ROLE_GUEST'" id="favoriteButton" mat-icon-button  [ngClass]="{ 'warn-color': buttonColor === 'warn', 'primary-color': buttonColor === 'primary' }"  (click)="addFavorite(accommodation)" aria-label="Example icon button with a heart icon">
         <mat-icon>favorite</mat-icon>
       </button>
     </h2>

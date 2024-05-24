@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface GuestRepository extends JpaRepository<Guest, Long> {
     Guest findGuestById(Long id);
+    Guest findGuestByAccount_Username(String username);
 }
