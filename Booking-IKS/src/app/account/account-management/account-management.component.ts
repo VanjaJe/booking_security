@@ -17,12 +17,12 @@ export class AccountManagementComponent implements OnInit {
   images: string[] =[];
   image:string = '../../../assets/images/addpicture.png';
 
-  passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
-
-    return password === confirmPassword ? null : { 'passwordMismatch': true };
-  };
+  // passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  //   const password = control.get('password')?.value;
+  //   const confirmPassword = control.get('confirmPassword')?.value;
+  //
+  //   return password === confirmPassword ? null : { 'passwordMismatch': true };
+  // };
 
   updateUserForm = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -32,8 +32,8 @@ export class AccountManagementComponent implements OnInit {
     address: new FormControl('', Validators.required),
     phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
     username: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.matchValues('password')]),
+    // password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    // confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.matchValues('password')]),
     picturePath: new FormControl('')
   });
 
@@ -78,8 +78,8 @@ export class AccountManagementComponent implements OnInit {
           address: this.user.address?.address,
           phoneNumber: this.user.phoneNumber,
           username: this.user.account?.username,
-          password: this.user.account?.password,
-          confirmPassword: this.user.account?.password,
+          // password: this.user.account?.password,
+          // confirmPassword: this.user.account?.password,
           picturePath: this.user.picturePath
         });
       },
@@ -133,7 +133,7 @@ export class AccountManagementComponent implements OnInit {
       const account: Account = {
         id: this.user?.account?.id,
         username: this.updateUserForm.value.username as string || '',
-        password: this.updateUserForm.value.password as string || '',
+        // password: this.updateUserForm.value.password as string || '',
         status: this.user?.account?.status as Status,
         roles: this.user?.account?.roles as Role[],
       };
@@ -151,7 +151,7 @@ export class AccountManagementComponent implements OnInit {
       this.service.update(updatedUser).subscribe(
         (updatedUser) => {
           localStorage.removeItem('user');
-          this.router.navigate(['logIn']);
+          this.router.navigate(['home']);
           this.service.setUser();
           this.uploadPicture(this.user?.id as number);
         },
@@ -186,7 +186,7 @@ export class AccountManagementComponent implements OnInit {
       () => {
         console.log('User deleted successfully.');
         localStorage.removeItem('user');
-        this.router.navigate(['logIn']);
+        this.router.navigate(['home']);
         this.service.setUser();
       },
       (error) => {

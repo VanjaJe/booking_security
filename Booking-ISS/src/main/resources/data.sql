@@ -11,16 +11,17 @@ INSERT INTO role (name) VALUES ('ROLE_ADMIN');
 --
 --
 -- INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@gmail.com', '$2a$10$v1RBSJEgLWTyYhksoKPGFuGHqGDcKKOHhkIb59LZ1GI2BmVcSfXKq', 'ACTIVE',false);
--- INSERT INTO accounts(username, password, status,deleted) VALUES ('mika@example.com', '123', 'ACTIVE',false);
 INSERT INTO accounts(username, status,deleted) VALUES ('pera@gmail.com', 'ACTIVE',false);
 INSERT INTO accounts(username, status,deleted) VALUES ('zika@gmail.com', 'ACTIVE',false);
+INSERT INTO accounts(username,status,deleted) VALUES ('mika@gmail.com', 'ACTIVE',false);
+
 
 --
 --
 --
 INSERT INTO account_role VALUES (1,1);
 INSERT INTO account_role VALUES (2,2);
--- INSERT INTO account_role VALUES (3,1);
+INSERT INTO account_role VALUES (3,2);
 -- INSERT INTO account_role VALUES (1,3);
 -- INSERT INTO account_role VALUES (2,4);
 --
@@ -31,20 +32,20 @@ VALUES ('pera', 'pera', 1, '1234', 1, '2023-01-01 12:00:00',false);
 -- values ('vanja','peric',2,'1234',2,'2023-01-01 12:00:00',false);
 insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
 values ('zika','zika',1,'1234',2,'2023-01-01 12:00:00',false);
--- insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
--- values ('kika','peric',1,'1234',4,'2023-01-01 12:00:00',false);
+insert into users(first_name,last_name,address_id,phone_number,account_id,last_password_reset_date,deleted)
+values ('mika','mika',1,'1234',3,'2023-01-01 12:00:00',false);
 --
 --
 --
 insert into guests values (1);
 insert into hosts values (2);
--- insert into hosts values (3);
+insert into hosts values (3);
 --
 insert into notification_settings (user_id) values (1);
 insert into notification_settings (user_id) values (2);
--- insert into notification_settings (user_id) values (3);
+insert into notification_settings (user_id) values (3);
 insert into host_notification_settings (id,is_reservation_cancelled, is_request_created, is_rated, is_accommodation_rated) values (2, true, false, true, true);
--- insert into host_notification_settings (id, is_reservation_cancelled, is_request_created, is_rated, is_accommodation_rated) values (3, true, false, true, true);
+insert into host_notification_settings (id, is_reservation_cancelled, is_request_created, is_rated, is_accommodation_rated) values (3, true, false, true, true);
 insert into guest_notification_settings (id, is_request_responded) values (1, false);
 --
 --
