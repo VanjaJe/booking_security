@@ -36,7 +36,8 @@
     <button  *ngIf=" role == 'ROLE_HOST'" (click)="viewCertificate()"  mat-icon-button class="example-icon favorite-icon">
       <mat-icon>chrome_reader_mode</mat-icon>
     </button>
-    <button  *ngIf="role == 'ROLE_ADMIN' || role == 'ROLE_HOST' || role == 'ROLE_GUEST'" [routerLink]="['myAccount']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+<!--    [routerLink]="['myAccount']"-->
+    <button  *ngIf="role == 'ROLE_ADMIN' || role == 'ROLE_HOST' || role == 'ROLE_GUEST'" (click)="navigateToProfile()" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>person</mat-icon>
     </button>
 <!--    <button [routerLink]="['logIn']" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">-->

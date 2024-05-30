@@ -111,4 +111,8 @@ export class NavBarComponent {
               }
             });
   }
+
+  navigateToProfile() {
+    window.location.href = `http://localhost:8080/realms/BookingKeycloak/account`;
+  }
 }

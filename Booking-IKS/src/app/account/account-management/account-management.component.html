@@ -15,7 +15,7 @@
     </div>
     <div class="login-container">
         <form  [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
-            
+
             <label for="firstName">First name:</label>
             <input type="text" id="firstName"  name="firstName" formControlName="firstName" [value]="user?.firstName" required>
             <div *ngIf="updateUserForm.get('firstName')?.hasError('required')">
@@ -69,30 +69,29 @@
             <div *ngIf="updateUserForm.get('username')?.hasError('email')">
                 Please enter a valid email address.
             </div>
+<!--            <label for="password">Password:</label>-->
+<!--            <input type="password" id="password" name="password"  formControlName="password" [value]="user?.account?.password" required>-->
+<!--            <div *ngIf="updateUserForm.get('password')?.hasError('required')">-->
+<!--                Password is required.-->
+<!--            </div>-->
+<!--            <div *ngIf="updateUserForm.get('password')?.hasError('minlength')">-->
+<!--                Minimum length is 6 characters.-->
+<!--            </div>-->
+<!--            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('mismatchedValues')">-->
+<!--                <span  class="error-message">Passwords do not match.</span>-->
+<!--            </div>-->
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password"  formControlName="password" [value]="user?.account?.password" required>
-            <div *ngIf="updateUserForm.get('password')?.hasError('required')">
-                Password is required.
-            </div>
-            <div *ngIf="updateUserForm.get('password')?.hasError('minlength')">
-                Minimum length is 6 characters.
-            </div>
-            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('mismatchedValues')">
-                <span  class="error-message">Passwords do not match.</span>
-            </div>
-
-            <label for="password">Confirm password:</label>
-            <input type="password" id="password1" name="confirmPassword" formControlName="confirmPassword" [value]="user?.account?.password" required>
-            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('required')">
-                Confirm password is required.
-            </div>
-            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('minlength')">
-                Minimum length is 6 characters.
-            </div>
-            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('mismatchedValues')">
-                <span  class="error-message">Passwords do not match.</span>
-            </div>
+<!--            <label for="password">Confirm password:</label>-->
+<!--            <input type="password" id="password1" name="confirmPassword" formControlName="confirmPassword" [value]="user?.account?.password" required>-->
+<!--            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('required')">-->
+<!--                Confirm password is required.-->
+<!--            </div>-->
+<!--            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('minlength')">-->
+<!--                Minimum length is 6 characters.-->
+<!--            </div>-->
+<!--            <div *ngIf="updateUserForm.get('confirmPassword')?.hasError('mismatchedValues')">-->
+<!--                <span  class="error-message">Passwords do not match.</span>-->
+<!--            </div>-->
 
 
             <button type="submit" [disabled]="updateUserForm.invalid">Save changes</button>
