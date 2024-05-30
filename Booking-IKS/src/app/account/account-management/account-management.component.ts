@@ -4,6 +4,8 @@ import { Account, Address, Role, Status, User, Image} from "../model/model.modul
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { JWT_OPTIONS, JwtInterceptor } from '@auth0/angular-jwt';
+import {noHtmlOrSqlValidator, lettersOnlyValidator, numbersOnlyValidator,lettersAndSpacesValidator} from "../../validators/validators";
+
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -24,12 +26,13 @@ export class AccountManagementComponent implements OnInit {
   //   return password === confirmPassword ? null : { 'passwordMismatch': true };
   // };
 
+
   updateUserForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    country: new FormControl('', Validators.required),
-    city: new FormControl('', Validators.required),
-    address: new FormControl('', Validators.required),
+    firstName: new FormControl('', [Validators.required, lettersOnlyValidator(), noHtmlOrSqlValidator()]),
+    lastName: new FormControl('', [Validators.required, lettersOnlyValidator(), noHtmlOrSqlValidator()]),
+    country: new FormControl('', [Validators.required,lettersAndSpacesValidator(), lettersOnlyValidator(), noHtmlOrSqlValidator()]),
+    city: new FormControl('', [Validators.required, noHtmlOrSqlValidator()]),
+    address: new FormControl('', [Validators.required, noHtmlOrSqlValidator()]),
     phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
     username: new FormControl('', [Validators.required, Validators.email]),
     // password: new FormControl('', [Validators.required, Validators.minLength(6)]),

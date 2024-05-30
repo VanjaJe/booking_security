@@ -8,6 +8,12 @@ import { AccommodationsService } from '../accommodations.service';
 import { CommentAndGrade } from 'src/app/administrator/comments-and-grades/model/model.module';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ReservationsService } from 'src/app/reservations/reservations.service';
+import {
+  lettersAndSpacesValidator,
+  lettersOnlyValidator,
+  noHtmlOrSqlValidator,
+  numbersOnlyValidator
+} from "../../validators/validators";
 
 @Component({
   selector: 'app-accommodation-update',
@@ -31,14 +37,14 @@ export class AccommodationUpdateComponent {
 
 
   updateAccommodationFormGroup = this.fb.group({
-    name: ['',[Validators.required]],
-    city: ['',[Validators.required]],
-    country: ['',[Validators.required]],
-    address: ['',[Validators.required]],
-    description: ['',[Validators.required]],
-    minGuests: [0,[Validators.required]],
-    maxGuests: [0,[Validators.required]],
-    deadline: [0,[Validators.required]],
+    name: ['', [Validators.required, lettersOnlyValidator() ,noHtmlOrSqlValidator()]],
+    city: ['', [Validators.required, lettersAndSpacesValidator() ,noHtmlOrSqlValidator()]],
+    country: ['', [Validators.required, lettersAndSpacesValidator(), noHtmlOrSqlValidator()]],
+    address: ['', [Validators.required, noHtmlOrSqlValidator()]],
+    description: ['', [Validators.required, noHtmlOrSqlValidator()]],
+    minGuests: [0,[Validators.required, numbersOnlyValidator(), noHtmlOrSqlValidator()]],
+    maxGuests: [0,[Validators.required, numbersOnlyValidator(), noHtmlOrSqlValidator()]],
+    deadline: [0,[Validators.required, numbersOnlyValidator(), noHtmlOrSqlValidator()]],
     checkPrice: new FormControl(),
     checkReservation: new FormControl(),
     selectType: ['',[Validators.required]]
@@ -113,7 +119,7 @@ export class AccommodationUpdateComponent {
 
   haveActiveReservation(){
     const today: Date = new Date();
-    const targetDate: Date = new Date(2030, 11, 31); 
+    const targetDate: Date = new Date(2030, 11, 31);
 
     const year: number = today.getFullYear();
     const month: number = today.getMonth() + 1; // Month is zero-based, so add 1

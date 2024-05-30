@@ -1,6 +1,7 @@
 import {Component, Host} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+
 import {AccommodationsService} from "../accommodations.service";
 import {
   Amenity,
@@ -15,6 +16,8 @@ import {UserService} from "../../account/account.service";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import { User } from 'src/app/account/model/model.module';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {noHtmlOrSqlValidator, lettersOnlyValidator, numbersOnlyValidator,lettersAndSpacesValidator} from "../../validators/validators";
+
 
 @Component({
   selector: 'app-create-accommodation',
@@ -43,18 +46,18 @@ export class CreateAccommodationComponent {
 
 
   createAccommodationForm = this.fb.group({
-    name: ['',[Validators.required]],
-    city: ['',[Validators.required]],
-    country: ['',[Validators.required]],
-    address: ['',[Validators.required]],
-    description: ['',[Validators.required]],
-    minGuests: ['',[Validators.required]],
-    maxGuests: ['',[Validators.required]],
-    price: ['',[Validators.required]],
-    deadline: ['',[Validators.required]],
+    name: ['', [Validators.required, lettersOnlyValidator() ,noHtmlOrSqlValidator()]],
+    city: ['', [Validators.required, lettersAndSpacesValidator() ,noHtmlOrSqlValidator()]],
+    country: ['', [Validators.required, lettersAndSpacesValidator(), noHtmlOrSqlValidator()]],
+    address: ['', [Validators.required, noHtmlOrSqlValidator()]],
+    description: ['', [Validators.required, noHtmlOrSqlValidator()]],
+    minGuests: ['', [Validators.required, numbersOnlyValidator(), noHtmlOrSqlValidator()]],
+    maxGuests: ['', [Validators.required, numbersOnlyValidator(), noHtmlOrSqlValidator()]],
+    price: ['', [Validators.required, numbersOnlyValidator(), noHtmlOrSqlValidator()]],
+    deadline: ['', [Validators.required, noHtmlOrSqlValidator()]],
     checkPrice: new FormControl(),
     checkReservation: new FormControl(),
-    selectType: ['',[Validators.required]]
+    selectType: ['', [Validators.required]]
   });
 
   ngOnInit(): void {
