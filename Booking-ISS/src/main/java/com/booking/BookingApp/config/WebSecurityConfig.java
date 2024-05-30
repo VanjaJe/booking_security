@@ -55,19 +55,19 @@ import static org.springframework.security.config.http.MatcherType.mvc;
 public class WebSecurityConfig {
 
 
-//    @Autowired
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .ldapAuthentication()
-//                .userDnPatterns("uid={0},ou=users,ou=system")
-//                .groupSearchBase("ou=groups")
-//                .contextSource()
-//                .url("ldap://localhost:10389/dc=springframework,dc=org")
-//                .and()
-//                .passwordCompare()
-//                .passwordEncoder(new BCryptPasswordEncoder())
-//                .passwordAttribute("userPassword");
-//    }
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .ldapAuthentication()
+                .userDnPatterns("uid={0},ou=users,ou=system")
+                .groupSearchBase("ou=groups")
+                .contextSource()
+                .url("ldap://localhost:10389/dc=springframework,dc=org")
+                .and()
+                .passwordCompare()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .passwordAttribute("userPassword");
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

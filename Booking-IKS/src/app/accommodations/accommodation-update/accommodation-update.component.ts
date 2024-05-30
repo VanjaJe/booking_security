@@ -134,7 +134,7 @@ export class AccommodationUpdateComponent {
         console.log(this.activeReservations)
         if(this.activeReservations.length>0){
           const updateButton = document.getElementById('updateAccommodation') as HTMLButtonElement;
-          updateButton.style.visibility = 'hidden';
+          //updateButton.style.visibility = 'hidden';
         }
       },
       error: (_) => {
