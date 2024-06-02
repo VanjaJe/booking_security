@@ -35,15 +35,5 @@ public class AmenityService implements IAmenityService {
     @Override
     public void delete(Long id) {}
 
-    public Collection<Amenity> data() {
-        Collection<Amenity> amenityList = new ArrayList<>();
 
-        // Add instances of Amenity to the list
-        amenityList.add(new Amenity(1L, "Swimming Pool", false));
-        amenityList.add(new Amenity(2L, "Gym", false));
-        amenityList.add(new Amenity(3L, "WiFi",false));
-        amenityList.add(new Amenity(3L, "WiFi", false));
-
-        return amenityList;
-    }
 }

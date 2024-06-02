@@ -63,7 +63,7 @@ public class WebSecurityConfig {
                 .userDnPatterns("uid={0},ou=users,ou=system")
                 .groupSearchBase("ou=groups")
                 .contextSource()
-                .url("ldap://localhost:10389/dc=springframework,dc=org")
+                .url("ldap://localhost:10389/dc=example,dc=com")
                 .and()
                 .passwordCompare()
                 .passwordEncoder(new BCryptPasswordEncoder())

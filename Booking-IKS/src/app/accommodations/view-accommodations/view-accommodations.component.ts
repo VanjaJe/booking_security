@@ -61,6 +61,7 @@ export class ViewAccommodationsComponent implements  OnInit{
       minValue: 5000,
       maxValue: 20000
     });
+
     if(this.role=="ROLE_HOST"){
       this.hostId=this.userService.getUserId();
     }
