@@ -79,6 +79,11 @@ public class User implements UserDetails {
         this.account = account;
         this.deleted = deleted;
     }
+    public User(String firstName, String lastName,Account account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.account = account;
+    }
 
     public User(Long id, String firstName, String lastName, Address address, String phoneNumber, Account account, Timestamp lastPasswordResetDate, String activationLink, LocalDate activationLinkDate, boolean deleted, List<String> image, String reportingReason) {
         this.id = id;

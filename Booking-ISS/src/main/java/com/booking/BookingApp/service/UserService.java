@@ -3,14 +3,21 @@ package com.booking.BookingApp.service;
 import com.booking.BookingApp.domain.*;
 import com.booking.BookingApp.domain.enums.RequestStatus;
 import com.booking.BookingApp.domain.enums.Status;
+import com.booking.BookingApp.mapper.UserAttributesMapper;
 import com.booking.BookingApp.repository.*;
 import com.booking.BookingApp.service.interfaces.IUserService;
 import com.booking.BookingApp.utils.ImageUploadUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.query.LdapQuery;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +32,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 @Service
 @Transactional
@@ -60,6 +69,12 @@ public class UserService implements IUserService {
     @Autowired
     GuestRepository guestRepository;
 
+    @Autowired
+    private LdapTemplate ldapTemplate;
+
+    @Autowired
+    private NotificationSettingsService notificationSettingsService;
+
     @Override
     public Collection<User> findAll() {
         return null;
@@ -67,7 +82,19 @@ public class UserService implements IUserService {
 
     @Override
     public User findOne(String id) {
+        if(userRepository.findByAccount_Username(id)==null){
+          return getLdapUser(id);
+        }
         return userRepository.findByAccount_Username(id);
+    }
+    public User getLdapUser(String id){
+        LdapQuery query = query()
+                .base("ou=users,ou=system")
+                .where("uid")
+                .is(id);
+
+        List<LdapUser> ldapUsers = ldapTemplate.search(query, new UserAttributesMapper());
+        return convertLdapUserToUser(ldapUsers);
     }
 
     @Override
@@ -397,5 +424,32 @@ public class UserService implements IUserService {
 
         host.getAccount().setStatus(Status.REPORTED);
         return userRepository.save(host);
+    }
+    private User convertLdapUserToUser(List<LdapUser> ldapUsers) {
+        LdapUser ldapUser=ldapUsers.get(0);
+        List<Role>roles=new ArrayList<>();
+        boolean isGuest=false;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof Jwt) {
+            Jwt jwt = (Jwt) authentication.getPrincipal();
+            Map<String, Object> realmAccess= jwt.getClaim("realm_access");
+            List<String> jwtRoles = (List<String>) realmAccess.get("roles");
+            if(jwtRoles.contains("HOST")){
+                roles.add(new Role("ROLE_HOST"));
+            }else if(jwtRoles.contains("GUEST")){
+                roles.add(new Role("ROLE_GUEST"));
+                isGuest=true;
+            }
+        }
+        Account account=new Account(ldapUser.getEmail(),Status.ACTIVE,roles,false);
+        User user=new User(ldapUser.getCn(),ldapUser.getSn(),account);
+        User savedUser;
+        if(isGuest){
+            savedUser=saveGuest(user);
+        }else{
+            savedUser=saveHost(user);
+        }
+        notificationSettingsService.createNotificationSettings(savedUser);
+        return user;
     }
 }

@@ -34,7 +34,6 @@ public class AvailabilityService implements IAvailabilityService {
 
     @Override
     public Collection<TimeSlot> updateFreeTimeSlots(TimeSlotDTO newTimeSlot, Collection<TimeSlot> timeSlots) {
-        System.out.println("wtf" );
         boolean check=false;
         for (TimeSlot timeSlot : timeSlots) {
             if (timeSlot.getStartDate().isBefore(newTimeSlot.getStartDate()) && timeSlot.getEndDate().isAfter(newTimeSlot.getEndDate())) {
