@@ -6,6 +6,7 @@ import com.booking.BookingApp.security.auth.TokenAuthenticationFilter;
 import com.booking.BookingApp.service.CustomUserDetailsService;
 import com.booking.BookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -113,6 +114,14 @@ public class WebSecurityConfig {
 //    @Autowired
 //    private TokenUtils tokenUtils;
 
+    @Bean
+    public FilterRegistrationBean<XSSFilter> filterRegistrationBean() {
+        FilterRegistrationBean<XSSFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new XSSFilter());
+        registrationBean.addUrlPatterns("/*");
+        return registrationBean;
+    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -129,12 +138,11 @@ public class WebSecurityConfig {
 //            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //        });
 
-        http.headers(headers ->
-                headers.xssProtection(
-                        xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)
-                ).contentSecurityPolicy(
-                        cps -> cps.policyDirectives("script-src 'self'")
-                ));
+        http.headers(headers -> headers
+                .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self'"))
+                .frameOptions(frameOptions -> frameOptions.sameOrigin())
+                .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000))
+        );
 
         http.exceptionHandling(exceptionHandling-> {
             exceptionHandling.authenticationEntryPoint(restAuthenticationEntryPoint);
